@@ -64,6 +64,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-找出两个升序数组中的中位数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/14/LeetCode-%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E5%8D%87%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" class="article-date">
+  <time datetime="2020-12-14T15:40:52.000Z" itemprop="datePublished">2020-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/14/LeetCode-%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E5%8D%87%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/">LeetCode-找出两个升序数组中的中位数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定两个大小为 m 和 n 的正序（从小到大）数组 <code>nums1</code> 和 <code>nums2</code>。请你找出并返回这两个正序数组的中位数。</p>
+<p>思路：遍历两个数组合并到新数组（也可不合并，直接取中间的数）后取中位数。</p>
+<p>时间复杂度O(m+n)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findMedianSortedArrays</span>(<span class="params">nums1, nums2</span>):</span></span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    j = <span class="number">0</span></span><br><span class="line">    ret_list = []</span><br><span class="line">    <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(nums1) <span class="keyword">and</span> j &lt; <span class="built_in">len</span>(nums2):</span><br><span class="line">        <span class="keyword">if</span> nums1[i] &lt; nums2[j]:</span><br><span class="line">            ret_list.append(nums1[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ret_list.append(nums2[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(nums1):</span><br><span class="line">        ret_list.extend(nums1[i:])</span><br><span class="line">    <span class="keyword">if</span> j &lt; <span class="built_in">len</span>(nums2):</span><br><span class="line">        ret_list.extend(nums2[j:])</span><br><span class="line">    <span class="keyword">return</span> (ret_list[(<span class="built_in">len</span>(ret_list) + <span class="number">1</span>) // <span class="number">2</span> - <span class="number">1</span>] + ret_list[(<span class="built_in">len</span>(ret_list) + <span class="number">2</span>) // <span class="number">2</span> - <span class="number">1</span>]) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>二分法思路：取两个数组中的第k/2个元素进行比较，如果数组1的元素小于数组2的元素，则说明数组1中的前k/2个元素不可能成为第k个元素的候选，所以将数组1中的前k/2个元素去掉，组成新数组和数组2求第k-k/2小的元素，因为我们把前k/2个元素去掉了，所以相应的k值也应该减小。另外就是注意处理一些边界条件问题，比如某一个数组可能为空或者k为1的情况。</p>
+<p>时间复杂度O(log(m+n))</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findMedianSortedArrays</span>(<span class="params">nums1, nums2</span>):</span></span><br><span class="line">    l = (<span class="built_in">len</span>(nums1) + <span class="built_in">len</span>(nums2) + <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">    r = (<span class="built_in">len</span>(nums1) + <span class="built_in">len</span>(nums2) + <span class="number">2</span>) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> (findKth(nums1, nums2, l) + findKth(nums1, nums2, r)) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findKth</span>(<span class="params">nums1, nums2, k</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums1) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> nums2[k - <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> k == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(nums1[<span class="number">0</span>], nums2[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums1) &gt; <span class="built_in">len</span>(nums2):</span><br><span class="line">        findKth(nums2, nums1, k)</span><br><span class="line">    i, j = <span class="built_in">min</span>(<span class="built_in">len</span>(nums1) - <span class="number">1</span>, k // <span class="number">2</span> - <span class="number">1</span>), <span class="built_in">min</span>(<span class="built_in">len</span>(nums2) - <span class="number">1</span>, k // <span class="number">2</span> - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> nums1[i] &gt; nums2[j]:</span><br><span class="line">        <span class="keyword">return</span> findKth(nums1, nums2[j + <span class="number">1</span>:], k - j - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> findKth(nums1[i + <span class="number">1</span>:], nums2, k - i - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/14/LeetCode-%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E5%8D%87%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" data-id="ckioq95rv0000fm1350pf63t7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-python内置的堆、栈和队列" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/13/python%E5%86%85%E7%BD%AE%E7%9A%84%E5%A0%86%E3%80%81%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/" class="article-date">
@@ -518,6 +565,10 @@
       <ul>
         
           <li>
+            <a href="/2020/12/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/20/git%E8%AF%A6%E8%A7%A3/">git详解</a>
           </li>
         
@@ -531,10 +582,6 @@
         
           <li>
             <a href="/2020/12/18/LeetCode-%E7%9B%9B%E6%9C%80%E5%A4%9A%E7%9A%84%E6%B0%B4%EF%BC%88%E5%AF%B9%E6%92%9E%E6%8C%87%E9%92%88%EF%BC%89/">LeetCode-盛最多的水（对撞指针）</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/17/LeetCode-%E6%95%B4%E6%95%B0%E5%8F%8D%E8%BD%AC/">LeetCode-整数反转</a>
           </li>
         
       </ul>
