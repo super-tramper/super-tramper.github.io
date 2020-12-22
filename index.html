@@ -120,10 +120,10 @@
 <p>如果并没有要求必须把背包装满，而是只希望价格尽量大，初始化时应该将 F [0..V ] 全部设为 0。</p>
 <p>这是为什么呢?可以这样理解:初始化的 F 数组事实上就是在没有任何物品可以放 入背包时的合法状态。如果要求背包恰好装满，那么此时只有容量为 0 的背包可以在什 么也不装且价值为 0 的情况下被“恰好装满”，其它容量的背包均没有合法的解，属于 未定义的状态，应该被赋值为 -∞ 了。如果背包并非必须被装满，那么任何容量的背包 都有一个合法解“什么都不装”，这个解的价值为 0，所以初始时状态的值也就全部为 0 了。</p>
 <h3 id="一个常数优化"><a href="#一个常数优化" class="headerlink" title="一个常数优化"></a>一个常数优化</h3><p>上面伪代码中的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i ←1 to N:</span><br><span class="line">		for v ←V to Ci</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i ←1 to N:</span><br><span class="line">	for v ←V to Ci</span><br></pre></td></tr></table></figure>
 
 <p>中第二重循环的下限可以改进。它可以被优化为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i ←1 to N:</span><br><span class="line">		for v←V to max(V−ΣWi,Ci)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i ←1 to N:</span><br><span class="line">	for v←V to max(V−ΣWi,Ci)</span><br></pre></td></tr></table></figure>
 
 
 
