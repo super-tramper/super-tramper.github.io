@@ -5,17 +5,17 @@
   
 
   
-  <title>动态规划 | IMTE</title>
+  <title>背包问题-混合三种背包问题 | IMTE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013309870&#x2F;article&#x2F;details&#x2F;75193592">
+  <meta name="description" content="01 背包与完全背包的混合考虑到 01 背包和完全背包中给出的伪代码只有一处不同，故如果只有两类物品：一类物品只能取一次，另一类物品可以取无限次，那么只需在对每个物品应用转移方程时，根据物品的类别选用顺序或逆序的循环即可，复杂度是 O(VN)。伪代码如下： 1234567for i ← 1 to N	if 第 i 件物品属于 01 背包		for v ← V to Ci     	F[v] ← m">
 <meta property="og:type" content="article">
-<meta property="og:title" content="动态规划">
-<meta property="og:url" content="http://example.com/2020/12/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/index.html">
+<meta property="og:title" content="背包问题-混合三种背包问题">
+<meta property="og:url" content="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="IMTE">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013309870&#x2F;article&#x2F;details&#x2F;75193592">
+<meta property="og:description" content="01 背包与完全背包的混合考虑到 01 背包和完全背包中给出的伪代码只有一处不同，故如果只有两类物品：一类物品只能取一次，另一类物品可以取无限次，那么只需在对每个物品应用转移方程时，根据物品的类别选用顺序或逆序的循环即可，复杂度是 O(VN)。伪代码如下： 1234567for i ← 1 to N	if 第 i 件物品属于 01 背包		for v ← V to Ci     	F[v] ← m">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-20T15:45:25.000Z">
-<meta property="article:modified_time" content="2020-12-20T15:45:56.581Z">
+<meta property="article:published_time" content="2020-12-27T10:43:40.000Z">
+<meta property="article:modified_time" content="2020-12-27T10:53:51.564Z">
 <meta property="article:author" content="IMTE">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-动态规划" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-背包问题-混合三种背包问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/12/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" class="article-date">
-  <time datetime="2020-12-20T15:45:25.000Z" itemprop="datePublished">2020-12-20</time>
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-12-27T10:43:40.000Z" itemprop="datePublished">2020-12-27</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      动态规划
+      背包问题-混合三种背包问题
     </h1>
   
 
@@ -89,12 +89,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013309870/article/details/75193592">https://blog.csdn.net/u013309870/article/details/75193592</a></p>
+        <h3 id="01-背包与完全背包的混合"><a href="#01-背包与完全背包的混合" class="headerlink" title="01 背包与完全背包的混合"></a><strong>01</strong> 背包与完全背包的混合</h3><p>考虑到 01 背包和完全背包中给出的伪代码只有一处不同，故如果只有两类物品：一类物品只能取一次，另一类物品可以取无限次，那么只需在对每个物品应用转移方程时，根据物品的类别选用顺序或逆序的循环即可，复杂度是 <em>O</em>(<em>VN</em>)。伪代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">	<span class="keyword">if</span> 第 i 件物品属于 01 背包</span><br><span class="line">		<span class="keyword">for</span> v ← V to Ci </span><br><span class="line">    	F[v] ← <span class="built_in">max</span>(F[v], F[v - Ci] + Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于完全背包</span><br><span class="line">		<span class="keyword">for</span> v ← Ci to V </span><br><span class="line">    	F[v] ← <span class="built_in">max</span>(F[v], F[v - Ci] + Wi)</span><br></pre></td></tr></table></figure>
+
+<h3 id="再加上多重背包"><a href="#再加上多重背包" class="headerlink" title="再加上多重背包"></a>再加上多重背包</h3><p>如果再加上最多可以取有限次的多重背包式的物品，那么利用单调队列，也可以给出均摊 <em>O</em>(<em>VN</em>) 的解法。但如果不考虑单调队列算法的话，用将每个这类物品分成 O(log<em>Mi</em>) 个 01 背包的物品的方法也已经很优了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">	<span class="keyword">if</span> 第 i 件物品属于 01 背包</span><br><span class="line">		ZeroOnePack(F,Ci,Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于完全背包</span><br><span class="line">		CompletePack(F,Ci,Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于多重背包</span><br><span class="line">		MultiplePack(F,Ci,Wi,Ni)</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" data-id="ckixaytn90000go13b0xz9w06" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="ckj70m1ll0000p0133lo12xl1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
@@ -105,19 +110,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/12/21/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-01%E8%83%8C%E5%8C%85/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          背包问题-01背包
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/12/20/git%E8%AF%A6%E8%A7%A3/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/12/24/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">git详解</div>
+      <div class="article-nav-title">单调队列</div>
     </a>
   
 </nav>
