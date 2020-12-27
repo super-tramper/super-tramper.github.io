@@ -15,7 +15,7 @@
 <meta property="og:description" content="问题：有 N 种物品和一个容量为 V 的背包，每种物品都有无限件可用。放入第 i 种物品 的费用是 Ci，价值是 Wi。求解:将哪些物品装入背包，可使这些物品的耗费的费用总 和不超过背包容量，且价值总和最大。 基本思路：状态转移方程如下 1F[i,v]&#x3D;max&amp;#123;F[i−1,v−kCi]+kWi |0≤kCi ≤v&amp;#125;  代码略，以下是优化思路： 思路一若两件物品 i、j">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-22T15:06:45.000Z">
-<meta property="article:modified_time" content="2020-12-23T13:51:08.504Z">
+<meta property="article:modified_time" content="2020-12-27T08:11:03.260Z">
 <meta property="article:author" content="IMTE">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -97,7 +97,7 @@
 <h4 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h4><p>若两件物品 i、j 满足 Ci ≤ Cj 且 Wi ≥ Wj，则将可以将物品 j 直接去掉，不用考虑。</p>
 <p>这个优化的正确性是显然的:任何情况下都可将价值小费用高的 j 换成物美价廉的 i，得到的方案至少不会更差。对于随机生成的数据，这个方法往往会大大减少物品的 件数，从而加快速度。然而这个并不能改善最坏情况的复杂度，因为有可能特别设计的 数据可以一件物品也去不掉。</p>
 <h4 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h4><p>首先将费用大于 V 的物品去掉，然后使用类似计数排序的做 法，计算出费用相同的物品中价值最高的是哪个，可以 O(V + N ) 地完成这个优化。计数排序的思路参考下一篇文档。</p>
-<h4 id="思路三（优于前两者）"><a href="#思路三（优于前两者）" class="headerlink" title="思路三（优于前两者）"></a>思路三（优于前两者）</h4><p>把第 i 种物品拆成费用为 Ci2k、价值为 Wi2k 的若干件物 品，其中 k 取遍满足 Ci2k ≤ V 的非负整数。</p>
+<h4 id="思路三（优于前两者）"><a href="#思路三（优于前两者）" class="headerlink" title="思路三（优于前两者）"></a>思路三（优于前两者）</h4><p>把第 i 种物品拆成费用为 Ci2^k、价值为 Wi2^k 的若干件物 品，其中 k 取遍满足 Ci2^k ≤ V 的非负整数。</p>
 <p>这是二进制的思想。因为，不管最优策略选几件第 i 种物品，其件数写成二进制后， 总可以表示成若干个 2k 件物品的和。这样一来就把每种物品拆成 O(log ⌊V /Ci⌋) 件物 品，是一个很大的改进。</p>
 <h3 id="复杂度O-VN-的算法"><a href="#复杂度O-VN-的算法" class="headerlink" title="复杂度O(VN)的算法"></a>复杂度O(VN)的算法</h3><p>使用一维数组，先看伪代码:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">F [0..V ] ←0</span><br><span class="line">	fori ←1toN</span><br><span class="line">		forv ←Ci toV</span><br><span class="line">			F[v] ←max(F[v],F[v−Ci]+Wi)</span><br></pre></td></tr></table></figure>
