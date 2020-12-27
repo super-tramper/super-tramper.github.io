@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>背包问题-问法的变化 | IMTE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="理解并熟悉了三种基本的背包问题后，分组背包、混合背包以及二维背包都能较快领悟。有依赖的背包和泛化物品还需要通过实战演练才能加深理解。 求方案总数对于一个给定了背包容量、物品费用、物品间相互关系（分组、依赖等）的背包问题，除了再给定每个物品的价值后求可得到的最大价值外，还可以得到装满背包或将背包装至某一指定容量的方案总数。 对于这类改变问法的问题，一般只需将状态转移方程中的 max 改成 sum 即">
+<meta property="og:type" content="article">
+<meta property="og:title" content="背包问题-问法的变化">
+<meta property="og:url" content="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/index.html">
+<meta property="og:site_name" content="IMTE">
+<meta property="og:description" content="理解并熟悉了三种基本的背包问题后，分组背包、混合背包以及二维背包都能较快领悟。有依赖的背包和泛化物品还需要通过实战演练才能加深理解。 求方案总数对于一个给定了背包容量、物品费用、物品间相互关系（分组、依赖等）的背包问题，除了再给定每个物品的价值后求可得到的最大价值外，还可以得到装满背包或将背包装至某一指定容量的方案总数。 对于这类改变问法的问题，一般只需将状态转移方程中的 max 改成 sum 即">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-27T15:59:46.000Z">
+<meta property="article:modified_time" content="2020-12-27T16:30:15.077Z">
+<meta property="article:author" content="IMTE">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">IMTE</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-背包问题-问法的变化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" class="article-date">
+  <time datetime="2020-12-27T15:59:46.000Z" itemprop="datePublished">2020-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      背包问题-问法的变化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>理解并熟悉了三种基本的背包问题后，分组背包、混合背包以及二维背包都能较快领悟。有依赖的背包和泛化物品还需要通过实战演练才能加深理解。</p>
+<h3 id="求方案总数"><a href="#求方案总数" class="headerlink" title="求方案总数"></a>求方案总数</h3><p>对于一个给定了背包容量、物品费用、物品间相互关系（分组、依赖等）的背包问题，除了再给定每个物品的价值后求可得到的最大价值外，还可以得到装满背包或将背包装至某一指定容量的方案总数。</p>
+<p>对于这类改变问法的问题，一般只需将状态转移方程中的 max 改成 sum 即可。例如若每件物品均是完全背包中的物品，转移方程即为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[i, v] &#x3D; sum&#123;F[i i 1, v], F[i, v v Ci]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>初始条件是 <em>F</em>[0*,* 0] = 1。F[i, v]指容量为v时前i件物品的组合数目。</p>
+<p>事实上，这样做可行的原因在于状态转移方程已经考察了所有可能的背包组成方案。</p>
+<h3 id="最优方案的总数"><a href="#最优方案的总数" class="headerlink" title="最优方案的总数"></a>最优方案的总数</h3><p>这里的最优方案是指物品总价值最大的方案。以 01 背包为例。</p>
+<p>结合求最大总价值和方案总数两个问题的思路，最优方案的总数可以这样求：<em>F</em>[<em>i, v</em>] 代表该状态的最大价值，<em>G</em>[<em>i, v</em>] 表示这个子问题的最优方案的总数，则在求<em>F</em>[<em>i, v</em>] 的同时求 <em>G</em>[<em>i, v</em>] 的伪代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">G[<span class="number">0</span>, <span class="number">0</span>] ← <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">		<span class="keyword">for</span> v ← <span class="number">0</span> to V </span><br><span class="line">    	F[i, v] ← <span class="built_in">max</span>&#123;F[i - <span class="number">1</span>, v], F[i - <span class="number">1</span>, v - Ci] + Wi&#125; </span><br><span class="line">      G[i, v] ← <span class="number">0</span></span><br><span class="line">			<span class="keyword">if</span> F[i, v] = F[i - <span class="number">1</span>, v] </span><br><span class="line">      	G[i, v] ← G[i, v] + G[i - <span class="number">1</span>][v]</span><br><span class="line">			<span class="keyword">if</span> F[i, v] = F[i - <span class="number">1</span>, v - Ci] + Wi </span><br><span class="line">      	G[i, v] ← G[i, v] + G[i - <span class="number">1</span>][v - Ci]</span><br></pre></td></tr></table></figure>
+
+<h3 id="求次优解、第-K-优解"><a href="#求次优解、第-K-优解" class="headerlink" title="求次优解、第 K 优解"></a>求次优解、第 <em>K</em> 优解</h3><p>对于求次优解、第 <em>K</em> 优解类的问题，如果相应的最优解问题能写出状态转移方程、用动态规划解决，那么求次优解往往可以相同的复杂度解决，第 <em>K</em> 优解则比求最优解的复杂度上多一个系数 <em>K</em>。</p>
+<p>其基本思想是，将每个状态都表示成有序队列，将状态转移方程中的 max/min 转化成有序队列的合并。</p>
+<p>这里仍然以 01 背包为例讲解一下。</p>
+<p>首先看 01 背包求最优解的状态转移方程：<em>F</em>[<em>i, v</em>] = max*{F*[<em>i -</em> 1*, v*]<em>, F</em>[<em>i -</em> 1*, v -* <em>Ci</em> ] + <em>W<strong>i</strong>}*。如果要求第 *K</em> 优解，那么状态 <em>F</em>[<em>i, v</em>] 就应该是一个大小为 <em>K</em> 的队列<em>F</em>[<em>i, v,</em> 1 <em>. . . K</em>]。其中 <em>F</em>[<em>i, v, k</em>] 表示前 <em>i</em> 个物品中，背包大小为 <em>v</em> 时，第 <em>k</em> 优解的值。这里也可以简单地理解为在原来的方程中加了一维来表示结果的优先次序。显然<em>f</em>[<em>i, v,</em> 1 <em>. . . K</em>] 这 <em>K</em> 个数是由大到小排列的，所以它可看作是一个有序队列。</p>
+<p>然后原方程就可以解释为：<em>F</em>[<em>i, v</em>] 这个有序队列是由 <em>F</em>[<em>i -</em> 1*, v*] 和 <em>F</em>[<em>i -</em> 1,<em>v -</em> <em>Ci</em> ] + <em>Wi</em> 这两个有序队列合并得到的。前者 F[i-1] [v] 即 <em>F</em>[<em>i -</em> 1*, v,* 1 <em>. . . K</em>]，后者<em>F</em>[<em>i -</em> 1,<em>v - Ci</em> ] + <em>Wi</em> 则理解为在 <em>F</em>[<em>i -</em> 1,<em>v - C<strong>i</strong>,</em> 1 <em>. . . K</em>] 的每个数上加上 <em>Wi</em> 后得到的有序队列。合并这两个有序队列并将结果的前 <em>K</em> 项储存到 <em>f</em>[<em>i, v,</em> 1 <em>. . . K</em>] 中的复杂度是<em>O</em>(<em>K</em>)。最后的第 <em>K</em> 优解的答案是 <em>F</em>[<em>N, V, K</em>]。总的时间复杂度是 <em>O</em>(<em>V NK</em>)。</p>
+<p>一个正确的状态转移方程的求解过程遍历了所有可用的策略，也就覆盖了问题的所有方案。只不过由于是求最优解，所以其它在任何一个策略上达不到最优的方案都被忽略了。如果把每个状态表示成一个大小为 <em>K</em> 的数组，并在这个数组中有序地保存该状态可取到的前 <em>K</em> 个最优值。那么，对于任两个状态的max 运算等价于两个由大到小的有序队列的合并。</p>
+<p>另外还要注意题目对于“第 <em>K</em> 优解”的定义，是要求将策略不同但权值相同的两个方案是看作同一个解还是不同的解。如果是前者，则维护有序队列时要保证队列里的数没有重复的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" data-id="ckj7cmpqd0007ip136ndbcr4x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">背包问题-泛化物品</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81/">背包问题-泛化物品</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-有依赖的背包问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%88%86%E7%BB%84%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-分组的背包问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-二维费用的背包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 IMTE<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

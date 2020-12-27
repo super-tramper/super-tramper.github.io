@@ -15,7 +15,7 @@
 <meta property="og:description" content="01 背包与完全背包的混合考虑到 01 背包和完全背包中给出的伪代码只有一处不同，故如果只有两类物品：一类物品只能取一次，另一类物品可以取无限次，那么只需在对每个物品应用转移方程时，根据物品的类别选用顺序或逆序的循环即可，复杂度是 O(VN)。伪代码如下： 1234567for i ← 1 to N	if 第 i 件物品属于 01 背包		for v ← V to Ci     	F[v] ← m">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-27T10:43:40.000Z">
-<meta property="article:modified_time" content="2020-12-27T10:53:51.564Z">
+<meta property="article:modified_time" content="2020-12-27T12:49:19.567Z">
 <meta property="article:author" content="IMTE">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -95,6 +95,7 @@
 <h3 id="再加上多重背包"><a href="#再加上多重背包" class="headerlink" title="再加上多重背包"></a>再加上多重背包</h3><p>如果再加上最多可以取有限次的多重背包式的物品，那么利用单调队列，也可以给出均摊 <em>O</em>(<em>VN</em>) 的解法。但如果不考虑单调队列算法的话，用将每个这类物品分成 O(log<em>Mi</em>) 个 01 背包的物品的方法也已经很优了。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">	<span class="keyword">if</span> 第 i 件物品属于 01 背包</span><br><span class="line">		ZeroOnePack(F,Ci,Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于完全背包</span><br><span class="line">		CompletePack(F,Ci,Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于多重背包</span><br><span class="line">		MultiplePack(F,Ci,Wi,Ni)</span><br></pre></td></tr></table></figure>
 
+<p>具体代码略</p>
 
       
     </div>
@@ -109,6 +110,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          背包问题-二维费用的背包问题
+        
+      </div>
+    </a>
   
   
     <a href="/2020/12/24/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/" id="article-nav-older" class="article-nav-link-wrap">
@@ -164,23 +174,23 @@
       <ul>
         
           <li>
-            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-混合三种背包问题</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
           </li>
         
           <li>
-            <a href="/2020/12/24/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/">单调队列</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81/">背包问题-泛化物品</a>
           </li>
         
           <li>
-            <a href="/2020/12/23/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85/">背包问题-多重背包</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-有依赖的背包问题</a>
           </li>
         
           <li>
-            <a href="/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">计数排序</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%88%86%E7%BB%84%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-分组的背包问题</a>
           </li>
         
           <li>
-            <a href="/2020/12/22/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85/">背包问题-完全背包</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-二维费用的背包问题</a>
           </li>
         
       </ul>

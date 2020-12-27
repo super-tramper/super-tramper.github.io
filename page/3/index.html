@@ -64,6 +64,240 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-单词规律" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/16/LeetCode-%E5%8D%95%E8%AF%8D%E8%A7%84%E5%BE%8B/" class="article-date">
+  <time datetime="2020-12-16T05:37:32.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/16/LeetCode-%E5%8D%95%E8%AF%8D%E8%A7%84%E5%BE%8B/">LeetCode-单词规律</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。</p>
+<p>这里的 遵循 指完全匹配，例如， pattern 里的每个字母和字符串 str 中的每个非空单词之间存在着双向连接的对应规律。</p>
+<p>示例1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: pattern &#x3D; &quot;abba&quot;, str &#x3D; &quot;dog cat cat dog&quot;</span><br><span class="line">输出: true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>示例 2:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入:pattern &#x3D; &quot;abba&quot;, str &#x3D; &quot;dog cat cat fish&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+
+<p>示例 3:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: pattern &#x3D; &quot;aaaa&quot;, str &#x3D; &quot;dog cat cat dog&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+
+
+<p>示例 4:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: pattern &#x3D; &quot;abba&quot;, str &#x3D; &quot;dog dog dog dog&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+
+<p>思路：建立字典后进行比较</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wordPattern</span>(<span class="params">pattern: <span class="built_in">str</span>, s: <span class="built_in">str</span></span>) -&gt; bool:</span></span><br><span class="line">    d = &#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(pattern) != <span class="built_in">len</span>(s.split()):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(pattern)):</span><br><span class="line">        <span class="keyword">if</span> pattern[i] <span class="keyword">not</span> <span class="keyword">in</span> d:</span><br><span class="line">            d[pattern[i]] = s.split()[i]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> d[pattern[i]] != s.split()[i]:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(<span class="built_in">set</span>(d.values())) == <span class="built_in">len</span>(d):</span><br></pre></td></tr></table></figure>
+
+<p>思路：利用zip()函数建立元祖</p>
+<blockquote>
+<p><strong>zip()</strong> 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用 * 号操作符，可以将元组解压为列表。zip 方法在 Python 2 和 Python 3 中的不同：在 Python 3.x 中为了减少内存，zip() 返回的是一个对象。如需展示列表，需手动 list() 转换。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wordPattern2</span>(<span class="params">pattern: <span class="built_in">str</span>, s: <span class="built_in">str</span></span>) -&gt; bool:</span></span><br><span class="line">    s1 = s.split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(pattern) != <span class="built_in">len</span>(s1):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(<span class="built_in">set</span>(<span class="built_in">zip</span>(<span class="built_in">list</span>(pattern), s1))) == <span class="built_in">len</span>(<span class="built_in">set</span>(s1)) == <span class="built_in">len</span>(<span class="built_in">set</span>(pattern))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/16/LeetCode-%E5%8D%95%E8%AF%8D%E8%A7%84%E5%BE%8B/" data-id="ckiqzpofo0000el13132u4sde" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-LeetCode-找出两个升序数组中的中位数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/14/LeetCode-%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E5%8D%87%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" class="article-date">
+  <time datetime="2020-12-14T15:40:52.000Z" itemprop="datePublished">2020-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/14/LeetCode-%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E5%8D%87%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/">LeetCode-找出两个升序数组中的中位数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定两个大小为 m 和 n 的正序（从小到大）数组 <code>nums1</code> 和 <code>nums2</code>。请你找出并返回这两个正序数组的中位数。</p>
+<p>思路：遍历两个数组合并到新数组（也可不合并，直接取中间的数）后取中位数。</p>
+<p>时间复杂度O(m+n)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findMedianSortedArrays</span>(<span class="params">nums1, nums2</span>):</span></span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    j = <span class="number">0</span></span><br><span class="line">    ret_list = []</span><br><span class="line">    <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(nums1) <span class="keyword">and</span> j &lt; <span class="built_in">len</span>(nums2):</span><br><span class="line">        <span class="keyword">if</span> nums1[i] &lt; nums2[j]:</span><br><span class="line">            ret_list.append(nums1[i])</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ret_list.append(nums2[j])</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(nums1):</span><br><span class="line">        ret_list.extend(nums1[i:])</span><br><span class="line">    <span class="keyword">if</span> j &lt; <span class="built_in">len</span>(nums2):</span><br><span class="line">        ret_list.extend(nums2[j:])</span><br><span class="line">    <span class="keyword">return</span> (ret_list[(<span class="built_in">len</span>(ret_list) + <span class="number">1</span>) // <span class="number">2</span> - <span class="number">1</span>] + ret_list[(<span class="built_in">len</span>(ret_list) + <span class="number">2</span>) // <span class="number">2</span> - <span class="number">1</span>]) / <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>二分法思路：取两个数组中的第k/2个元素进行比较，如果数组1的元素小于数组2的元素，则说明数组1中的前k/2个元素不可能成为第k个元素的候选，所以将数组1中的前k/2个元素去掉，组成新数组和数组2求第k-k/2小的元素，因为我们把前k/2个元素去掉了，所以相应的k值也应该减小。另外就是注意处理一些边界条件问题，比如某一个数组可能为空或者k为1的情况。</p>
+<p>时间复杂度O(log(m+n))</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findMedianSortedArrays</span>(<span class="params">nums1, nums2</span>):</span></span><br><span class="line">    l = (<span class="built_in">len</span>(nums1) + <span class="built_in">len</span>(nums2) + <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line">    r = (<span class="built_in">len</span>(nums1) + <span class="built_in">len</span>(nums2) + <span class="number">2</span>) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> (findKth(nums1, nums2, l) + findKth(nums1, nums2, r)) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findKth</span>(<span class="params">nums1, nums2, k</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums1) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> nums2[k - <span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> k == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(nums1[<span class="number">0</span>], nums2[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums1) &gt; <span class="built_in">len</span>(nums2):</span><br><span class="line">        findKth(nums2, nums1, k)</span><br><span class="line">    i, j = <span class="built_in">min</span>(<span class="built_in">len</span>(nums1) - <span class="number">1</span>, k // <span class="number">2</span> - <span class="number">1</span>), <span class="built_in">min</span>(<span class="built_in">len</span>(nums2) - <span class="number">1</span>, k // <span class="number">2</span> - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">if</span> nums1[i] &gt; nums2[j]:</span><br><span class="line">        <span class="keyword">return</span> findKth(nums1, nums2[j + <span class="number">1</span>:], k - j - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> findKth(nums1[i + <span class="number">1</span>:], nums2, k - i - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/14/LeetCode-%E6%89%BE%E5%87%BA%E4%B8%A4%E4%B8%AA%E5%8D%87%E5%BA%8F%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" data-id="ckioq95rv0000fm1350pf63t7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python内置的堆、栈和队列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/13/python%E5%86%85%E7%BD%AE%E7%9A%84%E5%A0%86%E3%80%81%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/" class="article-date">
+  <time datetime="2020-12-13T10:17:46.000Z" itemprop="datePublished">2020-12-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/13/python%E5%86%85%E7%BD%AE%E7%9A%84%E5%A0%86%E3%80%81%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/">python内置的堆、栈和队列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9b94651534c3">https://www.jianshu.com/p/9b94651534c3</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/13/python%E5%86%85%E7%BD%AE%E7%9A%84%E5%A0%86%E3%80%81%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97/" data-id="ckimz6cpo0000ua13hc2821rr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-sql优化-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/13/sql%E4%BC%98%E5%8C%96-1/" class="article-date">
+  <time datetime="2020-12-13T10:03:45.000Z" itemprop="datePublished">2020-12-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/13/sql%E4%BC%98%E5%8C%96-1/">sql优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265852739">https://zhuanlan.zhihu.com/p/265852739</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/13/sql%E4%BC%98%E5%8C%96-1/" data-id="ckimyurrt0000rx13f15g0tt9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/" rel="tag">sql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-括号匹配" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/13/%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D/" class="article-date">
+  <time datetime="2020-12-13T09:57:06.000Z" itemprop="datePublished">2020-12-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/13/%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D/">括号匹配</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>找出一个只包含左右括号的字符串里面复合匹配规则的最长字串</p>
+<p>不用栈的写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_length</span>(<span class="params">s</span>):</span></span><br><span class="line">    n = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i, <span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> j - i &gt; n <span class="keyword">and</span> test_match(s[i:j]):</span><br><span class="line">                n = j - i</span><br><span class="line">    <span class="keyword">return</span> n</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_match</span>(<span class="params">s</span>):</span></span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">        k = k + <span class="number">1</span> <span class="keyword">if</span> i == <span class="string">&#x27;(&#x27;</span> <span class="keyword">else</span> k - <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> k &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> k == <span class="number">0</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(test_length(<span class="string">&#x27;)((()())()())&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度为O(n^3)</p>
+<p>用栈的写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">s</span>):</span></span><br><span class="line">    q = LifoQueue()</span><br><span class="line">    temp = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    q.put(s[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s[<span class="number">1</span>:]:</span><br><span class="line">        <span class="keyword">if</span> temp == <span class="string">&#x27;(&#x27;</span> <span class="keyword">and</span> i == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">            q.get()</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        q.put(i)</span><br><span class="line">        temp = i</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(s)-q.qsize()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(test(<span class="string">&#x27;(((((((((((()())()())&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度为O(n)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/13/%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D/" data-id="ckimyursd0006rx13awmian6i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-无重复的最长子串" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/13/LeetCode-%E6%97%A0%E9%87%8D%E5%A4%8D%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/" class="article-date">
@@ -294,60 +528,11 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/21/hello-world/" class="article-date">
-  <time datetime="2020-11-21T12:51:03.377Z" itemprop="datePublished">2020-11-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/21/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/11/21/hello-world/" data-id="ckhuo71pg0000ai137dpx5o58" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页 &amp;raquo;</a>
   </nav>
 
 </section>
@@ -393,23 +578,23 @@
       <ul>
         
           <li>
-            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-混合三种背包问题</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
           </li>
         
           <li>
-            <a href="/2020/12/24/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/">单调队列</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81/">背包问题-泛化物品</a>
           </li>
         
           <li>
-            <a href="/2020/12/23/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85/">背包问题-多重背包</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-有依赖的背包问题</a>
           </li>
         
           <li>
-            <a href="/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">计数排序</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%88%86%E7%BB%84%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-分组的背包问题</a>
           </li>
         
           <li>
-            <a href="/2020/12/22/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85/">背包问题-完全背包</a>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-二维费用的背包问题</a>
           </li>
         
       </ul>
