@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>LeetCode-买卖股票的最佳时机IV | IMTE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 反复阅读题目后，确定买入和卖出各算一笔交易。 Buy[i, j]表示进行恰好 j 笔交易，并且当前手上持有一支股票，这种情况下的最大利润； Sell[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode-买卖股票的最佳时机IV">
+<meta property="og:url" content="http://example.com/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/index.html">
+<meta property="og:site_name" content="IMTE">
+<meta property="og:description" content="给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。 反复阅读题目后，确定买入和卖出各算一笔交易。 Buy[i, j]表示进行恰好 j 笔交易，并且当前手上持有一支股票，这种情况下的最大利润； Sell[">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-28T14:40:35.000Z">
+<meta property="article:modified_time" content="2020-12-28T16:18:47.789Z">
+<meta property="article:author" content="IMTE">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">IMTE</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-LeetCode-买卖股票的最佳时机IV" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/" class="article-date">
+  <time datetime="2020-12-28T14:40:35.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LeetCode-买卖股票的最佳时机IV
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。</p>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p>反复阅读题目后，确定买入和卖出各算一笔交易。</p>
+<p>Buy[i, j]表示进行恰好 j 笔交易，并且当前手上持有一支股票，这种情况下的最大利润；</p>
+<p>Sell[i, j]表示恰好进行 j 笔交易，并且当前手上不持有股票，这种情况下的最大利润。</p>
+<p>状态转移方程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">buy[i][j] = <span class="built_in">max</span>(buy[i-<span class="number">1</span>][j], sell[i-<span class="number">1</span>][j]-prices[i])</span><br><span class="line">sell[i][j] = <span class="built_in">max</span>(buy[i-<span class="number">1</span>][j-<span class="number">1</span>]+prices[i], sell[i-<span class="number">1</span>][j])</span><br></pre></td></tr></table></figure>
+
+<p>边界条件：buy[0, 0]设置为-prices[0]，sell[0, 0]设置为0，第0其它值行设置为负无穷</p>
+<p>注意<code>sell</code>的状态转移方程中包含j-1,故<code>j=0</code>时单独考虑<code>buy</code></p>
+<p>二维数组的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">prices, k</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(prices)</span><br><span class="line">    k = <span class="built_in">min</span>(k, n // <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    buy = numpy.zeros((n, k + <span class="number">1</span>), dtype=<span class="built_in">float</span>)</span><br><span class="line">    sell = numpy.zeros((n, k + <span class="number">1</span>), dtype=<span class="built_in">float</span>)</span><br><span class="line">    buy[<span class="number">0</span>, <span class="number">0</span>] = -prices[<span class="number">0</span>]</span><br><span class="line">    sell[<span class="number">0</span>, <span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">        buy[<span class="number">0</span>][i] = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        sell[<span class="number">0</span>][i] = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        buy[i][<span class="number">0</span>] = <span class="built_in">max</span>(buy[i-<span class="number">1</span>][<span class="number">0</span>], sell[i-<span class="number">1</span>][<span class="number">0</span>]-prices[i])</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">            buy[i][j] = <span class="built_in">max</span>(buy[i - <span class="number">1</span>][j], sell[i - <span class="number">1</span>][j] - prices[i])</span><br><span class="line">            sell[i][j] = <span class="built_in">max</span>(buy[i - <span class="number">1</span>][j - <span class="number">1</span>] + prices[i], sell[i - <span class="number">1</span>][j])</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(<span class="built_in">max</span>(sell[n-<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    prices = [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]</span><br><span class="line">    print(maxProfit(prices, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>当然，用一维数组同样可以实现，去掉维度<code>i</code>即可，解析见<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/mai-mai-gu-piao-de-zui-jia-shi-ji-iv-by-8xtkp/">链接</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/" data-id="ckj8rnvl90000df13ere16uzm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">背包问题-问法的变化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/">LeetCode-买卖股票的最佳时机IV</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81/">背包问题-泛化物品</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-有依赖的背包问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%88%86%E7%BB%84%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-分组的背包问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 IMTE<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
