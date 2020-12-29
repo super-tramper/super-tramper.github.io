@@ -64,6 +64,59 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-按要求补齐数组" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/" class="article-date">
+  <time datetime="2020-12-29T14:32:58.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/">LeetCode-按要求补齐数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个已排序的正整数数组 nums，和一个正整数 n 。从 [1, n] 区间内选取任意个数字补充到 nums 中，使得 [1, n] 区间内的任何数字都可以用 nums 中某几个数字的和来表示。请输出满足上述要求的最少需要补充的数字个数。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: nums &#x3D; [1,3], n &#x3D; 6</span><br><span class="line">输出: 1 </span><br><span class="line">解释:</span><br><span class="line">根据 nums 里现有的组合 [1], [3], [1,3]，可以得出 1, 3, 4。</span><br><span class="line">现在如果我们将 2 添加到 nums 中， 组合变为: [1], [2], [3], [1,3], [2,3], [1,2,3]。</span><br><span class="line">其和可以表示数字 1, 2, 3, 4, 5, 6，能够覆盖 [1, 6] 区间里所有的数。</span><br><span class="line">所以我们最少需要添加一个数字。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: nums &#x3D; [1,5,10], n &#x3D; 20</span><br><span class="line">输出: 2</span><br><span class="line">解释: 我们需要添加 [2, 4]。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: nums &#x3D; [1,2,2], n &#x3D; 5</span><br><span class="line">输出: 0</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/patching-array/solution/an-yao-qiu-bu-qi-shu-zu-by-leetcode-solu-klp1/">思路</a></p>
+<p>代码</p>
+<p>此处要注意边界值的处理，若<code>x == n</code>，则<code>[1,n-1]</code>内的所有数字都被覆盖，不包含<code>n</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minPatches</span>(<span class="params">nums, n</span>):</span></span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    x = <span class="number">1</span></span><br><span class="line">    patches = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> x &lt;= n:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="built_in">len</span>(nums) <span class="keyword">and</span> nums[index] &lt;= x:</span><br><span class="line">            x += nums[index]</span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            x = x + <span class="number">1</span></span><br><span class="line">            patches += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> patches</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(minPatches([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>], <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/" data-id="ckja3jjqq0000jc1394dc6vtq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-买卖股票的最佳时机IV" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/" class="article-date">
@@ -521,57 +574,6 @@
 
 
   
-    <article id="post-计数排序" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time datetime="2020-12-23T10:52:56.000Z" itemprop="datePublished">2020-12-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">计数排序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/counting-sort.html">https://www.runoob.com/w3cnote/counting-sort.html</a></p>
-<blockquote>
-<p>计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</p>
-</blockquote>
-<p>虽然时间复杂度只有O(n)，但对求解的问题的条件很苛刻，这也是计数排序的劣势。</p>
-<p>代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_sort</span>(<span class="params">l</span>):</span></span><br><span class="line">    l_min = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    l_max = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    ret_list = []</span><br><span class="line">    <span class="comment"># 求出列表中的最大值及最小值</span></span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> l:</span><br><span class="line">        <span class="keyword">if</span> v &lt; l_min:</span><br><span class="line">            l_min = v</span><br><span class="line">        <span class="keyword">if</span> v &gt; l_max:</span><br><span class="line">            l_max = v</span><br><span class="line">    <span class="comment"># 初始化计数容器</span></span><br><span class="line">    count_list = [<span class="number">0</span>] * (l_max - l_min + <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 统计出现次数</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">        count_list[i - l_min] += <span class="number">1</span></span><br><span class="line">    <span class="comment"># 按顺序输出结果</span></span><br><span class="line">    <span class="keyword">for</span> index, value <span class="keyword">in</span> <span class="built_in">enumerate</span>(count_list):</span><br><span class="line">        <span class="keyword">while</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            ret_list.append(index + l_min)</span><br><span class="line">            value -= <span class="number">1</span></span><br><span class="line">    print(ret_list)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    l = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>]</span><br><span class="line">    count_sort(l)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>输出结果为</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/" data-id="ckj1axgr70001rf135cl86j47" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -622,6 +624,10 @@
       <ul>
         
           <li>
+            <a href="/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/">LeetCode-按要求补齐数组</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/">LeetCode-买卖股票的最佳时机IV</a>
           </li>
         
@@ -635,10 +641,6 @@
         
           <li>
             <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-有依赖的背包问题</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%88%86%E7%BB%84%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-分组的背包问题</a>
           </li>
         
       </ul>
