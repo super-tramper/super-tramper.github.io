@@ -64,6 +64,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-计算数组中可构成三角形的个数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/30/%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AF%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/" class="article-date">
+  <time datetime="2020-12-30T12:25:20.000Z" itemprop="datePublished">2020-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/30/%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AF%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/">计算数组中可构成三角形的个数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/obrcnh/article/details/78633758">https://blog.csdn.net/obrcnh/article/details/78633758</a></p>
+<p>时间复杂度<code>O(n^2)</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/30/%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AF%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/" data-id="ckjbk7e930000u81356h7au2n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%83%8C%E5%8C%85/" rel="tag">背包</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-求一个无序数组的中位数" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/30/%E6%B1%82%E4%B8%80%E4%B8%AA%E6%97%A0%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" class="article-date">
@@ -88,6 +128,8 @@
       
         <p>另一个使用堆的算法</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/baike33/article/details/81011395">https://blog.csdn.net/baike33/article/details/81011395</a></p>
+<p>求出一百万个数中最小的一万个</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyq522376829/article/details/47686867">https://blog.csdn.net/zyq522376829/article/details/47686867</a></p>
 
       
     </div>
@@ -138,9 +180,10 @@
 <p>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lastStoneWeight</span>(<span class="params">stones</span>):</span></span><br><span class="line">    heap = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stones:</span><br><span class="line">        heapq.heappush(heap, -i)</span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(heap) &gt; <span class="number">1</span>:</span><br><span class="line">        stone_a = -heapq.heappop(heap)</span><br><span class="line">        stone_b = -heapq.heappop(heap)</span><br><span class="line">        heapq.heappush(heap, -<span class="built_in">abs</span>(stone_a - stone_b))</span><br><span class="line">    <span class="keyword">return</span> -heap[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    stones = [<span class="number">2</span>, <span class="number">7</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">1</span>]</span><br><span class="line">    print(lastStoneWeight(stones))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<p>建堆的过程：添加新节点到队列尾部，用一个工作指针指向这个节点，找出其父节点，比较新值与父节点值的大小，若父节点较小，则将父节点的值赋给新节点，工作指针指向父节点。然后不断向上比较，直到工作指针指向较小值或者到达堆顶，将新值插入工作指针指向的节点。一次入堆操作的源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heappush</span>(<span class="params">heap, item</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Push item onto heap, maintaining the heap invariant.&quot;&quot;&quot;</span></span><br><span class="line">    heap.append(item)</span><br><span class="line">    _siftdown(heap, <span class="number">0</span>, <span class="built_in">len</span>(heap)-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 
-
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_siftdown</span>(<span class="params">heap, startpos, pos</span>):</span></span><br><span class="line">    newitem = heap[pos]</span><br><span class="line">    <span class="comment"># Follow the path to the root, moving parents down until finding a place</span></span><br><span class="line">    <span class="comment"># newitem fits.</span></span><br><span class="line">    <span class="keyword">while</span> pos &gt; startpos:</span><br><span class="line">        parentpos = (pos - <span class="number">1</span>) &gt;&gt; <span class="number">1</span></span><br><span class="line">        parent = heap[parentpos]</span><br><span class="line">        <span class="keyword">if</span> newitem &lt; parent:</span><br><span class="line">            heap[pos] = parent</span><br><span class="line">            pos = parentpos</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    heap[pos] = newitem</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
@@ -502,56 +545,11 @@
 
 
   
-    <article id="post-背包问题-混合三种背包问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2020-12-27T10:43:40.000Z" itemprop="datePublished">2020-12-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-混合三种背包问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="01-背包与完全背包的混合"><a href="#01-背包与完全背包的混合" class="headerlink" title="01 背包与完全背包的混合"></a><strong>01</strong> 背包与完全背包的混合</h3><p>考虑到 01 背包和完全背包中给出的伪代码只有一处不同，故如果只有两类物品：一类物品只能取一次，另一类物品可以取无限次，那么只需在对每个物品应用转移方程时，根据物品的类别选用顺序或逆序的循环即可，复杂度是 <em>O</em>(<em>VN</em>)。伪代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">	<span class="keyword">if</span> 第 i 件物品属于 01 背包</span><br><span class="line">		<span class="keyword">for</span> v ← V to Ci </span><br><span class="line">    	F[v] ← <span class="built_in">max</span>(F[v], F[v - Ci] + Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于完全背包</span><br><span class="line">		<span class="keyword">for</span> v ← Ci to V </span><br><span class="line">    	F[v] ← <span class="built_in">max</span>(F[v], F[v - Ci] + Wi)</span><br></pre></td></tr></table></figure>
-
-<h3 id="再加上多重背包"><a href="#再加上多重背包" class="headerlink" title="再加上多重背包"></a>再加上多重背包</h3><p>如果再加上最多可以取有限次的多重背包式的物品，那么利用单调队列，也可以给出均摊 <em>O</em>(<em>VN</em>) 的解法。但如果不考虑单调队列算法的话，用将每个这类物品分成 O(log<em>Mi</em>) 个 01 背包的物品的方法也已经很优了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">	<span class="keyword">if</span> 第 i 件物品属于 01 背包</span><br><span class="line">		ZeroOnePack(F,Ci,Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于完全背包</span><br><span class="line">		CompletePack(F,Ci,Wi)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> 第 i 件物品属于多重背包</span><br><span class="line">		MultiplePack(F,Ci,Wi,Ni)</span><br></pre></td></tr></table></figure>
-
-<p>具体代码略</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="ckj70m1ll0000p0133lo12xl1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
   </nav>
 
 </section>
@@ -565,7 +563,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E5%8C%85/" rel="tag">背包</a></li></ul>
     </div>
   </div>
 
@@ -575,7 +573,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+      <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E8%83%8C%E5%8C%85/" style="font-size: 10px;">背包</a>
     </div>
   </div>
 
@@ -597,6 +595,10 @@
       <ul>
         
           <li>
+            <a href="/2020/12/30/%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AF%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/">计算数组中可构成三角形的个数</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/30/%E6%B1%82%E4%B8%80%E4%B8%AA%E6%97%A0%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/">求一个无序数组的中位数</a>
           </li>
         
@@ -610,10 +612,6 @@
         
           <li>
             <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/">LeetCode-买卖股票的最佳时机IV</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
           </li>
         
       </ul>

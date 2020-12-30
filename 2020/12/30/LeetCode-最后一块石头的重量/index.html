@@ -15,7 +15,7 @@
 <meta property="og:description" content="有一堆石头，每块石头的重量都是正整数。 每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;&#x3D; y。那么粉碎的可能结果如下： 如果 x &#x3D;&#x3D; y，那么两块石头都会被完全粉碎；如果 x !&#x3D; y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-30T11:00:27.000Z">
-<meta property="article:modified_time" content="2020-12-30T11:11:45.847Z">
+<meta property="article:modified_time" content="2020-12-30T12:43:20.077Z">
 <meta property="article:author" content="IMTE">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -101,9 +101,10 @@
 <p>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lastStoneWeight</span>(<span class="params">stones</span>):</span></span><br><span class="line">    heap = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stones:</span><br><span class="line">        heapq.heappush(heap, -i)</span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(heap) &gt; <span class="number">1</span>:</span><br><span class="line">        stone_a = -heapq.heappop(heap)</span><br><span class="line">        stone_b = -heapq.heappop(heap)</span><br><span class="line">        heapq.heappush(heap, -<span class="built_in">abs</span>(stone_a - stone_b))</span><br><span class="line">    <span class="keyword">return</span> -heap[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    stones = [<span class="number">2</span>, <span class="number">7</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">1</span>]</span><br><span class="line">    print(lastStoneWeight(stones))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<p>建堆的过程：添加新节点到队列尾部，用一个工作指针指向这个节点，找出其父节点，比较新值与父节点值的大小，若父节点较小，则将父节点的值赋给新节点，工作指针指向父节点。然后不断向上比较，直到工作指针指向较小值或者到达堆顶，将新值插入工作指针指向的节点。一次入堆操作的源码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heappush</span>(<span class="params">heap, item</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Push item onto heap, maintaining the heap invariant.&quot;&quot;&quot;</span></span><br><span class="line">    heap.append(item)</span><br><span class="line">    _siftdown(heap, <span class="number">0</span>, <span class="built_in">len</span>(heap)-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 
-
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_siftdown</span>(<span class="params">heap, startpos, pos</span>):</span></span><br><span class="line">    newitem = heap[pos]</span><br><span class="line">    <span class="comment"># Follow the path to the root, moving parents down until finding a place</span></span><br><span class="line">    <span class="comment"># newitem fits.</span></span><br><span class="line">    <span class="keyword">while</span> pos &gt; startpos:</span><br><span class="line">        parentpos = (pos - <span class="number">1</span>) &gt;&gt; <span class="number">1</span></span><br><span class="line">        parent = heap[parentpos]</span><br><span class="line">        <span class="keyword">if</span> newitem &lt; parent:</span><br><span class="line">            heap[pos] = parent</span><br><span class="line">            pos = parentpos</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    heap[pos] = newitem</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
@@ -149,7 +150,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E5%8C%85/" rel="tag">背包</a></li></ul>
     </div>
   </div>
 
@@ -159,7 +160,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a>
+      <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E8%83%8C%E5%8C%85/" style="font-size: 10px;">背包</a>
     </div>
   </div>
 
@@ -181,6 +182,10 @@
       <ul>
         
           <li>
+            <a href="/2020/12/30/%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AF%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/">计算数组中可构成三角形的个数</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/30/%E6%B1%82%E4%B8%80%E4%B8%AA%E6%97%A0%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/">求一个无序数组的中位数</a>
           </li>
         
@@ -194,10 +199,6 @@
         
           <li>
             <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/">LeetCode-买卖股票的最佳时机IV</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
           </li>
         
       </ul>
