@@ -64,6 +64,62 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-背包问题-问法的变化" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" class="article-date">
+  <time datetime="2020-12-27T15:59:46.000Z" itemprop="datePublished">2020-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>理解并熟悉了三种基本的背包问题后，分组背包、混合背包以及二维背包都能较快领悟。有依赖的背包和泛化物品还需要通过实战演练才能加深理解。</p>
+<h3 id="求方案总数"><a href="#求方案总数" class="headerlink" title="求方案总数"></a>求方案总数</h3><p>对于一个给定了背包容量、物品费用、物品间相互关系（分组、依赖等）的背包问题，除了再给定每个物品的价值后求可得到的最大价值外，还可以得到装满背包或将背包装至某一指定容量的方案总数。</p>
+<p>对于这类改变问法的问题，一般只需将状态转移方程中的 max 改成 sum 即可。例如若每件物品均是完全背包中的物品，转移方程即为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[i, v] &#x3D; sum&#123;F[i i 1, v], F[i, v v Ci]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>初始条件是 <em>F</em>[0*,* 0] = 1。F[i, v]指容量为v时前i件物品的组合数目。</p>
+<p>事实上，这样做可行的原因在于状态转移方程已经考察了所有可能的背包组成方案。</p>
+<h3 id="最优方案的总数"><a href="#最优方案的总数" class="headerlink" title="最优方案的总数"></a>最优方案的总数</h3><p>这里的最优方案是指物品总价值最大的方案。以 01 背包为例。</p>
+<p>结合求最大总价值和方案总数两个问题的思路，最优方案的总数可以这样求：<em>F</em>[<em>i, v</em>] 代表该状态的最大价值，<em>G</em>[<em>i, v</em>] 表示这个子问题的最优方案的总数，则在求<em>F</em>[<em>i, v</em>] 的同时求 <em>G</em>[<em>i, v</em>] 的伪代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">G[<span class="number">0</span>, <span class="number">0</span>] ← <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">		<span class="keyword">for</span> v ← <span class="number">0</span> to V </span><br><span class="line">    	F[i, v] ← <span class="built_in">max</span>&#123;F[i - <span class="number">1</span>, v], F[i - <span class="number">1</span>, v - Ci] + Wi&#125; </span><br><span class="line">      G[i, v] ← <span class="number">0</span></span><br><span class="line">			<span class="keyword">if</span> F[i, v] = F[i - <span class="number">1</span>, v] </span><br><span class="line">      	G[i, v] ← G[i, v] + G[i - <span class="number">1</span>][v]</span><br><span class="line">			<span class="keyword">if</span> F[i, v] = F[i - <span class="number">1</span>, v - Ci] + Wi </span><br><span class="line">      	G[i, v] ← G[i, v] + G[i - <span class="number">1</span>][v - Ci]</span><br></pre></td></tr></table></figure>
+
+<h3 id="求次优解、第-K-优解"><a href="#求次优解、第-K-优解" class="headerlink" title="求次优解、第 K 优解"></a>求次优解、第 <em>K</em> 优解</h3><p>对于求次优解、第 <em>K</em> 优解类的问题，如果相应的最优解问题能写出状态转移方程、用动态规划解决，那么求次优解往往可以相同的复杂度解决，第 <em>K</em> 优解则比求最优解的复杂度上多一个系数 <em>K</em>。</p>
+<p>其基本思想是，将每个状态都表示成有序队列，将状态转移方程中的 max/min 转化成有序队列的合并。</p>
+<p>这里仍然以 01 背包为例讲解一下。</p>
+<p>首先看 01 背包求最优解的状态转移方程：<em>F</em>[<em>i, v</em>] = max*{F*[<em>i -</em> 1*, v*]<em>, F</em>[<em>i -</em> 1*, v -* <em>Ci</em> ] + <em>W<strong>i</strong>}*。如果要求第 *K</em> 优解，那么状态 <em>F</em>[<em>i, v</em>] 就应该是一个大小为 <em>K</em> 的队列<em>F</em>[<em>i, v,</em> 1 <em>. . . K</em>]。其中 <em>F</em>[<em>i, v, k</em>] 表示前 <em>i</em> 个物品中，背包大小为 <em>v</em> 时，第 <em>k</em> 优解的值。这里也可以简单地理解为在原来的方程中加了一维来表示结果的优先次序。显然<em>f</em>[<em>i, v,</em> 1 <em>. . . K</em>] 这 <em>K</em> 个数是由大到小排列的，所以它可看作是一个有序队列。</p>
+<p>然后原方程就可以解释为：<em>F</em>[<em>i, v</em>] 这个有序队列是由 <em>F</em>[<em>i -</em> 1*, v*] 和 <em>F</em>[<em>i -</em> 1,<em>v -</em> <em>Ci</em> ] + <em>Wi</em> 这两个有序队列合并得到的。前者 F[i-1] [v] 即 <em>F</em>[<em>i -</em> 1*, v,* 1 <em>. . . K</em>]，后者<em>F</em>[<em>i -</em> 1,<em>v - Ci</em> ] + <em>Wi</em> 则理解为在 <em>F</em>[<em>i -</em> 1,<em>v - C<strong>i</strong>,</em> 1 <em>. . . K</em>] 的每个数上加上 <em>Wi</em> 后得到的有序队列。合并这两个有序队列并将结果的前 <em>K</em> 项储存到 <em>f</em>[<em>i, v,</em> 1 <em>. . . K</em>] 中的复杂度是<em>O</em>(<em>K</em>)。最后的第 <em>K</em> 优解的答案是 <em>F</em>[<em>N, V, K</em>]。总的时间复杂度是 <em>O</em>(<em>V NK</em>)。</p>
+<p>一个正确的状态转移方程的求解过程遍历了所有可用的策略，也就覆盖了问题的所有方案。只不过由于是求最优解，所以其它在任何一个策略上达不到最优的方案都被忽略了。如果把每个状态表示成一个大小为 <em>K</em> 的数组，并在这个数组中有序地保存该状态可取到的前 <em>K</em> 个最优值。那么，对于任两个状态的max 运算等价于两个由大到小的有序队列的合并。</p>
+<p>另外还要注意题目对于“第 <em>K</em> 优解”的定义，是要求将策略不同但权值相同的两个方案是看作同一个解还是不同的解。如果是前者，则维护有序队列时要保证队列里的数没有重复的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" data-id="ckj7cmpqd0007ip136ndbcr4x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-背包问题-泛化物品" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B3%9B%E5%8C%96%E7%89%A9%E5%93%81/" class="article-date">
@@ -543,89 +599,6 @@
 
 
   
-    <article id="post-背包问题-01背包" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/21/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-01%E8%83%8C%E5%8C%85/" class="article-date">
-  <time datetime="2020-12-21T14:58:54.000Z" itemprop="datePublished">2020-12-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/21/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-01%E8%83%8C%E5%8C%85/">背包问题-01背包</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>以前费老大劲学习背包问题，昨天看了动态规划的内容之后觉得豁然开朗，决定再肝一遍背包九讲。</p>
-<h3 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h3><p>问题：</p>
-<blockquote>
-<p>有 N 件物品和一个容量为 V 的背包。放入第 i 件物品耗费的费用是 Ci1，得到的 价值是 Wi。求解将哪些物品装入背包可使价值总和最大。</p>
-</blockquote>
-<p>思路：用子问题定义状态，F[i,v]表示前i件物品恰放入一个容量为v的背包可以获得的最大价值，状态转移方程如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[i, v] = max(F[i<span class="number">-1</span>, v], F[i<span class="number">-1</span>, v-Ci] + Wi)</span><br></pre></td></tr></table></figure>
-
-<p>实现代码如下：</p>
-<p>容量为10的背包，从items中选择一些物品放入，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"><span class="comment"># item (C,W)</span></span><br><span class="line">items = [[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">5</span>], [<span class="number">7</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line">v = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ZeroOnePack</span>(<span class="params">v</span>):</span></span><br><span class="line">    F = numpy.zeros((<span class="built_in">len</span>(items) + <span class="number">1</span>, v + <span class="number">1</span>), dtype=<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(items) + <span class="number">1</span>):</span><br><span class="line">        F[i] = F[i-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(items[i-<span class="number">1</span>][<span class="number">0</span>], v + <span class="number">1</span>):</span><br><span class="line">          	F[i, j] = <span class="built_in">max</span>(F[i - <span class="number">1</span>][j], F[i - <span class="number">1</span>][j - items[i - <span class="number">1</span>][<span class="number">0</span>]] + items[i - <span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> F[<span class="built_in">len</span>(items)][v]</span><br><span class="line">          </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(ZeroOnePack(v))</span><br></pre></td></tr></table></figure>
-
-<p>输出结果为14</p>
-<p>遍历结束后F的内容为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[[ <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">0</span>  <span class="number">0</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">0</span>  <span class="number">4</span>  <span class="number">4</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">5</span>  <span class="number">5</span>  <span class="number">5</span>  <span class="number">5</span>  <span class="number">5</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">0</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">5</span>  <span class="number">9</span>  <span class="number">9</span>  <span class="number">9</span> <span class="number">10</span> <span class="number">10</span> <span class="number">10</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">0</span>  <span class="number">4</span>  <span class="number">5</span>  <span class="number">5</span>  <span class="number">9</span>  <span class="number">9</span>  <span class="number">9</span> <span class="number">10</span> <span class="number">10</span> <span class="number">11</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">2</span>  <span class="number">4</span>  <span class="number">6</span>  <span class="number">7</span>  <span class="number">9</span> <span class="number">11</span> <span class="number">11</span> <span class="number">11</span> <span class="number">12</span> <span class="number">12</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">2</span>  <span class="number">4</span>  <span class="number">6</span>  <span class="number">7</span>  <span class="number">9</span> <span class="number">11</span> <span class="number">11</span> <span class="number">11</span> <span class="number">12</span> <span class="number">14</span>]</span><br><span class="line"> [ <span class="number">0</span>  <span class="number">2</span>  <span class="number">4</span>  <span class="number">6</span>  <span class="number">7</span>  <span class="number">9</span> <span class="number">11</span> <span class="number">11</span> <span class="number">13</span> <span class="number">13</span> <span class="number">14</span>]]</span><br></pre></td></tr></table></figure>
-
-<p>可得出放入<code>items[0] items[1] items[2] items[4] items[6]</code>后背包内物品的价值最大。</p>
-<h3 id="空间复杂度优化"><a href="#空间复杂度优化" class="headerlink" title="空间复杂度优化"></a>空间复杂度优化</h3><p>在每次主循环中我们以 v ← V . . . 0 的递减顺序计算 F [v]，这样能保证计算 F[v] 时 F[v − Ci] 保存的是状态 F[i − 1,v − Ci] 的值，伪代码如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[v]=max&#123;F[v],F[v−Ci]+Wi&#125;</span><br></pre></td></tr></table></figure>
-
-<p>详细代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"><span class="comment"># item (C,W)</span></span><br><span class="line">items = [[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">5</span>], [<span class="number">7</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ZeroOnePack</span>(<span class="params">v</span>):</span></span><br><span class="line">    F = numpy.zeros((v + <span class="number">1</span>), dtype=<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(items) + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(v, items[i - <span class="number">1</span>][<span class="number">0</span>] - <span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            F[j] = <span class="built_in">max</span>(F[j], F[j - items[i - <span class="number">1</span>][<span class="number">0</span>]] + items[i - <span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> F[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-
-<p>最后F的值为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ <span class="number">0</span>  <span class="number">2</span>  <span class="number">4</span>  <span class="number">6</span>  <span class="number">7</span>  <span class="number">9</span> <span class="number">11</span> <span class="number">11</span> <span class="number">13</span> <span class="number">13</span> <span class="number">14</span>]</span><br></pre></td></tr></table></figure>
-
-<p>将内层循环抽象后得到如下代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"><span class="comment"># item (C,W)</span></span><br><span class="line">items = [[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">5</span>], [<span class="number">7</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Solution</span>(<span class="params">V</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ZeroOnePack</span>(<span class="params">F, C, W</span>):</span></span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> <span class="built_in">range</span>(V, C-<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            F[v] = <span class="built_in">max</span>(F[v], F[v-C] + W)</span><br><span class="line"></span><br><span class="line">    F = numpy.zeros((V + <span class="number">1</span>), dtype=<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(items)+<span class="number">1</span>):</span><br><span class="line">        ZeroOnePack(F, items[i-<span class="number">1</span>][<span class="number">0</span>], items[i-<span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> F[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(Solution(<span class="number">10</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="初始化的细节"><a href="#初始化的细节" class="headerlink" title="初始化的细节"></a>初始化的细节</h3><p>我们看到的求最优解的背包问题题目中，事实上有两种不太相同的问法。有的题目 要求“恰好装满背包”时的最优解，有的题目则并没有要求必须把背包装满。一种区别 这两种问法的实现方法是在初始化的时候有所不同。</p>
-<p>如果是第一种问法，要求恰好装满背包，那么在初始化时除了 F[0] 为 0，其它 F [1..V ] 均设为 −∞，这样就可以保证最终得到的 F [V ] 是一种恰好装满背包的最优解。</p>
-<p>如果并没有要求必须把背包装满，而是只希望价格尽量大，初始化时应该将 F [0..V ] 全部设为 0。</p>
-<p>这是为什么呢?可以这样理解:初始化的 F 数组事实上就是在没有任何物品可以放 入背包时的合法状态。如果要求背包恰好装满，那么此时只有容量为 0 的背包可以在什 么也不装且价值为 0 的情况下被“恰好装满”，其它容量的背包均没有合法的解，属于 未定义的状态，应该被赋值为 -∞ 了。如果背包并非必须被装满，那么任何容量的背包 都有一个合法解“什么都不装”，这个解的价值为 0，所以初始时状态的值也就全部为 0 了。</p>
-<h3 id="一个常数优化"><a href="#一个常数优化" class="headerlink" title="一个常数优化"></a>一个常数优化</h3><p>上面伪代码中的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i ←1 to N:</span><br><span class="line">	for v ←V to Ci</span><br></pre></td></tr></table></figure>
-
-<p>中第二重循环的下限可以改进。它可以被优化为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i ←1 to N:</span><br><span class="line">	for v←V to max(V−ΣWi,Ci)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/21/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-01%E8%83%8C%E5%8C%85/" data-id="ckiyqanps00009113asiofvkk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -676,6 +649,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/06/LeetCode-%E9%99%A4%E6%B3%95%E6%B1%82%E5%80%BC/">LeetCode-除法求值</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/05/LeetCode-%E8%BE%83%E5%A4%A7%E5%88%86%E7%BB%84%E7%9A%84%E4%BD%8D%E7%BD%AE/">LeetCode-较大分组的位置</a>
           </li>
         
@@ -689,10 +666,6 @@
         
           <li>
             <a href="/2021/01/03/LeetCode-%E7%A7%8D%E8%8A%B1%E9%97%AE%E9%A2%98/">LeetCode-种花问题</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/30/%E8%AE%A1%E7%AE%97%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AF%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/">计算数组中可构成三角形的个数</a>
           </li>
         
       </ul>
