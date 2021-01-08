@@ -5,18 +5,19 @@
   
 
   
-  <title>C# 开发桌面程序技能 | IMTE</title>
+  <title>LeetCode-旋转数组 | IMTE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="WPF快速入门系列  WPF布局概览   依赖属性   WPF事件机制   WPF绑定   WPF命令 资源和样式   WPF模板   MVVM快速入门   WPF任务管理工具实现    开发项目过程中这些博客给了我很大帮助  dotnet-从入门到放弃的-500-篇文章合集    网络流、网络数据的编解码   WPF简单导航框架">
+  <meta name="description" content="给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。 示例 1: 123456输入: [1,2,3,4,5,6,7] 和 k &#x3D; 3输出: [5,6,7,1,2,3,4]解释:向右旋转 1 步: [7,1,2,3,4,5,6]向右旋转 2 步: [6,7,1,2,3,4,5]向右旋转 3 步: [5,6,7,1,2,3,4]  思路老题了，先将数组逆置，再将数组在位置k">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C# 开发桌面程序技能">
-<meta property="og:url" content="http://example.com/2019/07/27/C-%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F%E6%8A%80%E8%83%BD/index.html">
+<meta property="og:title" content="LeetCode-旋转数组">
+<meta property="og:url" content="http://example.com/2021/01/08/LeetCode-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="IMTE">
-<meta property="og:description" content="WPF快速入门系列  WPF布局概览   依赖属性   WPF事件机制   WPF绑定   WPF命令 资源和样式   WPF模板   MVVM快速入门   WPF任务管理工具实现    开发项目过程中这些博客给了我很大帮助  dotnet-从入门到放弃的-500-篇文章合集    网络流、网络数据的编解码   WPF简单导航框架">
+<meta property="og:description" content="给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。 示例 1: 123456输入: [1,2,3,4,5,6,7] 和 k &#x3D; 3输出: [5,6,7,1,2,3,4]解释:向右旋转 1 步: [7,1,2,3,4,5,6]向右旋转 2 步: [6,7,1,2,3,4,5]向右旋转 3 步: [5,6,7,1,2,3,4]  思路老题了，先将数组逆置，再将数组在位置k">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2019-07-27T10:33:26.000Z">
-<meta property="article:modified_time" content="2019-07-27T11:40:40.000Z">
+<meta property="article:published_time" content="2021-01-08T14:40:40.000Z">
+<meta property="article:modified_time" content="2021-01-08T15:02:23.047Z">
 <meta property="article:author" content="IMTE">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
@@ -66,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-C-开发桌面程序技能" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-LeetCode-旋转数组" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/27/C-%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F%E6%8A%80%E8%83%BD/" class="article-date">
-  <time datetime="2019-07-27T10:33:26.000Z" itemprop="datePublished">2019-07-27</time>
+    <a href="/2021/01/08/LeetCode-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/" class="article-date">
+  <time datetime="2021-01-08T14:40:40.000Z" itemprop="datePublished">2021-01-08</time>
 </a>
     
   </div>
@@ -80,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      C# 开发桌面程序技能
+      LeetCode-旋转数组
     </h1>
   
 
@@ -88,50 +89,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>WPF快速入门系列</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111583">WPF布局概览</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111584">依赖属性</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111585">WPF事件机制</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111586">WPF绑定</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111587">WPF命令</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111588">资源和样式</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111589">WPF模板</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111590">MVVM快速入门</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://www.kancloud.cn/wizardforcel/learning-hard-csharp/111591">WPF任务管理工具实现</a>  </li>
-</ul>
-<p>开发项目过程中这些博客给了我很大帮助</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://blog.lindexi.com/post/dotnet-%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E6%94%BE%E5%BC%83%E7%9A%84-500-%E7%AF%87%E6%96%87%E7%AB%A0%E5%90%88%E9%9B%86.html">dotnet-从入门到放弃的-500-篇文章合集</a>   </li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/liyuqian199695/article/details/53790604">网络流、网络数据的编解码</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lordwish/article/details/52667150">WPF简单导航框架</a>  </li>
-</ul>
+        <p>给定一个数组，将数组中的元素向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3,4,5,6,7] 和 k &#x3D; 3</span><br><span class="line">输出: [5,6,7,1,2,3,4]</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: [7,1,2,3,4,5,6]</span><br><span class="line">向右旋转 2 步: [6,7,1,2,3,4,5]</span><br><span class="line">向右旋转 3 步: [5,6,7,1,2,3,4]</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>老题了，先将数组逆置，再将数组在位置k分成两半，两部分分别逆置，即为所求。逆置数组采用双指针分别指向数组的头部和尾部，交换位置后向内移动，直到相遇完成逆置。</p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rotate</span>(<span class="params">nums, k</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">    n = <span class="built_in">len</span>(nums)</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">    k = k % n</span><br><span class="line">    invrese(nums, <span class="number">0</span>, n-<span class="number">1</span>)</span><br><span class="line">    invrese(nums, <span class="number">0</span>, k-<span class="number">1</span>)</span><br><span class="line">    invrese(nums, k, n-<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invrese</span>(<span class="params">nums, start, end</span>):</span></span><br><span class="line">    <span class="keyword">while</span> start &lt; end:</span><br><span class="line">        nums[start], nums[end] = nums[end], nums[start]</span><br><span class="line">        start, end = start + <span class="number">1</span>, end - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    nums = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>]</span><br><span class="line">    k = <span class="number">3</span></span><br><span class="line">    print(rotate(nums, k))</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2019/07/27/C-%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E7%A8%8B%E5%BA%8F%E6%8A%80%E8%83%BD/" data-id="ckja57edx0000fq13fvhde61x" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/08/LeetCode-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/" data-id="ckjoes5n40000el13a8e7ao18" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2019/08/07/%E7%94%A8docker%E6%9E%84%E5%BB%BA%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          用docker构建静态文件服务器
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/05/28/C-Http%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/01/07/LeetCode-%E7%9C%81%E4%BB%BD%E6%95%B0%E9%87%8F/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">C# Http请求模块</div>
+      <div class="article-nav-title">LeetCode-省份数量</div>
     </a>
   
 </nav>
