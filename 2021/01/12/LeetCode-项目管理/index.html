@@ -5,19 +5,19 @@
   
 
   
-  <title>git详解 | IMTE</title>
+  <title>LeetCode-项目管理 | IMTE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;freeking101&#x2F;article&#x2F;details&#x2F;90289202">
+  <meta name="description" content="公司共有 n 个项目和  m 个小组，每个项目要不无人接手，要不就由 m 个小组之一负责。 group[i] 表示第 i 个项目所属的小组，如果这个项目目前无人接手，那么 group[i] 就等于 -1。（项目和小组都是从零开始编号的）小组可能存在没有接手任何项目的情况。 请你帮忙按要求安排这些项目的进度，并返回排序后的项目列表： 同一小组的项目，排序后在列表中彼此相邻。项目之间存在一定的依赖关系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git详解">
-<meta property="og:url" content="http://example.com/2020/12/20/git%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:title" content="LeetCode-项目管理">
+<meta property="og:url" content="http://example.com/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="IMTE">
-<meta property="og:description" content="https:&#x2F;&#x2F;blog.csdn.net&#x2F;freeking101&#x2F;article&#x2F;details&#x2F;90289202">
+<meta property="og:description" content="公司共有 n 个项目和  m 个小组，每个项目要不无人接手，要不就由 m 个小组之一负责。 group[i] 表示第 i 个项目所属的小组，如果这个项目目前无人接手，那么 group[i] 就等于 -1。（项目和小组都是从零开始编号的）小组可能存在没有接手任何项目的情况。 请你帮忙按要求安排这些项目的进度，并返回排序后的项目列表： 同一小组的项目，排序后在列表中彼此相邻。项目之间存在一定的依赖关系">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-20T14:27:23.000Z">
-<meta property="article:modified_time" content="2020-12-20T14:27:46.250Z">
+<meta property="article:published_time" content="2021-01-12T14:57:13.000Z">
+<meta property="article:modified_time" content="2021-01-12T15:00:01.292Z">
 <meta property="article:author" content="IMTE">
-<meta property="article:tag" content="tool">
+<meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-git详解" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-LeetCode-项目管理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/12/20/git%E8%AF%A6%E8%A7%A3/" class="article-date">
-  <time datetime="2020-12-20T14:27:23.000Z" itemprop="datePublished">2020-12-20</time>
+    <a href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2021-01-12T14:57:13.000Z" itemprop="datePublished">2021-01-12</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      git详解
+      LeetCode-项目管理
     </h1>
   
 
@@ -89,15 +89,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/freeking101/article/details/90289202">https://blog.csdn.net/freeking101/article/details/90289202</a></p>
+        <p>公司共有 n 个项目和  m 个小组，每个项目要不无人接手，要不就由 m 个小组之一负责。</p>
+<p>group[i] 表示第 i 个项目所属的小组，如果这个项目目前无人接手，那么 group[i] 就等于 -1。（项目和小组都是从零开始编号的）小组可能存在没有接手任何项目的情况。</p>
+<p>请你帮忙按要求安排这些项目的进度，并返回排序后的项目列表：</p>
+<p>同一小组的项目，排序后在列表中彼此相邻。<br>项目之间存在一定的依赖关系，我们用一个列表 beforeItems 来表示，其中 beforeItems[i] 表示在进行第 i 个项目前（位于第 i 个项目左侧）应该完成的所有项目。<br>如果存在多个解决方案，只需要返回其中任意一个即可。如果没有合适的解决方案，就请返回一个 空列表 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, m &#x3D; 2, group &#x3D; [-1,-1,1,0,0,1,0,-1], beforeItems &#x3D; [[],[6],[5],[6],[3,6],[],[],[]]</span><br><span class="line">输出：[6,3,4,1,5,2,0,7]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, m &#x3D; 2, group &#x3D; [-1,-1,1,0,0,1,0,-1], beforeItems &#x3D; [[],[6],[5],[6],[3],[],[4],[]]</span><br><span class="line">输出：[]</span><br><span class="line">解释：与示例 1 大致相同，但是在排序后的列表中，4 必须放在 6 的前面。</span><br></pre></td></tr></table></figure>
+
+<p>今天这题有点难度，整了半天都没解出来。先挖个坑，日后再填。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/20/git%E8%AF%A6%E8%A7%A3/" data-id="ckix869gf00009613g9pp5jmk" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" data-id="ckju4g9js00003q13fe8g6isz" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tool/" rel="tag">tool</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
 
     </footer>
   </div>
@@ -105,19 +115,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/12/20/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          动态规划
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/12/20/git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/01/11/LeetCode-%E4%BA%A4%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">git基本操作</div>
+      <div class="article-nav-title">LeetCode-交换字符串中的元素</div>
     </a>
   
 </nav>
