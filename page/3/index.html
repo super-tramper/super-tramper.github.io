@@ -64,6 +64,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-背包问题-有依赖的背包问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-12-27T12:23:50.000Z" itemprop="datePublished">2020-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-有依赖的背包问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这种背包问题的物品间存在某种“依赖”的关系。也就是说，物品 <em>i</em> 依赖于物品 <em>j</em>，表示若选物品 <em>i</em>，则必须选物品 <em>j</em>。为了简化起见，我们先设没有某个物品既依赖于别的物品，又被别的物品所依赖；另外，没有某件物品同时依赖多件物品。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>这个问题由 NOIP2006 中“金明的预算方案”一题扩展而来。遵从该题的提法，将不依赖于别的物品的物品称为“主件”，依赖于某主件的物品称为“附件”。由这个问题的简化条件可知所有的物品由若干主件和依赖于每个主件的一个附件集合组成。</p>
+<p>按照背包问题的一般思路，仅考虑一个主件和它的附件集合。可是，可用的策略非常多，包括：一个也不选，仅选择主件，选择主件后再选择一个附件，选择主件后再选择两个附件……无法用状态转移方程来表示如此多的策略。事实上，设有 <em>n</em> 个附件，则策略有 2^<em>n</em> + 1 个，为指数级。</p>
+<p>虑对每组内的物品应用完全背包中的优化思路二（计数排序）。我们可以想到，对于第 <em>k</em> 个物品组中的物品，所有费用相同的物品只留一个价值最大的，不影响结果。所以，可以对主件 <em>k</em> 的“附件集合”先进行一次 01 背包，得到费用依次为 0*. . .V - Ck* 所有这些值时相应的最大价值 <em>Fk</em>[0 <em>. . . V - Ck</em>]。那么，这个主件及它的附件集合相当于 <em>V - Ck</em> + 1 个物品的物品组，其中费用为 <em>v</em> 的物品的价值为 <em>Fk</em>[<em>v - Ck</em>] + <em>Wk</em>，<em>v</em> 的取值范围是 <em>Ck</em> <em>≤</em> <em>v</em> <em>≤</em> <em>V</em> 。</p>
+<p>也就是说，原来指数级的策略中，有很多策略都是冗余的，通过一次 01 背包后，将主件 <em>k</em> 及其附件转化为 <em>V - Ck</em> + 1 个物品的物品组，就可以直接应用分组背包的算法解决问题了。</p>
+<h3 id="较一般的问题"><a href="#较一般的问题" class="headerlink" title="较一般的问题"></a>较一般的问题</h3><p>依赖关系以图论中“森林”（多叉树多集合）的形式给出。也就是说，主件的附件仍然可以具有自己的附件集合。限制只是每个物品最多只依赖于一个物品（只有一个主件）且不出现循环依赖。</p>
+<p>事实上，这是一种树形动态规划，其特点是，在用动态规划求每个父节点的属性之前，需要对它的各个儿子的属性进行一次动态规划式的求值。这已经触及到了“泛化物品”的思想。这个“依赖关系树”每一个子树都等价于一件泛化物品，求某节点为根的子树对应的泛化物品相当于求其所有儿子的对应的泛化物品之和。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%9C%89%E4%BE%9D%E8%B5%96%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="ckj7cmpqc0003ip131j4f8dv6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-背包问题-分组的背包问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%88%86%E7%BB%84%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
@@ -570,45 +615,6 @@
 
 
   
-    <article id="post-git详解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/20/git%E8%AF%A6%E8%A7%A3/" class="article-date">
-  <time datetime="2020-12-20T14:27:23.000Z" itemprop="datePublished">2020-12-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/20/git%E8%AF%A6%E8%A7%A3/">git详解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/freeking101/article/details/90289202">https://blog.csdn.net/freeking101/article/details/90289202</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/20/git%E8%AF%A6%E8%A7%A3/" data-id="ckix869gf00009613g9pp5jmk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tool/" rel="tag">tool</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -659,6 +665,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/14/LeetCode-%E5%8F%AF%E8%A2%AB-5-%E6%95%B4%E9%99%A4%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%89%8D%E7%BC%80/">LeetCode-可被 5 整除的二进制前缀</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/">LeetCode-冗余连接</a>
           </li>
         
@@ -672,10 +682,6 @@
         
           <li>
             <a href="/2021/01/10/LeetCode-%E6%B1%87%E6%80%BB%E5%8C%BA%E9%97%B4/">LeetCode-汇总区间</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/09/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA-III/">LeetCode-买卖股票的最佳时机 III</a>
           </li>
         
       </ul>
