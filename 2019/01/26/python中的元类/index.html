@@ -15,8 +15,9 @@
 <meta property="og:description" content="深刻理解Python中的元类(metaclass) 本文由 伯乐在线 - bigship 翻译译注：这是一篇在Stack overflow上很热的帖子。提问者自称已经掌握了有关Python OOP编程中的各种概念，但始终觉得元类(metaclass)难以理解。他知道这肯定和自省有关，但仍然觉得不太明白，希望大家可以给出一些实际的例子和代码片段以帮助理解，以及在什么情况下需要进行元编程。于是e-sa">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-01-26T07:42:49.000Z">
-<meta property="article:modified_time" content="2019-01-26T07:54:04.000Z">
+<meta property="article:modified_time" content="2021-01-14T15:15:51.332Z">
 <meta property="article:author" content="IMTE">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
@@ -196,6 +197,8 @@
       <a data-url="http://example.com/2019/01/26/python%E4%B8%AD%E7%9A%84%E5%85%83%E7%B1%BB/" data-id="ckja57eeh000bfq135ugb0hkc" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li></ul>
+
     </footer>
   </div>
   
@@ -233,7 +236,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E5%8C%85/" rel="tag">背包</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
     </div>
   </div>
 
@@ -243,7 +246,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E8%83%8C%E5%8C%85/" style="font-size: 10px;">背包</a>
+      <a href="/tags/C/" style="font-size: 16.67px;">C#</a> <a href="/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;">网络</a>
     </div>
   </div>
 
