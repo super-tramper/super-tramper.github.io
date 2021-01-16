@@ -64,6 +64,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-除法求值" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/06/LeetCode-%E9%99%A4%E6%B3%95%E6%B1%82%E5%80%BC/" class="article-date">
+  <time datetime="2021-01-06T11:51:05.000Z" itemprop="datePublished">2021-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/06/LeetCode-%E9%99%A4%E6%B3%95%E6%B1%82%E5%80%BC/">LeetCode-除法求值</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给你一个变量对数组 <code>equations</code> 和一个实数值数组 <code>values</code> 作为已知条件，其中 <code>equations[i] = [Ai, Bi]</code> 和 <code>values[i]</code> 共同表示等式 <code>Ai / Bi = values[i]</code> 。每个 <code>Ai</code> 或<code> Bi</code> 是一个表示单个变量的字符串。</p>
+<p>另有一些以数组 <code>queries</code> 表示的问题，其中<code> queries[j] = [Cj, Dj]</code> 表示第<code>j</code> 个问题，请你根据已知条件找出 <code>Cj / Dj = ?</code> 的结果作为答案。</p>
+<p>返回 所有问题的答案 。如果存在某个无法确定的答案，则用 -1.0 替代这个答案。</p>
+<p> 注意：输入总是有效的。你可以假设除法运算中不会出现除数为 0 的情况，且不存在任何矛盾的结果。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入：equations &#x3D; [[&quot;a&quot;,&quot;b&quot;],[&quot;b&quot;,&quot;c&quot;]], values &#x3D; [2.0,3.0], queries &#x3D; [[&quot;a&quot;,&quot;c&quot;],[&quot;b&quot;,&quot;a&quot;],[&quot;a&quot;,&quot;e&quot;],[&quot;a&quot;,&quot;a&quot;],[&quot;x&quot;,&quot;x&quot;]]</span><br><span class="line">输出：[6.00000,0.50000,-1.00000,1.00000,-1.00000]</span><br><span class="line">解释：</span><br><span class="line">条件：a &#x2F; b &#x3D; 2.0, b &#x2F; c &#x3D; 3.0</span><br><span class="line">问题：a &#x2F; c &#x3D; ?, b &#x2F; a &#x3D; ?, a &#x2F; e &#x3D; ?, a &#x2F; a &#x3D; ?, x &#x2F; x &#x3D; ?</span><br><span class="line">结果：[6.0, 0.5, -1.0, 1.0, -1.0 ]</span><br></pre></td></tr></table></figure>
+
+<p>思路一：有向图深度优先遍历。节点之间的路径代表它们之间的倍数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcEquation</span>(<span class="params">equations, values, queries</span>):</span></span><br><span class="line">    table = collections.defaultdict(<span class="built_in">dict</span>)</span><br><span class="line">    <span class="keyword">for</span> (a, b), value <span class="keyword">in</span> <span class="built_in">zip</span>(equations, values):</span><br><span class="line">        table[a][b] = value</span><br><span class="line">        table[b][a] = <span class="number">1.0</span> / value</span><br><span class="line">    ans = [dfs(c, d, table, <span class="built_in">set</span>()) <span class="keyword">if</span> c <span class="keyword">in</span> table <span class="keyword">and</span> d <span class="keyword">in</span> table <span class="keyword">else</span> -<span class="number">1.0</span> <span class="keyword">for</span> (c, d) <span class="keyword">in</span> queries]</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">x, y, table, visited</span>):</span></span><br><span class="line">    <span class="keyword">if</span> x == y:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1.0</span></span><br><span class="line">    visited.add(x)</span><br><span class="line">    print(x, y, table, visited)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> table[x]:</span><br><span class="line">        <span class="keyword">if</span> k <span class="keyword">in</span> visited:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        visited.add(k)</span><br><span class="line">        d = dfs(k, y, table, visited)</span><br><span class="line">        <span class="keyword">if</span> d &gt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> d * table[x][k]</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1.0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    equations = [[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>], [<span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>]]</span><br><span class="line">    values = [<span class="number">2.0</span>, <span class="number">3.0</span>]</span><br><span class="line">    queries = [[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;c&quot;</span>], [<span class="string">&quot;b&quot;</span>, <span class="string">&quot;a&quot;</span>], [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;e&quot;</span>], [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;a&quot;</span>], [<span class="string">&quot;x&quot;</span>, <span class="string">&quot;x&quot;</span>]]</span><br><span class="line">    print(calcEquation(equations, values, queries))</span><br></pre></td></tr></table></figure>
+
+<p>思路二：并查集，在网上搜到这篇<a target="_blank" rel="noopener" href="https://blog.csdn.net/liujian20150808/article/details/50848646">博客</a>，要笑死我了，不过讲得浅显易懂。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calcEquation</span>(<span class="params">equations, values, queries</span>):</span></span><br><span class="line">    parents = &#123;&#125;</span><br><span class="line">    weights = &#123;&#125;</span><br><span class="line">    <span class="comment"># 初始化</span></span><br><span class="line">    <span class="keyword">for</span> (a, b), value <span class="keyword">in</span> <span class="built_in">zip</span>(equations, values):</span><br><span class="line">        <span class="keyword">if</span> a <span class="keyword">not</span> <span class="keyword">in</span> parents:</span><br><span class="line">            parents[a] = a</span><br><span class="line">            weights[a] = <span class="number">1.0</span></span><br><span class="line">        <span class="keyword">if</span> b <span class="keyword">not</span> <span class="keyword">in</span> parents:</span><br><span class="line">            parents[b] = b</span><br><span class="line">            weights[b] = <span class="number">1.0</span></span><br><span class="line">        Union(a, b, value, parents, weights)</span><br><span class="line">    ans = []</span><br><span class="line">    <span class="keyword">for</span> c, d <span class="keyword">in</span> queries:</span><br><span class="line">        root1, weight1 = Find(c, parents, weights)</span><br><span class="line">        root2, weight2 = Find(d, parents, weights)</span><br><span class="line">        <span class="comment"># root1 != root2 或者其中一个为&quot;&quot;，即不在同一集合中</span></span><br><span class="line">        <span class="keyword">if</span> root1 != root2 <span class="keyword">or</span> root1 == <span class="string">&quot;&quot;</span> <span class="keyword">or</span> root2 == <span class="string">&quot;&quot;</span>:</span><br><span class="line">            ans.append(-<span class="number">1.0</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ans.append(weight1 / weight2)</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Find</span>(<span class="params">x, parents, weights</span>):</span></span><br><span class="line">    <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> parents:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span>, -<span class="number">1.0</span></span><br><span class="line">    weight = <span class="number">1.0</span></span><br><span class="line">    <span class="keyword">while</span> x != parents[x]:</span><br><span class="line">        weight *= weights[x]</span><br><span class="line">        x = parents[x]</span><br><span class="line">    <span class="keyword">return</span> x, weight</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Union</span>(<span class="params">x, y, value, parents, weights</span>):</span></span><br><span class="line">    root1, weight1 = Find(x, parents, weights)</span><br><span class="line">    root2, weight2 = Find(y, parents, weights)</span><br><span class="line">    <span class="keyword">if</span> root1 == root2:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    parents[root1] = root2</span><br><span class="line">    weights[root1] = <span class="number">1.0</span> / weight1 * value * weight2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    equations = [[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>], [<span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>]]</span><br><span class="line">    values = [<span class="number">2.0</span>, <span class="number">3.0</span>]</span><br><span class="line">    queries = [[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;c&quot;</span>], [<span class="string">&quot;b&quot;</span>, <span class="string">&quot;a&quot;</span>], [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;e&quot;</span>], [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;a&quot;</span>], [<span class="string">&quot;x&quot;</span>, <span class="string">&quot;x&quot;</span>]]</span><br><span class="line">    print(calcEquation(equations, values, queries))</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/06/LeetCode-%E9%99%A4%E6%B3%95%E6%B1%82%E5%80%BC/" data-id="ckjlgjwot0000l213191o5y99" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-较大分组的位置" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/05/LeetCode-%E8%BE%83%E5%A4%A7%E5%88%86%E7%BB%84%E7%9A%84%E4%BD%8D%E7%BD%AE/" class="article-date">
@@ -510,62 +559,6 @@
 
 
   
-    <article id="post-背包问题-问法的变化" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" class="article-date">
-  <time datetime="2020-12-27T15:59:46.000Z" itemprop="datePublished">2020-12-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/">背包问题-问法的变化</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>理解并熟悉了三种基本的背包问题后，分组背包、混合背包以及二维背包都能较快领悟。有依赖的背包和泛化物品还需要通过实战演练才能加深理解。</p>
-<h3 id="求方案总数"><a href="#求方案总数" class="headerlink" title="求方案总数"></a>求方案总数</h3><p>对于一个给定了背包容量、物品费用、物品间相互关系（分组、依赖等）的背包问题，除了再给定每个物品的价值后求可得到的最大价值外，还可以得到装满背包或将背包装至某一指定容量的方案总数。</p>
-<p>对于这类改变问法的问题，一般只需将状态转移方程中的 max 改成 sum 即可。例如若每件物品均是完全背包中的物品，转移方程即为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[i, v] &#x3D; sum&#123;F[i i 1, v], F[i, v v Ci]&#125;</span><br></pre></td></tr></table></figure>
-
-<p>初始条件是 <em>F</em>[0*,* 0] = 1。F[i, v]指容量为v时前i件物品的组合数目。</p>
-<p>事实上，这样做可行的原因在于状态转移方程已经考察了所有可能的背包组成方案。</p>
-<h3 id="最优方案的总数"><a href="#最优方案的总数" class="headerlink" title="最优方案的总数"></a>最优方案的总数</h3><p>这里的最优方案是指物品总价值最大的方案。以 01 背包为例。</p>
-<p>结合求最大总价值和方案总数两个问题的思路，最优方案的总数可以这样求：<em>F</em>[<em>i, v</em>] 代表该状态的最大价值，<em>G</em>[<em>i, v</em>] 表示这个子问题的最优方案的总数，则在求<em>F</em>[<em>i, v</em>] 的同时求 <em>G</em>[<em>i, v</em>] 的伪代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">G[<span class="number">0</span>, <span class="number">0</span>] ← <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> i ← <span class="number">1</span> to N</span><br><span class="line">		<span class="keyword">for</span> v ← <span class="number">0</span> to V </span><br><span class="line">    	F[i, v] ← <span class="built_in">max</span>&#123;F[i - <span class="number">1</span>, v], F[i - <span class="number">1</span>, v - Ci] + Wi&#125; </span><br><span class="line">      G[i, v] ← <span class="number">0</span></span><br><span class="line">			<span class="keyword">if</span> F[i, v] = F[i - <span class="number">1</span>, v] </span><br><span class="line">      	G[i, v] ← G[i, v] + G[i - <span class="number">1</span>][v]</span><br><span class="line">			<span class="keyword">if</span> F[i, v] = F[i - <span class="number">1</span>, v - Ci] + Wi </span><br><span class="line">      	G[i, v] ← G[i, v] + G[i - <span class="number">1</span>][v - Ci]</span><br></pre></td></tr></table></figure>
-
-<h3 id="求次优解、第-K-优解"><a href="#求次优解、第-K-优解" class="headerlink" title="求次优解、第 K 优解"></a>求次优解、第 <em>K</em> 优解</h3><p>对于求次优解、第 <em>K</em> 优解类的问题，如果相应的最优解问题能写出状态转移方程、用动态规划解决，那么求次优解往往可以相同的复杂度解决，第 <em>K</em> 优解则比求最优解的复杂度上多一个系数 <em>K</em>。</p>
-<p>其基本思想是，将每个状态都表示成有序队列，将状态转移方程中的 max/min 转化成有序队列的合并。</p>
-<p>这里仍然以 01 背包为例讲解一下。</p>
-<p>首先看 01 背包求最优解的状态转移方程：<em>F</em>[<em>i, v</em>] = max*{F*[<em>i -</em> 1*, v*]<em>, F</em>[<em>i -</em> 1*, v -* <em>Ci</em> ] + <em>W<strong>i</strong>}*。如果要求第 *K</em> 优解，那么状态 <em>F</em>[<em>i, v</em>] 就应该是一个大小为 <em>K</em> 的队列<em>F</em>[<em>i, v,</em> 1 <em>. . . K</em>]。其中 <em>F</em>[<em>i, v, k</em>] 表示前 <em>i</em> 个物品中，背包大小为 <em>v</em> 时，第 <em>k</em> 优解的值。这里也可以简单地理解为在原来的方程中加了一维来表示结果的优先次序。显然<em>f</em>[<em>i, v,</em> 1 <em>. . . K</em>] 这 <em>K</em> 个数是由大到小排列的，所以它可看作是一个有序队列。</p>
-<p>然后原方程就可以解释为：<em>F</em>[<em>i, v</em>] 这个有序队列是由 <em>F</em>[<em>i -</em> 1*, v*] 和 <em>F</em>[<em>i -</em> 1,<em>v -</em> <em>Ci</em> ] + <em>Wi</em> 这两个有序队列合并得到的。前者 F[i-1] [v] 即 <em>F</em>[<em>i -</em> 1*, v,* 1 <em>. . . K</em>]，后者<em>F</em>[<em>i -</em> 1,<em>v - Ci</em> ] + <em>Wi</em> 则理解为在 <em>F</em>[<em>i -</em> 1,<em>v - C<strong>i</strong>,</em> 1 <em>. . . K</em>] 的每个数上加上 <em>Wi</em> 后得到的有序队列。合并这两个有序队列并将结果的前 <em>K</em> 项储存到 <em>f</em>[<em>i, v,</em> 1 <em>. . . K</em>] 中的复杂度是<em>O</em>(<em>K</em>)。最后的第 <em>K</em> 优解的答案是 <em>F</em>[<em>N, V, K</em>]。总的时间复杂度是 <em>O</em>(<em>V NK</em>)。</p>
-<p>一个正确的状态转移方程的求解过程遍历了所有可用的策略，也就覆盖了问题的所有方案。只不过由于是求最优解，所以其它在任何一个策略上达不到最优的方案都被忽略了。如果把每个状态表示成一个大小为 <em>K</em> 的数组，并在这个数组中有序地保存该状态可取到的前 <em>K</em> 个最优值。那么，对于任两个状态的max 运算等价于两个由大到小的有序队列的合并。</p>
-<p>另外还要注意题目对于“第 <em>K</em> 优解”的定义，是要求将策略不同但权值相同的两个方案是看作同一个解还是不同的解。如果是前者，则维护有序队列时要保证队列里的数没有重复的。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" data-id="ckj7cmpqd0007ip136ndbcr4x" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -584,7 +577,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
     </div>
   </div>
 
@@ -594,7 +587,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 16.67px;">C#</a> <a href="/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;">网络</a>
+      <a href="/tags/C/" style="font-size: 16.67px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;">网络</a>
     </div>
   </div>
 
@@ -616,6 +609,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/15/LeetCode-947-%E7%A7%BB%E9%99%A4%E6%9C%80%E5%A4%9A%E7%9A%84%E5%90%8C%E8%A1%8C%E6%88%96%E5%90%8C%E5%88%97%E7%9F%B3%E5%A4%B4/">LeetCode-947. 移除最多的同行或同列石头</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/15/python%E7%9A%84collections%E5%92%8Citertools/">python的collections和itertools</a>
           </li>
         
@@ -629,10 +626,6 @@
         
           <li>
             <a href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">LeetCode-项目管理</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/11/LeetCode-%E4%BA%A4%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0/">LeetCode-交换字符串中的元素</a>
           </li>
         
       </ul>

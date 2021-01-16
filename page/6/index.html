@@ -64,6 +64,130 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Docker部署Django+uwsgi+MongoDB+Nginx" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/29/Docker%E9%83%A8%E7%BD%B2Django+uwsgi+MongoDB+Nginx/" class="article-date">
+  <time datetime="2020-03-29T12:50:16.000Z" itemprop="datePublished">2020-03-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/29/Docker%E9%83%A8%E7%BD%B2Django+uwsgi+MongoDB+Nginx/">django项目docker整体部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>项目由Django+uwsgi、MongoDB、Nginx三部分组成，现需将其部署到Docker中。</p>
+<ul>
+<li><p>django 一个pyhton的开源web框架。</p>
+</li>
+<li><p>uWSGI 一个基于自有的uwsgi协议、WSGI协议和http服务协议的web网关</p>
+</li>
+<li><p>nginx 常用的代理服务器</p>
+<blockquote>
+<p>WSGI：一种实现python解析的通用接口标准/协议，是一种通用的接口标准或者接口协议，实现了python web程序与服务器之间交互的通用性。 </p>
+<p>利用它，web.py或bottle或者django等等的python web开发框架，就可以轻松地部署在不同的web server上了；</p>
+<p><strong>uwsgi</strong>:同WSGI一样是一种通信协议<br>uwsgi协议是一个uWSGI服务器自有的协议，它用于定义传输信息的类型，它与WSGI相比是两样东西。</p>
+<p><strong>uWSGI</strong> :一种python web server或称为Server/Gateway<br>uWSGI类似tornadoweb或者flup，是一种python web server，uWSGI是实现了uwsgi和WSGI两种协议的Web服务器，负责响应python 的web请求。<br>因为apache、nginx等，它们自己都没有解析动态语言如php的功能，而是分派给其他模块来做，比如apache就可以说内置了php模块，让人感觉好像apache就支持php一样。<br>uWSGI实现了wsgi协议、uwsgi协议、http等协议。 Nginx中HttpUwsgiModule的作用是与uWSGI服务器进行交换。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><blockquote>
+<p>首先客户端请求服务资源，<br>nginx作为直接对外的服务接口,接收到客户端发送过来的http请求,会解包、分析，<br>如果是静态文件请求就根据nginx配置的静态文件目录，返回请求的资源，<br>如果是动态的请求,nginx就通过配置文件,将请求传递给uWSGI；uWSGI 将接收到的包进行处理，并转发给wsgi，<br>wsgi根据请求调用django工程的某个文件或函数，处理完后django将返回值交给wsgi，<br>wsgi将返回值进行打包，转发给uWSGI，<br>uWSGI接收后转发给nginx,nginx最终将返回值返回给客户端(如浏览器)。<br>*注:不同的组件之间传递信息涉及到数据格式和协议的转换</p>
+</blockquote>
+<p> <strong>作用:</strong> </p>
+<ol>
+<li>第一级的nginx并不是必须的，uwsgi完全可以完成整个的和浏览器交互的流程； </li>
+<li>在nginx上加上安全性或其他的限制，可以达到保护程序的作用； </li>
+<li>uWSGI本身是内网接口，开启多个work和processes可能也不够用，而nginx可以代理多台uWSGI完成uWSGI的负载均衡； </li>
+<li>django在debug=False下对静态文件的处理能力不是很好，而用nginx来处理更加高效。</li>
+</ol>
+<h3 id="项目各部分独立测试"><a href="#项目各部分独立测试" class="headerlink" title="项目各部分独立测试"></a>项目各部分独立测试</h3><p>为避免部署中出现问题，找不到问题在哪个部分，需掌握各部分的运行状况</p>
+<h5 id="Django"><a href="#Django" class="headerlink" title="Django"></a>Django</h5><p>在项目目录下执行<code>python manage.py runserver</code>若项目可顺利运行且可通过浏览器访问，则无问题。</p>
+<h5 id="uWSGI"><a href="#uWSGI" class="headerlink" title="uWSGI"></a>uWSGI</h5><p>通常通过<code>pip install uwsgi</code>命令来安装，如果希望从源码安装进行模块化构建，可参考<a target="_blank" rel="noopener" href="https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/Install.html">uwsgi安装文档</a>。</p>
+<p>安装完成后新建文件<code>test.py</code>，写入以下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">application</span>(<span class="params">env, start_response</span>):</span></span><br><span class="line">    start_response(<span class="string">&#x27;200 OK&#x27;</span>, [(<span class="string">&#x27;Content-Type&#x27;</span>,<span class="string">&#x27;text/html&#x27;</span>)])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello World&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行<code>uwsgi --http 0.0.0.0:8000 --wsgi-file test.py --processes 4 --threads 3</code></p>
+<p>然后<code>ps aux | grep uwsgi</code>或者<code>lsof -i:8000</code>查看进程运行情况，然后浏览器访问<code>ip:8000</code>查看返回结果。</p>
+<h5 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h5><p><code>apt-get install nginx</code>安装好Nginx后启动，浏览器访问80端口，检测Nginx是否安装正常。</p>
+<p>在终端运行<code>nginx -t</code>可检测配置文件的有效性。</p>
+<h3 id="Django-uWSGI"><a href="#Django-uWSGI" class="headerlink" title="Django+uWSGI"></a>Django+uWSGI</h3><p>运行Django项目时，需要对uwsgi配置众多参数，通常在运行uwsgi时指定<code>ini</code>配置文件。</p>
+<p>uwsgi.ini配置文件如下所示：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[uwsgi]</span></span><br><span class="line"><span class="comment"># 專案目錄</span></span><br><span class="line"><span class="attr">chdir</span>=/app/django-api</span><br><span class="line"><span class="comment"># 指定專案的application</span></span><br><span class="line"><span class="attr">module</span>=drfx.wsgi</span><br><span class="line"><span class="comment"># 指定sock的檔案路徑</span></span><br><span class="line"><span class="attr">socket</span>=/root/uwsgi.sock</span><br><span class="line"><span class="comment"># 程序個數</span></span><br><span class="line"><span class="attr">workers</span>=<span class="number">5</span></span><br><span class="line"><span class="attr">pidfile</span>=/root/uwsgi.pid</span><br><span class="line"><span class="comment"># 指定IP埠，根據情況選擇http or socket，一般選擇socket</span></span><br><span class="line"><span class="comment"># http为直接作为服务器时使用（通常在部署完这部分测试时使用），socket为通过Nginx代理时使用</span></span><br><span class="line"> <span class="attr">http</span>=<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8889</span> </span><br><span class="line"><span class="comment">#socket      = 0.0.0.0:8889</span></span><br><span class="line"><span class="comment"># 指定靜態檔案(actually not exist)</span></span><br><span class="line"><span class="attr">static-map</span>=/static=/app/django-api/static</span><br><span class="line"><span class="comment"># 啟用主程序</span></span><br><span class="line"><span class="attr">master</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 自動移除unix Socket和pid檔案當服務停止的時候</span></span><br><span class="line"><span class="attr">vacuum</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 序列化接受的內容，如果可能的話</span></span><br><span class="line"><span class="attr">thunder-lock</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 啟用執行緒</span></span><br><span class="line"><span class="attr">enable-threads</span>=<span class="literal">true</span></span><br><span class="line"><span class="comment"># 設定自中斷時間</span></span><br><span class="line"><span class="comment"># 若出现worker 2 (pid: 8) died, killed by signal 9 :( trying respawn .，则增大该值</span></span><br><span class="line"><span class="attr">harakiri</span>=<span class="number">30</span></span><br><span class="line"><span class="comment"># 設定緩衝</span></span><br><span class="line"><span class="attr">post-buffering</span>=<span class="number">4096</span></span><br><span class="line"><span class="comment"># 設定日誌目錄，运行日志将输出到配置的文件中</span></span><br><span class="line"><span class="comment"># 注意，若希望uwsgi在前台运行，则不用此设置</span></span><br><span class="line"><span class="attr">daemonize</span>=/root/uwsgi.log</span><br></pre></td></tr></table></figure>
+
+<p>Django+uwsgi的Dockerfile如下所示：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.7</span>-alpine</span><br><span class="line"><span class="keyword">ENV</span> PYTHONUNBUFFERED <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /app &amp;&amp; apk --update add gcc libc-dev jpeg-dev zlib-dev git libxml2 libxml2-dev libxslt libxslt-dev linux-headers</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app/django-api/</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> mkdir -p /app/django-api/<span class="built_in">log</span> &amp;&amp; pip install -r requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> ./docker-entrypoint.sh /docker-entrypoint.sh</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> chmod +x /docker-entrypoint.sh</span></span><br><span class="line"><span class="comment"># EXPOSE 8888</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#此命令为docker单独运行Django项目时使用</span></span><br><span class="line"><span class="comment">#CMD python manage.py runserver 0.0.0.0:8888 </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> uwsgi --ini /app/django-api/uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+
+<p>此时<code>docker-compose.yml</code>内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span>  <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">./django-api/Dockerfile</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">dapi-dev:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">dapi-dev</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/log/debug.log:/app/log/debug.log</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/uwsgi.ini:/app/django-api/uwsgi.ini</span></span><br><span class="line">     <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8889:8889&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行<code>docker-compose up</code>命令后构建Django容器，容器运行后可通过8889访问容器是否正常运行。</p>
+<h3 id="Nginx-1"><a href="#Nginx-1" class="headerlink" title="Nginx"></a>Nginx</h3><p>直接从官方镜像构建容器，仅从宿主机映射配置文件，容器的配置文件放在项目的同级目录<code>.docker</code>下,修改<code>docker-compose.yml</code>内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span>  <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">./django-api/Dockerfile</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">dapi-dev:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">dapi-dev</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/log/debug.log:/app/log/debug.log</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/uwsgi.ini:/app/django-api/uwsgi.ini</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">nginx_network</span></span><br><span class="line"></span><br><span class="line"><span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.14.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./.docker/nginx/conf.d/:/etc/nginx/conf.d/</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/log/nginx/:/var/log/nginx/</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/static/:/app/static/</span>  <span class="comment"># 注意此处静态文件路径配置</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:80&quot;</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">nginx_network</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">web</span></span><br><span class="line">      </span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">nginx_network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<p>修改<code>uwsgi.ini</code>的内容：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># http=0.0.0.0:8889 </span></span><br><span class="line"><span class="attr">socket</span>      = <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8889</span></span><br></pre></td></tr></table></figure>
+
+<p><code>docker-compose up</code>重启项目</p>
+<p>.docker/nginx/nginx.conf<code>的内容保持不变，</code>.docker/nginx/conf.d/nginx.conf`的内容如下：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定义django api</span></span><br><span class="line"><span class="attribute">upstream</span> djapi &#123;</span><br><span class="line">    <span class="attribute">server</span> web:<span class="number">8889</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">	<span class="attribute">listen</span> <span class="number">80</span> default_server;</span><br><span class="line">	<span class="attribute">listen</span> [::]:<span class="number">80</span> default_server;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">location</span> /static &#123;</span><br><span class="line">		<span class="attribute">alias</span> /app/static;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">location</span> / &#123;</span><br><span class="line">		<span class="attribute">include</span> /etc/nginx/uwsgi_params;</span><br><span class="line">		<span class="attribute">uwsgi_pass</span> djapi;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>docker-compose up</code>构建容器，执行命令<code>docker container exec -it nginx /bin/bash</code>进入容器shell，执行<code>nginx -t</code>测试配置文件。</p>
+<h3 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h3><p>MongoDB依然从官方镜像构建，配置文件放在<code>.docker/mongodb/</code>目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># mongodb.conf</span><br><span class="line">dbpath&#x3D;&#x2F;var&#x2F;lib&#x2F;mongodb</span><br><span class="line">logpath&#x3D;&#x2F;var&#x2F;log&#x2F;mongodb&#x2F;mongodb.log</span><br><span class="line">logappend&#x3D;true</span><br><span class="line">bind_ip &#x3D; 0.0.0.0</span><br><span class="line">noauth &#x3D; true</span><br></pre></td></tr></table></figure>
+
+<p>此处将MongoDB的<code>noauth</code>选项设置为<code>true</code>，待容器启动后再添加授权用户</p>
+<p><code>docker-compose.yml</code>内容改为如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span>  <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">.</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">./django-api/Dockerfile</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nic19801207/dapi-dev:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">dapi-dev</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/log/debug.log:/app/log/debug.log</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/uwsgi8889.ini:/app/django-api/uwsgi8889.ini</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ENV=develop</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mongo_network</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">nginx_network</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mongodb</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">mongodb:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo:3.6.3</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/etc/mongodb.conf:/etc/mongod.conf.orig:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/lib/mongodb/:/var/lib/mongodb</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/log/mongodb/:/var/log/mongodb</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hinh/:/app/hinh</span>  <span class="comment"># 用于导入数据或定期备份数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#    command: [--auth]</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mongo_network</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.14.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./.docker/nginx/conf.d/:/etc/nginx/conf.d/</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/log/nginx/:/var/log/nginx/</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./django-api/static/:/app/static/</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:80&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">nginx_network</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">web</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">nginx_network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br><span class="line">  <span class="attr">mongo_network:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br></pre></td></tr></table></figure>
+
+<p>将Django项目的settings.py中的数据库连接信息改为如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;djongo&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;NAME&#x27;</span>: <span class="string">&#x27;data&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span>: <span class="string">&#x27;mongodb&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;PORT&#x27;</span>: <span class="number">27017</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时我导入了项目中原有数据，<code>docker-compose up</code>启动项目，进行测试。</p>
+<p>此时整个项目已经可以顺利运行，如果希望给MongoDB加上权限验证，则继续进行剩下的操作。</p>
+<h4 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h4><p>此时MongoDB无需验证，<code>docker container exec -it proj_mongodb_1 /bin/bash</code>进入容器内部（若开启了端口则可在容器外部进入mongo shell），<code>mongo</code>进入MongoDB shell，创建<code>root</code>用户和项目数据库用户。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.createUser(</span><br><span class="line">    &#123;</span><br><span class="line">        user: &quot;root&quot;, </span><br><span class="line">        pwd: &quot;root&quot;, </span><br><span class="line">        roles:[&quot;root&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">use data</span><br><span class="line">db.createUser(</span><br><span class="line">    &#123;</span><br><span class="line">        user: &quot;data_app&quot;,</span><br><span class="line">        pwd: &quot;data_app123456&quot;,</span><br><span class="line">        roles:[</span><br><span class="line">            &#123;</span><br><span class="line">                role: &quot;readWrite&quot;,</span><br><span class="line">                db: &quot;data&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h4 id="以验证方式运行MongoDB"><a href="#以验证方式运行MongoDB" class="headerlink" title="以验证方式运行MongoDB"></a>以验证方式运行MongoDB</h4><p>修改<code>docker-compose.yml</code>文件如下(添加<code>--auth</code>启动项)：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mongodb:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">mongo:3.6.3</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/etc/mongodb.conf:/etc/mongod.conf.orig:ro</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/var/lib/mongodb/:/var/lib/mongodb</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/var/log/mongodb/:/var/log/mongodb</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">./hinh/:/app/hinh</span>  <span class="comment"># 用于导入数据或定期备份数据</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">command:</span> [<span class="string">--auth</span>]</span><br><span class="line">  <span class="attr">networks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">mongo_network</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="修改Django数据库设置"><a href="#修改Django数据库设置" class="headerlink" title="修改Django数据库设置"></a>修改Django数据库设置</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">        <span class="string">&#x27;default&#x27;</span>: &#123;</span><br><span class="line">            <span class="string">&#x27;ENGINE&#x27;</span>: <span class="string">&#x27;djongo&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;NAME&#x27;</span>: <span class="string">&#x27;data&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;HOST&#x27;</span>: <span class="string">&#x27;mongodb&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;PORT&#x27;</span>: <span class="number">27017</span>,</span><br><span class="line">            <span class="string">&#x27;USER&#x27;</span>: <span class="string">&#x27;data_app&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;PASSWORD&#x27;</span>: <span class="string">&#x27;data_app123456&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="—"><a href="#—" class="headerlink" title="—"></a>—</h3><p>疫情期间在家窝着，从docker文档，到熟悉uwsgi+Django+Nginx部署，到docker化部署，一路花了不少时间，期间犯过很多错误，有低级的有理解错误的。不断地部署，不断地遇到问题，然后一个个地解决，加深理解。最终我一路扛过来，但是我忘了把错误和解决过程记下来，主线倒是记得。期间重点参考了一些博客，以下是这些内容的链接。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/tutorials/Django_and_nginx.html">使用uWSGI和nginx来设置Django和你的web服务器</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/c465869935/article/details/53242126">uWSGI+django+nginx的工作原理流程与部署历程</a></li>
+<li><a target="_blank" rel="noopener" href="http://pawamoy.github.io/2018/02/01/docker-compose-django-postgres-nginx.html">Docker Compose with NginX, Django, Gunicorn and multiple Postgres databases</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/rahasak/enable-mongodb-authentication-with-docker-1b9f7d405a94">Enable mongodb authentication with docker</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/03/29/Docker%E9%83%A8%E7%BD%B2Django+uwsgi+MongoDB+Nginx/" data-id="ckja57ee30002fq137drecwfl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-docker" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/03/19/docker/" class="article-date">
@@ -1011,7 +1135,7 @@
       <a data-url="http://example.com/2020/01/31/KeepAlived%E7%AD%89%E5%BA%94%E7%94%A8%E7%9A%84%E7%89%B9%E7%82%B9/" data-id="ckja57eex000ffq13a8u88xiw" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
 
     </footer>
   </div>
@@ -1624,230 +1748,6 @@
 
 
   
-    <article id="post-应用层" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/02/13/%E5%BA%94%E7%94%A8%E5%B1%82/" class="article-date">
-  <time datetime="2019-02-13T13:58:27.000Z" itemprop="datePublished">2019-02-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/13/%E5%BA%94%E7%94%A8%E5%B1%82/">应用层</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h1><h2 id="应用层协议原理"><a href="#应用层协议原理" class="headerlink" title="应用层协议原理"></a>应用层协议原理</h2><p>研发网络应用程序的核心：写出能够运行在不同的端系统和通过网络彼此通信的程序。<br>网络核心设备并不在应用层起作用，特别是网络层及下面层次，应用被限制在端系统。  </p>
-<h3 id="网络应用程序体系结构"><a href="#网络应用程序体系结构" class="headerlink" title="网络应用程序体系结构"></a>网络应用程序体系结构</h3><p>应用程序体系结构：由应用程序研发者设计，规定了如何在各种端系统上组织该应用结构。<br>客户-服务器体系结构（cs architecture):总是打开的主机服务于来自客户主机的请求，服务器具有固定的IP，客户机之间不能直接通信，客户机能随时从服务器获得服务，服务方通常具有配备大量主机的数据中心。  </p>
-<p>P2P结构（P2P architecture):对服务器的依赖很小或没有，主机对之间间断连接，适用于流量密集型应用。  </p>
-<p>P2P结构的自扩展性：每个对等方都请求文件产生工作量，但每个对等方都通过分发文件为系统增加服务能力。  </p>
-<p>P2P应用面临的挑战：  </p>
-<blockquote>
-<ol>
-<li>硬件设施限制了P2P的上载流量；   </li>
-<li>高分布、开放的特性带来的安全性问题；  </li>
-<li>用户向应用提供带宽的意愿。</li>
-</ol>
-</blockquote>
-<h3 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h3><p>运行在相同端系统上的进程（process）使用进程间通信机制相互通信，规则由端系统上的操作系统确定；  </p>
-<p>运行在不同端系统上的进程通过跨越计算机网络交换报文（message）来通信。</p>
-<h4 id="客户和服务器进程"><a href="#客户和服务器进程" class="headerlink" title="客户和服务器进程"></a>客户和服务器进程</h4><p>客户：发起通信的进程；  </p>
-<p>服务器：会话开始时等待连接的进程。  </p>
-<h4 id="进程云计算机网络之间的接口"><a href="#进程云计算机网络之间的接口" class="headerlink" title="进程云计算机网络之间的接口"></a>进程云计算机网络之间的接口</h4><p>套接字（socket）：进程向网络发送报文和接收报文时所使用的软件接口，也称为应用程序和网络之间的应用程序编程接口。  </p>
-<p>应用程序开发者对套接字的控制权：  </p>
-<blockquote>
-<ol>
-<li>选择运输层协议</li>
-<li>设置运输层参数</li>
-</ol>
-</blockquote>
-<h3 id="进程寻址"><a href="#进程寻址" class="headerlink" title="进程寻址"></a>进程寻址</h3><p>标识接收进程需要定义两种信息：IP地址、目的端口号</p>
-<h3 id="可供应用程序使用的运输服务"><a href="#可供应用程序使用的运输服务" class="headerlink" title="可供应用程序使用的运输服务"></a>可供应用程序使用的运输服务</h3><p>可通过以下方面的需要来选择可用的运输层协议：</p>
-<ul>
-<li>可靠数据传输：从应用程序端把数据正确、完整地交给另一端；</li>
-<li>吞吐量：发送进程能够接受进程交付比特的速率；</li>
-<li>定时：分组从发送方套接字到进入接收方套接字不迟于一定时间；</li>
-<li>安全性：发送加密、交付解密、数据完整性、端点界别等。</li>
-</ul>
-<h3 id="因特网提供的运输服务"><a href="#因特网提供的运输服务" class="headerlink" title="因特网提供的运输服务"></a>因特网提供的运输服务</h3><h4 id="TCP服务"><a href="#TCP服务" class="headerlink" title="TCP服务"></a>TCP服务</h4><p>面向连接： 在应用层数据报文开始流动之前，TCP让客户和服务器互相交换运输层控制信息，以建立连接，连接双方的进程可在此连接上同时进行报文收发（全双工）。  </p>
-<p>可靠的数据传送服务：通信进程能够依靠TCP，无差错、按适当顺序交付所有发送的数据。  </p>
-<p>拥塞机制：发送方和接收方之间的网络出现拥塞时，TCP的拥塞控制机制会抑制发送进程。</p>
-<h4 id="UDP服务"><a href="#UDP服务" class="headerlink" title="UDP服务"></a>UDP服务</h4><p>轻量级、无拥塞（时序错乱、丢失数据）、不可靠</p>
-<h4 id="因特网运输协议不提供的服务"><a href="#因特网运输协议不提供的服务" class="headerlink" title="因特网运输协议不提供的服务"></a>因特网运输协议不提供的服务</h4><p>定时、吞吐量</p>
-<h3 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h3><p>应用层协议（application-layer protocol）：定义运行在端系统上的应用程序进程如何互相传递报文。  </p>
-<p>应用层协议是网络应用的一部分。  </p>
-<p>定义内容：</p>
-<blockquote>
-<ol>
-<li>交换的报文类型；</li>
-<li>各种报文类型的语法；</li>
-<li>字段的语义</li>
-<li>一个进程何时以及如何发送报文，对报文进行响应的规则</li>
-</ol>
-</blockquote>
-<h2 id="Web和HTTP"><a href="#Web和HTTP" class="headerlink" title="Web和HTTP"></a>Web和HTTP</h2><h3 id="HTTP概况"><a href="#HTTP概况" class="headerlink" title="HTTP概况"></a>HTTP概况</h3><p>web的应用层协议是超文本传输协议（HyperText Transfer Protocol）。  </p>
-<p>HTTP由两个程序实现：客户端程序和服务器程序。  </p>
-<p>对象：一个文件，如HTML文件，JPEG图形等。  </p>
-<p>多数web页面含有一个HTML基本文件以及几个引用对象。  </p>
-<p>HTTP定义了web客户向web服务器请求web页面的方式，以及服务器向客户传送web页面的方式。  </p>
-<p>HTTP使用TCP作为它的支撑运输协议。  </p>
-<p>无状态协议：HTTP服务器并不保存客户的任何信息。</p>
-<h3 id="非持续连接和持续连接"><a href="#非持续连接和持续连接" class="headerlink" title="非持续连接和持续连接"></a>非持续连接和持续连接</h3><p>往返时间（Round-Trip Time, RTT）：一个短分组从客户到服务器然后再返回客户所花费的时间，包括分组传播时延、分组在中间路由器和交换机上的排队时延以及分组处理时延。  </p>
-<p>非持续连接：每个请求/响应对是经一个单独的TCP连接发送，总响应时间是两个RTT加上服务器传输HTML文件的时间。   </p>
-<p>持续连接：所有请求/响应对是经相同的TCP连接发送。  </p>
-<h3 id="HTTP报文格式"><a href="#HTTP报文格式" class="headerlink" title="HTTP报文格式"></a>HTTP报文格式</h3><h4 id="HTTP请求报文"><a href="#HTTP请求报文" class="headerlink" title="HTTP请求报文"></a>HTTP请求报文</h4><ul>
-<li>由普通的ASCII文本书写；</li>
-<li>每行由一个回车和换行符结束，最后一行再附加一个回车换行符；</li>
-<li>第一行：请求行；</li>
-<li>后继行：首部行；</li>
-<li>请求行（request line）：方法字段、URL字段、HTTP版本字段；</li>
-<li>首部行（header line）：<code>Connection:close</code>  不使用持续连接，要求服务器在发送完请求的对象后关闭连接</li>
-<li>首部行：<code>User-agent: </code>指明用户代理，即浏览器的类型。</li>
-<li>实体体（entity body）：使用GET方法时为空、使用POST方法时才使用该实体体；</li>
-<li>当服务器收到HEAD方法的请求时，会用一个HTTP报文进行响应，但是并不返回请求对象。</li>
-</ul>
-<h4 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h4><ul>
-<li>由状态行、首部行、实体体组成；</li>
-<li>状态行：协议版本、状态码、响应状态信息</li>
-<li>首部行：<code>Connection:close</code> 发送完报文后将关闭TCP连接、<code>Date：</code>服务器产生并发送该响应报文的日期和时间，是服务器从文件系统中检索到该对象，插入到响应报文并发送的时间、<code>Server:</code>指示由什么服务器产生的报文、<code>Last-Modified:</code>指示了对象创建或者最后修改的日期和时间、<code>Content-Length：</code>被发送对象中的字节数、<code>Content-Type：</code>指示了实体体中的对象时HTML文本；</li>
-</ul>
-<h3 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h3><p>作用：允许站点对用户进行跟踪，识别用户<br>四大组件：  </p>
-<ul>
-<li>在HTTP响应报文中的一个cookie首部行；</li>
-<li>在HTTP请求报文中的一个cookie首部行；</li>
-<li>在用户端系统中保留有一个cookie文件，并由用户的浏览器进行管理；</li>
-<li>位于web站点的一个后端数据库。</li>
-</ul>
-<p>使用过程：首次与一个网站联系，服务器用一个包含<code>Set-cookie</code>首部的HTTP响应报文对浏览器进行响应，浏览器在它管理的特定cookie文件中添加一行，包含服务器的主机名和在<code>Set-cookie</code>首部中的识别码，每当该浏览器请求一个该网站的web页面时，浏览器会自动从cookie文件中获取他对这个网站的识别码并放到请求报文中的cookie首部行中。</p>
-<h3 id="web缓存"><a href="#web缓存" class="headerlink" title="web缓存"></a>web缓存</h3><p>web缓存器（Web cache)<br>代理服务器（proxy server）  </p>
-<p>作用：</p>
-<ul>
-<li>减少对客户请求的响应时间</li>
-<li>减少机构接入因特网的通信量</li>
-<li>降低因特网上的web流量、改善应用性能</li>
-</ul>
-<h3 id="条件GET方法"><a href="#条件GET方法" class="headerlink" title="条件GET方法"></a>条件GET方法</h3><p>HTTP协议可使缓存器正式它的对象时最新的，即条件GET方法<br>特征：</p>
-<ul>
-<li>请求报文使用GET方法</li>
-<li>请求报文中包含一个<code>If-Modified-Since:</code>首部行</li>
-</ul>
-<h2 id="文件传输协议：FTP"><a href="#文件传输协议：FTP" class="headerlink" title="文件传输协议：FTP"></a>文件传输协议：FTP</h2><p>用户提供用户标识和口令，简历与server的连接，与server进行文件传输。<br>与HTTP的共同点：</p>
-<ul>
-<li>都是文件传输协议</li>
-<li>都运行在TCP上</li>
-</ul>
-<p>与HTTP的不同，FTP使用两个并行的连接来传输文件，一个是控制连接，一个是数据连接。FTP的控制信息是带外（out-of-band）传送的，HTTP在带内（in-band）传送控制信息。  </p>
-<p>控制连接：在两主机之间传输控制信息，例如用户标识、口令、改变远程目录的命令以及存放和获取文件的命令。<br>数据连接：用于实际发送一个文件。  </p>
-<p>控制连接贯穿了整个用户会话期间，但是对会话中的每一次文件传输都需要建立一个新的数据连接。FTP服务器必须在整个会话期间保留用户的状态，服务器需要把特定的用户账户与控制连接联系起来，追踪用户在远程目录树上的当前位置，对每个进行中的用户会话的状态信息进行追踪。  </p>
-<h3 id="FTP命令和回答"><a href="#FTP命令和回答" class="headerlink" title="FTP命令和回答"></a>FTP命令和回答</h3><p>FTP的命令和回答都是以7比特ASCII格式在控制连接上传送的，每个命令后跟回车换行符，每个命令由四个大写字母ASCII字符组成，有些还有可选参数。</p>
-<h2 id="电子邮件"><a href="#电子邮件" class="headerlink" title="电子邮件"></a>电子邮件</h2><p>电子邮件系统的主要组成部分：用户代理、邮件服务器、简单邮件传输协议。</p>
-<p>邮件发送过程：从发送方的用户代理开始，传输到发送方的邮件服务器，再传输到接收放的邮件服务器，然后在这里被分发到接收方的邮箱中。</p>
-<h3 id="SMTP"><a href="#SMTP" class="headerlink" title="SMTP"></a>SMTP</h3><p>SMTP是邮件中主要的应用层协议，运行在25端口，由两部分组成：运行在发送方邮件服务器的客户端和运行在接收方邮件的服务器端，每台邮件服务器上既运行SMTP的客户端也运行SMTP的服务器端。</p>
-<p>SMTP使用持续连接，用于发送多个报文，一般不使用中间邮件服务器发送邮件。</p>
-<h3 id="与HTTP对比"><a href="#与HTTP对比" class="headerlink" title="与HTTP对比"></a>与HTTP对比</h3><p>相同点：都用于从一台主机向另一台主机传送文件，持续的HTTP和SMTP都使用持续连接。</p>
-<p>区别：</p>
-<ul>
-<li>HTTP是一个拉协议（pull protocol），SMTP是一个推协议（push protocol）；</li>
-<li>SMTP要求每个报文使用7比特ASCII码格式，HTTP数据不受这种限制；</li>
-<li>处理一个既包含文本又包含图形的文档时，HTTP把每个对象封装到自己的HTTP响应报文中，而SMTP则把所有报文对象放在一个报文之中。</li>
-</ul>
-<h3 id="邮件报文格式"><a href="#邮件报文格式" class="headerlink" title="邮件报文格式"></a>邮件报文格式</h3><p>格式：</p>
-<ul>
-<li>首部行和体用空行进行分隔；</li>
-<li>每个首部行必须有一个<code>From:</code>和<code>To:</code>首部行，也许会包括<code>Subject:</code>和其它可选的首部行。</li>
-</ul>
-<h3 id="邮件访问协议"><a href="#邮件访问协议" class="headerlink" title="邮件访问协议"></a>邮件访问协议</h3><p>第三版的邮局协议POP3、因特网邮件访问协议IMAP、HTTP</p>
-<h4 id="POP3"><a href="#POP3" class="headerlink" title="POP3"></a>POP3</h4><p>端口110，按照三个阶段进行工作：</p>
-<ul>
-<li>特许：用户代理（明文）发送用户名和口令以鉴别用户，主要命令为<code>user &lt;username&gt;</code>和<code>pass &lt;password&gt;</code>；</li>
-<li>事务处理：用户代理取回报文，带报文做删除标记以及获取邮件的统计信息，可使用四个命令<code>list</code>、<code>retr</code>、<code>dele</code>、<code>quit</code>；</li>
-<li>更新：出现在客户发出了quit命令结束POP3会话之后，删除那些被标记为删除的报文。</li>
-</ul>
-<p>事务处理过程：回答为<code>+OK</code>或<code>-ERR</code>，可设置为下载并保留或下载并删除方式，POP3服务保留了一些状态信息，但并不会在POP3会话过程中携带状态信息。</p>
-<h4 id="IMAP"><a href="#IMAP" class="headerlink" title="IMAP"></a>IMAP</h4><p>IMAP服务器把每个报文与一个文件夹联系起来，为用户提供了创建文件夹以及将邮件从一个文件夹移动到另一个文件夹的命令，还为用户提供了在远程文件夹中查询邮件的命令，同时还维护了会话的用户状态信息。</p>
-<p>IMAP的一个重要特性是它具有允许用户代理湖区报文组件的命令，例如只读取一个报文的首部，或一个多部分MIME报文的一部分。</p>
-<h4 id="基于Web的电子邮件"><a href="#基于Web的电子邮件" class="headerlink" title="基于Web的电子邮件"></a>基于Web的电子邮件</h4><p>电子邮件报文从邮件服务器发送到浏览器，使用的是HTTP。</p>
-<h2 id="DNS：因特网的目录服务"><a href="#DNS：因特网的目录服务" class="headerlink" title="DNS：因特网的目录服务"></a>DNS：因特网的目录服务</h2><p>主机可以使用主机名和IP地址进行标识。</p>
-<h3 id="DNS提供的服务"><a href="#DNS提供的服务" class="headerlink" title="DNS提供的服务"></a>DNS提供的服务</h3><p>域名系统（DNS）：主机名到IP地址转换的目录服务。</p>
-<ul>
-<li>由分层的DNS服务器实现的分布式数据库</li>
-<li>使主机能够查询分布式数据库的应用层协议</li>
-<li>运行在UDP之上，使用53号端口</li>
-</ul>
-<p>服务的具体内容：</p>
-<ul>
-<li>主机别名：应用程序可以调用DNS来忽的主机别名队形的规范主机名以及主机的IP地址；</li>
-<li>邮件服务器别名：电子邮件应用程序调用DNS对提供的邮件服务器别名进行解析，获得该主机的规范主机名以及IP地址；</li>
-<li>负载分配：当客户对映射到某地址集合的名字发出一个DNS请求时，该服务器用IP地址的一个集合进行响应，但在每个回答中循环这些地址次序。</li>
-</ul>
-<h3 id="DNS工作机理"><a href="#DNS工作机理" class="headerlink" title="DNS工作机理"></a>DNS工作机理</h3><h4 id="分布式、层次数据库"><a href="#分布式、层次数据库" class="headerlink" title="分布式、层次数据库"></a>分布式、层次数据库</h4><ul>
-<li>根DNS服务器：至2011年秋季，全球共有247个根服务器</li>
-<li>顶级域（Top-Level Domain, TLD）DNS服务器：负责域名如com、org、net以及所有国家的顶级域名</li>
-<li>权威DNS服务器：在因特网上具有公共可访问主机的每个组织机构必须提供公共可访问的DNS记录  </li>
-<li>本地DNS服务器：每个ISP都有一台本地DNS服务器，本地DNS服务器不属于DNS层次体系结构。</li>
-</ul>
-<p>当主机与某ISP连接时，该ISP提供一台主机的IP地址，该主机具有一台或多台本地DNS服务器的IP地址，通过访问Windows或Unix的网络状态窗口，能够容易地确定你本地DNS服务器的IP地址。</p>
-<p>请求某域名的主机的IP地址：</p>
-<blockquote>
-<p>1.主机cis.poly.edu向它的本地DNS服务器dns.poly.edu发送一个DNS查询报文，报文中含有被转换的主机名gaia.cs.umass.edu<br>2.本地DNS服务器将该报文转发到根DNS服务器，根DNS向本地DNS服务器返回负责edu的TLD的IP地址列表<br>3.本地DNS服务器再次向这些TLD服务器之一发送查询报文，TLD用权威DNS服务器（dns.umass.edu）的IP地址进行响应<br>4.本地DNS服务器直接向dns.umass.edu重发查询报文，权威DNS用gaia.cs.umass.edu的IP地址进行响应。</p>
-</blockquote>
-<p>本例子中，第一步为递归查询(recursive query),该查询请求dns.poly.edu以自己的名义获得该映射。后继的3个查询是迭代查询(iterative query)，因为所有的回答都是直接返回给dns.poly.edu。</p>
-<h4 id="DNS缓存"><a href="#DNS缓存" class="headerlink" title="DNS缓存"></a>DNS缓存</h4><p>DNS缓存能改善时延性能并减少在因特网上到处传输的DNS报文数量。<br>每当本地DNS服务器dns.poly.edu从某个DNS服务器接收到一个回答，它能够缓存包含在该回答中的任何信息。如果在DNS服务器中缓存了一台主机名/IP地址对，另一对相同的主机名的查询到达该DNS服务器时，该DNS服务器就能够提供所要求的IP地址。  </p>
-<h3 id="DNS记录和报文"><a href="#DNS记录和报文" class="headerlink" title="DNS记录和报文"></a>DNS记录和报文</h3><p>共同实现DNS分布式数据库的所有DNS服务器存储了资源记录。资源记录是一个包含了下列字段的4元组：<br>（Name, Value, Type, TTL)<br>TTL是该记录的生成时间，它决定了资源记录应当从缓存中删除的时间。<br>Name和Value的值取决于Type：</p>
-<ul>
-<li>如果Type=A,则Name是主机名， Value是该主机名对应的IP地址</li>
-<li>如果Type=NS，则Name是个域，而Value是个知道如何获得该域中主机IP地址的权威DNS的主机名</li>
-<li>如果Type=CNAME，则Value是别名为Name的主机对应的规范主机名</li>
-<li>如果Type=MX，则Value是个别名为Name的邮件服务器的规范主机名</li>
-</ul>
-<p>如果一台DNS服务器时用于某特定主机名的权威DNS服务器，那个该DNS服务器会有一条包含该主机名的类型A记录，如果服务器不是用于某主机名的权威服务器，那么该服务器将包含一条类型NS记录，该记录对应于包含主机名的域，它还将包含一条类型NS记录，该记录提供了在NS记录的value字段中的DNS服务器的IP地址。</p>
-<h4 id="DNS报文"><a href="#DNS报文" class="headerlink" title="DNS报文"></a>DNS报文</h4><p>DNS只有查询和回答报文，并且这两种报文具有相同的格式。</p>
-<ul>
-<li>前12个字节是首部区域：第一个字段是16比特的数，用于标识该查询，这个标识符会被复制到对查询的回答报文中，标志字段中1比特的“查询/回答”标志位支出报文时查询报文（0）还是回答报文（1）；当某DNS服务器时所请求名字的权威DNS服务器时，1比特的“权威的”标志位被置在回答报文中；如果客户在该DNS服务器没有某记录时希望它执行递归查询，将设置1比特的“希望递归”标志位；如果DNS服务器支持递归查询，将设置1比特的“递归可用”标志位。还有4个有关数量的字段，这些字段指出了在首部后的4类数据区域出现的数量。</li>
-<li>问题区域包含正在进行的查询信息：包括名字字段，指出正在被查询的主机名字；类型字段，指出有关该名字的正被询问的问题类型</li>
-<li>来自DNS服务器的回答中，回答区域包含了对最初请求的名字的资源记录</li>
-<li>权威区域包含了其他权威服务器的记录</li>
-<li>附加区域包含了其他有包住的记录</li>
-</ul>
-<h4 id="在DNS数据库中插入记录"><a href="#在DNS数据库中插入记录" class="headerlink" title="在DNS数据库中插入记录"></a>在DNS数据库中插入记录</h4><p>因特网名字和地址分配机构（ICANN）向各种注册登记机构授权，用户向某些注册登记机构注册域名时，需要向该机构提供基本和辅助权威DNS服务器的名字和IP地址，注册登记机构确保将一个类型NS和一个类型A的记录输入TLD com服务器</p>
-<h2 id="P2P应用"><a href="#P2P应用" class="headerlink" title="P2P应用"></a>P2P应用</h2><h3 id="P2P文件分发"><a href="#P2P文件分发" class="headerlink" title="P2P文件分发"></a>P2P文件分发</h3><p>应用程序从单个源向大量的对等方分发一个文件，服务器承受了极大的负担，并且小号了大量的服务器带宽，每个对等方能够重新分发它所有的该文件的任何部分，从而在分发过程中协助该服务器。</p>
-<h4 id="P2P体系结构的扩展性"><a href="#P2P体系结构的扩展性" class="headerlink" title="P2P体系结构的扩展性"></a>P2P体系结构的扩展性</h4><blockquote>
-<p>公式推导过程略</p>
-</blockquote>
-<p>对于客户-服务器体系结构，随着对等方数量的增加，分发时间呈线性增长且没有界；对于P2P体系结构，最小分发时间总是小于cs体系结构的分发时间，并且对于任意的对等方数量N，总是小于文件大小/对等方的上载速率。这叫做P2P体系结构的自扩展性，这种扩展性的直接成因是：对等方处理是比特的消费者外还是它们的重新分发者。</p>
-<h4 id="BitTorrent"><a href="#BitTorrent" class="headerlink" title="BitTorrent"></a>BitTorrent</h4><p>BitTorrent是一种用于文件分发的流行P2P协议。<br>洪流（torrent）：参与一个特定文件分发的所有对等方的集合。<br>每个洪流具有一个基础设施节点，称为追踪器（tracker），当一个对等方加入某个洪流时，它向追踪器注册自己，并周期性地通知追踪器它仍在洪流中。<br>当一个新的对等方A加入洪流时，追踪器随机地从参与对等方的集合中选择对等方的一个子集，并将子集中所有对等方的IP地址发送给A，A持有这张表并试图与该列表上的所有对等方简历并行的TCP连接，所有这样与A建立TCP连接的对等方为临近对等方。在任何时刻，每个对等方将具有来自该文件的块子集，并且不同的对等方具有不同的子集。A周期性地询问每个临近对等方它们所具有的块列表，获得这些列表后，A对它还没有的块发出请求。<br>最稀缺优先（rarest first）：针对没有的块在邻居中决定最稀缺的块，首先请求那些最稀缺的块，目标是大致地均衡每个块在洪流中的副本数量。<br>对换算法：根据当前能够以最高速率向它提供数据的邻居，给出其优先权。（针对A优先响应哪个请求）</p>
-<h3 id="分布式散列表"><a href="#分布式散列表" class="headerlink" title="分布式散列表"></a>分布式散列表</h3><p>在P2P体系中，每个对等方将保持（键，值）对仅占总体的一个小子集。允许任何对等方用一个特别的键来查询该分布式数据库。分布式数据库则将定位拥有该（键，值）对的对等方，然后向查询的对等方返回该（键，值）对。任何对等方也将允许在数据库中插入新（键，值）对。这样的分布式数据库被称为分布式散列表（DHT）。<br>其中键可以是目录名，值是存储内容的IP地址。</p>
-<h4 id="设计DHT的方法"><a href="#设计DHT的方法" class="headerlink" title="设计DHT的方法"></a>设计DHT的方法</h4><p>为每个对等方分配一个标识符，每个标识符是一个[0,2^n-1]范围内的整数，n取某些固定值，这样的标识符能够由n比特法表示，键也是同一范围内的整数。为其标识符最邻近该键的对等方分配一个（键，值）对。<br>最邻近： 键的最邻后继。  </p>
-<h4 id="环形DHT"><a href="#环形DHT" class="headerlink" title="环形DHT"></a>环形DHT</h4><p>每个对等方仅知道它的直接后继和直接前任。<br>在最差的情况下，DHT中的所有N个节点将必须环绕转发报文，平均发送N/2条报文。<br>具有捷径的环形DHT：每个对等方不仅联系它的直接后继和直接前任，而且联系分布在环上的数量相对少的捷径对等方。DHT能被设计成每个对等方的邻居数量以及每个请求的报文数量均为O（logN）。</p>
-<h4 id="对等方扰动"><a href="#对等方扰动" class="headerlink" title="对等方扰动"></a>对等方扰动</h4><p>对等方的加入和离开使得其它对等方必须更新其前任和后继</p>
-<blockquote>
-<p>这样全部摘要的方式虽然能较好复习书本内容，但付出的时间及精力也是巨大的，在此感谢网上无私奉献的同志们，后续不会再写这样的内容了。</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/02/13/%E5%BA%94%E7%94%A8%E5%B1%82/" data-id="ckja57eei000dfq131dcgf84e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -1866,7 +1766,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
     </div>
   </div>
 
@@ -1876,7 +1776,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 16.67px;">C#</a> <a href="/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;">网络</a>
+      <a href="/tags/C/" style="font-size: 16.67px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;">网络</a>
     </div>
   </div>
 
@@ -1898,6 +1798,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/15/LeetCode-947-%E7%A7%BB%E9%99%A4%E6%9C%80%E5%A4%9A%E7%9A%84%E5%90%8C%E8%A1%8C%E6%88%96%E5%90%8C%E5%88%97%E7%9F%B3%E5%A4%B4/">LeetCode-947. 移除最多的同行或同列石头</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/15/python%E7%9A%84collections%E5%92%8Citertools/">python的collections和itertools</a>
           </li>
         
@@ -1911,10 +1815,6 @@
         
           <li>
             <a href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">LeetCode-项目管理</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/11/LeetCode-%E4%BA%A4%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0/">LeetCode-交换字符串中的元素</a>
           </li>
         
       </ul>
