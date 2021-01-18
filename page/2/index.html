@@ -64,6 +64,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-买卖股票的最佳时机-III" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/09/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA-III/" class="article-date">
+  <time datetime="2021-01-09T04:56:47.000Z" itemprop="datePublished">2021-01-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/09/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA-III/">LeetCode-买卖股票的最佳时机 III</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。</p>
+<p>设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。</p>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：prices &#x3D; [3,3,5,0,0,3,1,4]</span><br><span class="line">输出：6</span><br><span class="line">解释：在第 4 天（股票价格 &#x3D; 0）的时候买入，在第 6 天（股票价格 &#x3D; 3）的时候卖出，这笔交易所能获得利润 &#x3D; 3-0 &#x3D; 3 。</span><br><span class="line">     随后，在第 7 天（股票价格 &#x3D; 1）的时候买入，在第 8 天 （股票价格 &#x3D; 4）的时候卖出，这笔交易所能获得利润 &#x3D; 4-1 &#x3D; 3 。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：prices &#x3D; [1,2,3,4,5]</span><br><span class="line">输出：4</span><br><span class="line">解释：在第 1 天（股票价格 &#x3D; 1）的时候买入，在第 5 天 （股票价格 &#x3D; 5）的时候卖出, 这笔交易所能获得利润 &#x3D; 5-1 &#x3D; 4 。   </span><br><span class="line">     注意你不能在第 1 天和第 2 天接连购买股票，之后再将它们卖出。   </span><br><span class="line">     因为这样属于同时参与了多笔交易，你必须在再次购买前出售掉之前的股票。</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>2020年12月28日题目的简化版，交易次数已知。状态转移方程见代码</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">prices</span>):</span></span><br><span class="line">    buy1, sell1 = -prices[<span class="number">0</span>], <span class="number">0</span></span><br><span class="line">    buy2, sell2 = -prices[<span class="number">0</span>], <span class="number">0</span></span><br><span class="line">    n = <span class="built_in">len</span>(prices)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        buy1 = <span class="built_in">max</span>(buy1, -prices[i])</span><br><span class="line">        sell1 = <span class="built_in">max</span>(sell1, buy1 + prices[i])</span><br><span class="line">        buy2 = <span class="built_in">max</span>(buy2, sell1 - prices[i])</span><br><span class="line">        sell2 = <span class="built_in">max</span>(sell2, buy2 + prices[i])</span><br><span class="line">    <span class="keyword">return</span> sell2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    prices = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">    print(maxProfit(prices))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/09/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA-III/" data-id="ckjp8q64e0000qc13fane2h1a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-旋转数组" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/08/LeetCode-%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/" class="article-date">
@@ -514,59 +564,6 @@
 
 
   
-    <article id="post-LeetCode-最后一块石头的重量" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/30/LeetCode-%E6%9C%80%E5%90%8E%E4%B8%80%E5%9D%97%E7%9F%B3%E5%A4%B4%E7%9A%84%E9%87%8D%E9%87%8F/" class="article-date">
-  <time datetime="2020-12-30T11:00:27.000Z" itemprop="datePublished">2020-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/30/LeetCode-%E6%9C%80%E5%90%8E%E4%B8%80%E5%9D%97%E7%9F%B3%E5%A4%B4%E7%9A%84%E9%87%8D%E9%87%8F/">LeetCode-最后一块石头的重量</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有一堆石头，每块石头的重量都是正整数。</p>
-<p>每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x &lt;= y。那么粉碎的可能结果如下：</p>
-<p>如果 x == y，那么两块石头都会被完全粉碎；<br>如果 x != y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。<br>最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。</p>
-<p><strong>示例：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入：[2,7,4,1,8,1]</span><br><span class="line">输出：1</span><br><span class="line">解释：</span><br><span class="line">先选出 7 和 8，得到 1，所以数组转换为 [2,4,1,1,1]，</span><br><span class="line">再选出 2 和 4，得到 2，所以数组转换为 [2,1,1,1]，</span><br><span class="line">接着是 2 和 1，得到 1，所以数组转换为 [1,1,1]，</span><br><span class="line">最后选出 1 和 1，得到 0，最终数组转换为 [1]，这就是最后剩下那块石头的重量。</span><br></pre></td></tr></table></figure>
-
-<p>思路：每次遍历数组，从中选出最重的两块石头，相减后加入数组。时间复杂度为<code>O(n^2)</code>，不算最优。</p>
-<p>刚好堆可以适用于此题，每次加入元素进行排序的时间复杂度为<code>O(logn)</code>,完成整个过程的时间复杂度为<code>O(nlogn)</code>,小顶堆和大顶堆的转换可以用负号完成。即存入元素前加上负号，取出元素时再加一个负号。</p>
-<p>堆的用法在<code>heapq</code>的源码里查看。总算今天是easy level。</p>
-<p>代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lastStoneWeight</span>(<span class="params">stones</span>):</span></span><br><span class="line">    heap = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stones:</span><br><span class="line">        heapq.heappush(heap, -i)</span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(heap) &gt; <span class="number">1</span>:</span><br><span class="line">        stone_a = -heapq.heappop(heap)</span><br><span class="line">        stone_b = -heapq.heappop(heap)</span><br><span class="line">        heapq.heappush(heap, -<span class="built_in">abs</span>(stone_a - stone_b))</span><br><span class="line">    <span class="keyword">return</span> -heap[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    stones = [<span class="number">2</span>, <span class="number">7</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">1</span>]</span><br><span class="line">    print(lastStoneWeight(stones))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>建堆的过程：添加新节点到队列尾部，用一个工作指针指向这个节点，找出其父节点，比较新值与父节点值的大小，若父节点较小，则将父节点的值赋给新节点，工作指针指向父节点。然后不断向上比较，直到工作指针指向较小值或者到达堆顶，将新值插入工作指针指向的节点。一次入堆操作的源码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heappush</span>(<span class="params">heap, item</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Push item onto heap, maintaining the heap invariant.&quot;&quot;&quot;</span></span><br><span class="line">    heap.append(item)</span><br><span class="line">    _siftdown(heap, <span class="number">0</span>, <span class="built_in">len</span>(heap)-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_siftdown</span>(<span class="params">heap, startpos, pos</span>):</span></span><br><span class="line">    newitem = heap[pos]</span><br><span class="line">    <span class="comment"># Follow the path to the root, moving parents down until finding a place</span></span><br><span class="line">    <span class="comment"># newitem fits.</span></span><br><span class="line">    <span class="keyword">while</span> pos &gt; startpos:</span><br><span class="line">        parentpos = (pos - <span class="number">1</span>) &gt;&gt; <span class="number">1</span></span><br><span class="line">        parent = heap[parentpos]</span><br><span class="line">        <span class="keyword">if</span> newitem &lt; parent:</span><br><span class="line">            heap[pos] = parent</span><br><span class="line">            pos = parentpos</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    heap[pos] = newitem</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/30/LeetCode-%E6%9C%80%E5%90%8E%E4%B8%80%E5%9D%97%E7%9F%B3%E5%A4%B4%E7%9A%84%E9%87%8D%E9%87%8F/" data-id="ckjbbkqq000005n13c95pa44z" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -617,6 +614,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/18/LeetCode-721-%E8%B4%A6%E6%88%B7%E5%90%88%E5%B9%B6/">LeetCode-721. 账户合并</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/17/LeetCode-1232-%E7%BC%80%E7%82%B9%E6%88%90%E7%BA%BF/">LeetCode-1232. 缀点成线</a>
           </li>
         
@@ -630,10 +631,6 @@
         
           <li>
             <a href="/2021/01/15/python%E7%9A%84collections%E5%92%8Citertools/">python的collections和itertools</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/14/LeetCode-%E5%8F%AF%E8%A2%AB-5-%E6%95%B4%E9%99%A4%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%89%8D%E7%BC%80/">LeetCode-可被 5 整除的二进制前缀</a>
           </li>
         
       </ul>
