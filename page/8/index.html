@@ -64,6 +64,78 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-minio" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/15/minio/" class="article-date">
+  <time datetime="2018-12-15T14:23:03.000Z" itemprop="datePublished">2018-12-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/15/minio/">minio</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##分布式Minio服务  </p>
+<h3 id="Minio服务的特点"><a href="#Minio服务的特点" class="headerlink" title="Minio服务的特点"></a>Minio服务的特点</h3><blockquote>
+<ol>
+<li>数据保护：引入纠删码来防范节点宕机和位衰减，部署分布式minio最少需要4块硬盘。</li>
+<li>高可用：集群中部署了n块硬盘，当不少于n/2块硬盘在线时，存储的数据就是安全的。创建新对象需要至少n/2+1块硬盘。</li>
+<li>限制：分布式minio单租户要求最少两台，最多32台服务器，但是对这些服务器中共享硬盘的个数没有限制。</li>
+<li>一致性：在分布式和单机模式下，minio的读写操作都严格遵循 read-after-write 一致性原则。</li>
+</ol>
+</blockquote>
+<h3 id="部署分布式Minio服务"><a href="#部署分布式Minio服务" class="headerlink" title="部署分布式Minio服务"></a>部署分布式Minio服务</h3><h4 id="单节点安装Minio"><a href="#单节点安装Minio" class="headerlink" title="单节点安装Minio"></a>单节点安装Minio</h4><p>分布式minio系统中每台机器都需要安装Minio（<a target="_blank" rel="noopener" href="https://docs.minio.io/docs/minio-quickstart-guide">官方文档</a>）<br>以下是安装过程（centos7-64bit)  </p>
+<p><code>wget https://dl.minio.io/server/minio/release/linux-amd64/minio</code><br><code>chmod +x minio</code><br><code>./minio server /data</code><br><img src="./%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%90%AF%E5%8A%A8minio.png">  </p>
+<p>浏览器访问<a target="_blank" rel="noopener" href="http://127.0.0.1:9000/">http://127.0.0.1:9000</a> 或 <a target="_blank" rel="noopener" href="http://10.0.0.13:9000/">http://10.0.0.13:9000</a> ,用AccessKey和SecretKey登录，Minio界面如下图：<br><img src="./minio%E6%8E%A7%E5%88%B6%E7%95%8C%E9%9D%A2.png">  </p>
+<h3 id="分布式Minio"><a href="#分布式Minio" class="headerlink" title="分布式Minio"></a>分布式Minio</h3><blockquote>
+<p>注意：  </p>
+</blockquote>
+<ol>
+<li>执行Minio命令前，先将MINIO_ACCESS_KEY和MINIO_SECRET_KEY在所有节点上export到环境变量；  </li>
+<li>所有运行Minio的节点需要在相同的环境下，即相同的操作系统和相同数量的硬盘；  </li>
+<li>分布式Minio需要使用空目录；  </li>
+<li>运行分布式Minio的服务器的节点时间差不能超过3秒，可以使用<a target="_blank" rel="noopener" href="http://www.ntp.org/">NTP</a>来保证服务器间的时间一致性。  </li>
+</ol>
+<p>用来运行minio服务的三台机器分别为20.20.20.152, 20.20.20.153, 20.20.20.155，这三台机器都安装了minio，以下的操作需要分别在三台机器上执行（<a target="_blank" rel="noopener" href="https://docs.minio.io/docs/distributed-minio-quickstart-guide">官方文档</a>）：  </p>
+<ol>
+<li><p>创建存储路径<br><code>mkdir /export&#123;1,2,3,4&#125;</code>  </p>
+</li>
+<li><p>开放80和9000端口<br><code>firewall-cmd --add-port=80/tcp --permanent</code><br><code>firewall-cmd --add-port=9000/tcp --permanent</code><br><code>firewall-cmd --reload</code>    </p>
+</li>
+<li><p>设置环境变量access_key和secret_key<br><code>export MINIO_ACCESS_KEY=ruchi</code><br><code>export MINIO_SECRET_KEY=miniocluster</code>  </p>
+</li>
+<li><p>启动服务<br><code>./minio server http://20.20.20.&#123;152,153,155&#125;/export&#123;1,2,3,4&#125;</code><br><img src="./%E5%90%AF%E5%8A%A8minio%E9%9B%86%E7%BE%A4.png">  </p>
+</li>
+<li><p>后台运行服务(可选）<br><code>./minio server http://20.20.20.&#123;152,153,155&#125;/export&#123;1,2,3,4&#125; &gt; minio.file 2&gt;&amp;1 &amp;</code>  </p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2018/12/15/minio/" data-id="ckja57ee70006fq13gibk50jj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/12/08/hello-world/" class="article-date">
@@ -163,6 +235,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/20/LeetCode-628-%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/">LeetCode-628. 三个数的最大乘积</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/19/LeetCode-1584-%E8%BF%9E%E6%8E%A5%E6%89%80%E6%9C%89%E7%82%B9%E7%9A%84%E6%9C%80%E5%B0%8F%E8%B4%B9%E7%94%A8/">LeetCode-1584. 连接所有点的最小费用</a>
           </li>
         
@@ -176,10 +252,6 @@
         
           <li>
             <a href="/2021/01/17/LeetCode-1232-%E7%BC%80%E7%82%B9%E6%88%90%E7%BA%BF/">LeetCode-1232. 缀点成线</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/17/LeetCode-803-%E6%89%93%E7%A0%96%E5%9D%97/">LeetCode-803.打砖块</a>
           </li>
         
       </ul>

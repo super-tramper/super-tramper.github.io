@@ -64,6 +64,60 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-项目管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="article-date">
+  <time datetime="2021-01-12T14:57:13.000Z" itemprop="datePublished">2021-01-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">LeetCode-项目管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>公司共有 n 个项目和  m 个小组，每个项目要不无人接手，要不就由 m 个小组之一负责。</p>
+<p>group[i] 表示第 i 个项目所属的小组，如果这个项目目前无人接手，那么 group[i] 就等于 -1。（项目和小组都是从零开始编号的）小组可能存在没有接手任何项目的情况。</p>
+<p>请你帮忙按要求安排这些项目的进度，并返回排序后的项目列表：</p>
+<p>同一小组的项目，排序后在列表中彼此相邻。<br>项目之间存在一定的依赖关系，我们用一个列表 beforeItems 来表示，其中 beforeItems[i] 表示在进行第 i 个项目前（位于第 i 个项目左侧）应该完成的所有项目。<br>如果存在多个解决方案，只需要返回其中任意一个即可。如果没有合适的解决方案，就请返回一个 空列表 。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, m &#x3D; 2, group &#x3D; [-1,-1,1,0,0,1,0,-1], beforeItems &#x3D; [[],[6],[5],[6],[3,6],[],[],[]]</span><br><span class="line">输出：[6,3,4,1,5,2,0,7]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, m &#x3D; 2, group &#x3D; [-1,-1,1,0,0,1,0,-1], beforeItems &#x3D; [[],[6],[5],[6],[3],[],[4],[]]</span><br><span class="line">输出：[]</span><br><span class="line">解释：与示例 1 大致相同，但是在排序后的列表中，4 必须放在 6 的前面。</span><br></pre></td></tr></table></figure>
+
+<p>今天这题有点难度，整了半天都没解出来。先挖个坑，日后再填。</p>
+<h3 id="1月14日更新"><a href="#1月14日更新" class="headerlink" title="1月14日更新"></a>1月14日更新</h3><p>根据官方题解的思路，写出了代码，勉强能跑出来。还有很大优化空间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：520 ms, 在所有 Python3 提交中击败了6.51%的用户</span><br><span class="line">内存消耗：33.5 MB, 在所有 Python3 提交中击败了46.96%的用户</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sortItems</span>(<span class="params">n, m, group, beforeItems</span>):</span></span><br><span class="line">    ans = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> group[i] == -<span class="number">1</span>:</span><br><span class="line">            group[i] = m</span><br><span class="line">            m += <span class="number">1</span></span><br><span class="line">    <span class="comment"># 初始组的化入度表和邻接表</span></span><br><span class="line">    groupIndegree = [<span class="number">0</span>] * m</span><br><span class="line">    groupAdj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m)]</span><br><span class="line">    <span class="comment"># item拓扑排序</span></span><br><span class="line">    <span class="comment"># 初始化项目的入度表和邻接表</span></span><br><span class="line">    inDegree = [<span class="number">0</span>] * n</span><br><span class="line">    adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="comment"># item n 的group 为 group[n]</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> beforeItems[i]:</span><br><span class="line">            <span class="comment"># 统计group的依赖关系</span></span><br><span class="line">            <span class="keyword">if</span> group[j] != group[i]:</span><br><span class="line">                groupAdj[group[j]].append(group[i])</span><br><span class="line">            <span class="comment"># 统计items的依赖关系</span></span><br><span class="line">            adj[j].append(i)</span><br><span class="line">    <span class="comment"># 统计各group的入度</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> groupAdj[i]:</span><br><span class="line">            groupIndegree[j] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> adj[i]:</span><br><span class="line">            inDegree[j] += <span class="number">1</span></span><br><span class="line">    group_ans = topological(groupAdj, groupIndegree, m)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">len</span>(group_ans):</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    item_ans = topological(adj, inDegree, n)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">len</span>(item_ans):</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    <span class="comment"># 根据组的拓扑排序结果输出item顺序</span></span><br><span class="line">    ans_dict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> group_ans:</span><br><span class="line">        ans_dict[i] = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> item_ans:</span><br><span class="line">        ans_dict[group[i]].append(i)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> group_ans:</span><br><span class="line">        ans.extend(ans_dict[i])</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">topological</span>(<span class="params">adj, inDegree, n</span>):</span></span><br><span class="line">    itemQueue = queue.Queue(maxsize=n)</span><br><span class="line">    ans = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> inDegree[i]:</span><br><span class="line">            itemQueue.put(i)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> itemQueue.empty():</span><br><span class="line">        k = itemQueue.get()</span><br><span class="line">        ans.append(k)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> adj[k]:</span><br><span class="line">            inDegree[j] -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> inDegree[j]:</span><br><span class="line">                itemQueue.put(j)</span><br><span class="line">    <span class="keyword">return</span> ans <span class="keyword">if</span> <span class="built_in">len</span>(ans) == n <span class="keyword">else</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">8</span></span><br><span class="line">    m = <span class="number">2</span></span><br><span class="line">    group = [-<span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>]</span><br><span class="line">    beforeItems = [[], [<span class="number">6</span>], [<span class="number">5</span>], [<span class="number">6</span>], [<span class="number">3</span>, <span class="number">6</span>], [], [], []]</span><br><span class="line">    print(sortItems(n, m, group, beforeItems))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" data-id="ckju4g9js00003q13fe8g6isz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-交换字符串中的元素" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/11/LeetCode-%E4%BA%A4%E6%8D%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0/" class="article-date">
@@ -538,62 +592,6 @@
 
 
   
-    <article id="post-LeetCode-种花问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/03/LeetCode-%E7%A7%8D%E8%8A%B1%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2021-01-03T09:02:54.000Z" itemprop="datePublished">2021-01-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/03/LeetCode-%E7%A7%8D%E8%8A%B1%E9%97%AE%E9%A2%98/">LeetCode-种花问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>假设你有一个很长的花坛，一部分地块种植了花，另一部分却没有。可是，花卉不能种植在相邻的地块上，它们会争夺水源，两者都会死去。</p>
-<p>给定一个花坛（表示为一个数组包含0和1，其中0表示没种植花，1表示种植了花），和一个数 n 。能否在不打破种植规则的情况下种入 n 朵花？能则返回True，不能则返回False。</p>
-<p><strong>示例 1:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: flowerbed &#x3D; [1,0,0,0,1], n &#x3D; 1</span><br><span class="line">输出: True</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: flowerbed &#x3D; [1,0,0,0,1], n &#x3D; 2</span><br><span class="line">输出: False</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意:</strong></p>
-<ol>
-<li>数组内已种好的花不会违反种植规则。</li>
-<li>输入的数组长度范围为 [1, 20000]。</li>
-<li><strong>n</strong> 是非负整数，且不会超过输入数组的大小。</li>
-</ol>
-<p>思路：用芬兰人找座位的思路同样可以以O(n)级别的时间复杂度解决此问题，且不用讨论边界条件。</p>
-<p>此处代码思路参考<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/can-place-flowers/solution/chong-hua-wen-ti-by-leetcode-solution-sojr/">官方题解(贪心算法)</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">canPlaceFlowers</span>(<span class="params">flowerbed, n</span>) -&gt; bool:</span></span><br><span class="line">    prev = -<span class="number">1</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    m = <span class="built_in">len</span>(flowerbed)</span><br><span class="line">    <span class="keyword">for</span> index, i <span class="keyword">in</span> <span class="built_in">enumerate</span>(flowerbed):</span><br><span class="line">        <span class="keyword">if</span> i:</span><br><span class="line">            <span class="keyword">if</span> prev == -<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span> index &gt;= <span class="number">2</span>:</span><br><span class="line">                    count += index &gt;&gt; <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                count += (index - prev - <span class="number">2</span>) &gt;&gt; <span class="number">1</span></span><br><span class="line">            prev = index</span><br><span class="line">        <span class="keyword">if</span> count &gt;= n:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">if</span> m - prev &gt;= <span class="number">2</span>:</span><br><span class="line">        count += (m - prev - <span class="number">1</span>) &gt;&gt; <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> prev == -<span class="number">1</span>:</span><br><span class="line">        count = (m + <span class="number">1</span>) &gt;&gt; <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> count &gt;= n</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    flowers = [<span class="number">0</span>]</span><br><span class="line">    print(canPlaceFlowers(flowers, <span class="number">1</span>))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/03/LeetCode-%E7%A7%8D%E8%8A%B1%E9%97%AE%E9%A2%98/" data-id="ckjgx058t0000rm13gyxzg6rb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -644,6 +642,10 @@
       <ul>
         
           <li>
+            <a href="/2021/01/20/LeetCode-628-%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/">LeetCode-628. 三个数的最大乘积</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/19/LeetCode-1584-%E8%BF%9E%E6%8E%A5%E6%89%80%E6%9C%89%E7%82%B9%E7%9A%84%E6%9C%80%E5%B0%8F%E8%B4%B9%E7%94%A8/">LeetCode-1584. 连接所有点的最小费用</a>
           </li>
         
@@ -657,10 +659,6 @@
         
           <li>
             <a href="/2021/01/17/LeetCode-1232-%E7%BC%80%E7%82%B9%E6%88%90%E7%BA%BF/">LeetCode-1232. 缀点成线</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/17/LeetCode-803-%E6%89%93%E7%A0%96%E5%9D%97/">LeetCode-803.打砖块</a>
           </li>
         
       </ul>
