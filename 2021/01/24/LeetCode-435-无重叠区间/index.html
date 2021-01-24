@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>LeetCode-435. 无重叠区间 | IMTE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。 注意: 可以认为区间的终点总是大于它的起点。区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。示例 1: 123输入: [ [1,2], [2,3], [3,4], [1,3] ]输出: 1解释: 移除 [1,3] 后，剩下的区间没有重叠。  示例 2: 123输入: [ [1,2], [1,2], [1,2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LeetCode-435. 无重叠区间">
+<meta property="og:url" content="http://example.com/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/index.html">
+<meta property="og:site_name" content="IMTE">
+<meta property="og:description" content="给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。 注意: 可以认为区间的终点总是大于它的起点。区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。示例 1: 123输入: [ [1,2], [2,3], [3,4], [1,3] ]输出: 1解释: 移除 [1,3] 后，剩下的区间没有重叠。  示例 2: 123输入: [ [1,2], [1,2], [1,2">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-24T14:40:56.000Z">
+<meta property="article:modified_time" content="2021-01-24T15:25:03.043Z">
+<meta property="article:author" content="IMTE">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">IMTE</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-LeetCode-435-无重叠区间" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" class="article-date">
+  <time datetime="2021-01-24T14:40:56.000Z" itemprop="datePublished">2021-01-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LeetCode-435. 无重叠区间
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。</p>
+<p>注意:</p>
+<p>可以认为区间的终点总是大于它的起点。<br>区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。<br><strong>示例 1</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [ [1,2], [2,3], [3,4], [1,3] ]</span><br><span class="line">输出: 1</span><br><span class="line">解释: 移除 [1,3] 后，剩下的区间没有重叠。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [ [1,2], [1,2], [1,2] ]</span><br><span class="line">输出: 2</span><br><span class="line">解释: 你需要移除两个 [1,2] 来使剩下的区间没有重叠。</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p><strong>动态规划</strong>：以<code>f[i]</code>表示当前区间为最后一个区间时，能排列的区间的最大值。将区间列表按起始位置排序，当前区间为最后一个区间时，上一个区间<code>j</code>的尾部必须小于或等于区间<code>i</code>的起始值。</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span>(<span class="params">intervals</span>) -&gt; int:</span></span><br><span class="line">    n = <span class="built_in">len</span>(intervals)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    f = [<span class="number">1</span>]</span><br><span class="line">    intervals.sort()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        f.append(<span class="built_in">max</span>([f[j] <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i) <span class="keyword">if</span> intervals[j][<span class="number">1</span>] &lt;= intervals[i][<span class="number">0</span>]], default=<span class="number">0</span>) + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> n - <span class="built_in">max</span>(f)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    intervals = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span>, <span class="number">3</span>]]</span><br><span class="line">    print(eraseOverlapIntervals(intervals))</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度为<code>O(n^2)</code>，运行时间 6188 ms</p>
+<h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p><strong>贪心算法</strong>：将区间列表按右端点排序，选择右端点值最小的作为第一个区间（若有多个则任选一个），然后将可选区间缩小，即可选区间的左端点为已选区间的左端点，再次选择右端点最小且在可选区间内的字区间；不断重复上述步骤。由于每一次选择的区间都是满足条件的右端点最小的那个，因此每次选择后留下的可选区间的起点都最小，即可选空间最大，因此能选择最多的区间数。</p>
+<p>贪心算法的执行效率如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：68 ms, 在所有 Python3 提交中击败了99.48%的用户</span><br><span class="line">内存消耗：17.9 MB, 在所有 Python3 提交中击败了5.16%的用户</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span>(<span class="params">intervals</span>) -&gt; int:</span></span><br><span class="line">    n = <span class="built_in">len</span>(intervals)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    intervals.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>])</span><br><span class="line">    right = intervals[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">    ans = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        <span class="keyword">if</span> intervals[i][<span class="number">0</span>] &gt;= right:</span><br><span class="line">            ans += <span class="number">1</span></span><br><span class="line">            right = intervals[i][<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> n - ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    intervals = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span>, <span class="number">3</span>]]</span><br><span class="line">    print(eraseOverlapIntervals(intervals))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行贪心算法部分的时间复杂度为<code>O(n)</code>，但针对右端点对区间排序的时间复杂度为`O(nlogn)。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" data-id="ckkbamqop00009013hi3f8w61" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/01/23/LeetCode-1319-%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LeetCode-1319. 连通网络的操作次数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/celery/" rel="tag">celery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/" rel="tag">sql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tool/" rel="tag">tool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" rel="tag">编译原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 16.67px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 16.67px;">docker</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 13.33px;">tool</a> <a href="/tags/web/" style="font-size: 16.67px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 10px;">编译原理</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 16.67px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/">LeetCode-435. 无重叠区间</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/23/LeetCode-1319-%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/">LeetCode-1319. 连通网络的操作次数</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/22/LeetCode-989-%E6%95%B0%E7%BB%84%E5%BD%A2%E5%BC%8F%E7%9A%84%E6%95%B4%E6%95%B0%E5%8A%A0%E6%B3%95/">LeetCode-989. 数组形式的整数加法</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/21/LeetCode-1489-%E6%89%BE%E5%88%B0%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E9%87%8C%E7%9A%84%E5%85%B3%E9%94%AE%E8%BE%B9%E5%92%8C%E4%BC%AA%E5%85%B3%E9%94%AE%E8%BE%B9/">LeetCode-1489. 找到最小生成树里的关键边和伪关键边</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/20/LeetCode-628-%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/">LeetCode-628. 三个数的最大乘积</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 IMTE<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
