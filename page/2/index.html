@@ -64,6 +64,105 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-1489-找到最小生成树里的关键边和伪关键边" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/21/LeetCode-1489-%E6%89%BE%E5%88%B0%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E9%87%8C%E7%9A%84%E5%85%B3%E9%94%AE%E8%BE%B9%E5%92%8C%E4%BC%AA%E5%85%B3%E9%94%AE%E8%BE%B9/" class="article-date">
+  <time datetime="2021-01-21T11:24:59.000Z" itemprop="datePublished">2021-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/21/LeetCode-1489-%E6%89%BE%E5%88%B0%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E9%87%8C%E7%9A%84%E5%85%B3%E9%94%AE%E8%BE%B9%E5%92%8C%E4%BC%AA%E5%85%B3%E9%94%AE%E8%BE%B9/">LeetCode-1489. 找到最小生成树里的关键边和伪关键边</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给你一个 n 个点的带权无向连通图，节点编号为 0 到 n-1 ，同时还有一个数组 edges ，其中 edges[i] = [fromi, toi, weighti] 表示在 fromi 和 toi 节点之间有一条带权无向边。最小生成树 (MST) 是给定图中边的一个子集，它连接了所有节点且没有环，而且这些边的权值和最小。</p>
+<p>请你找到给定图中最小生成树的所有关键边和伪关键边。如果从图中删去某条边，会导致最小生成树的权值和增加，那么我们就说它是一条关键边。伪关键边则是可能会出现在某些最小生成树中但不会出现在所有最小生成树中的边。</p>
+<p>请注意，你可以分别以任意顺序返回关键边的下标和伪关键边的下标。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 5, edges &#x3D; [[0,1,1],[1,2,1],[2,3,2],[0,3,2],[0,4,3],[3,4,3],[1,4,6]]</span><br><span class="line">输出：[[0,1],[2,3,4,5]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2 ：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 4, edges &#x3D; [[0,1,1],[1,2,1],[2,3,1],[0,3,1]]</span><br><span class="line">输出：[[],[0,1,2,3]]</span><br><span class="line">解释：可以观察到 4 条边都有相同的权值，任选它们中的 3 条可以形成一棵 MST 。所以 4 条边都是伪关键边。</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>用<code>kruskal</code>算法构造最小生成树，求出其路径权值之和，作为基准。然后遍历边列表，进行以下试探：</p>
+<p>1.试着不用当前边构造最小生成树，若生成树的路径权值之和大于基准值或不能生成最小生成树，则当前边为关键边；</p>
+<p>2.从当前边中剔除关键边后，试着构造最小生成树，若可构成生成树且路径之和等于基准值，则当前边为伪关键边。</p>
+<p>在进行以上操作时，针对本题的特性，对并查集进行了相应的修改。</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findCriticalAndPseudoCriticalEdges</span>(<span class="params">self, n: <span class="built_in">int</span>, edges</span>):</span></span><br><span class="line">        value, ans = <span class="number">0</span>, [<span class="built_in">list</span>(), <span class="built_in">list</span>()]</span><br><span class="line">        m = <span class="built_in">len</span>(edges)</span><br><span class="line">        <span class="keyword">for</span> i, edge <span class="keyword">in</span> <span class="built_in">enumerate</span>(edges):</span><br><span class="line">            edge.append(i)</span><br><span class="line">        edges.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">2</span>])</span><br><span class="line">        uf = UnionFind(n)</span><br><span class="line">        <span class="comment"># 求出最小生成树的路径权值之和</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            <span class="keyword">if</span> uf.unionNodes(edges[i][<span class="number">0</span>], edges[i][<span class="number">1</span>]):</span><br><span class="line">                value += edges[i][<span class="number">2</span>]</span><br><span class="line">        <span class="comment"># 遍历边列表</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">            ufr = UnionFind(n)</span><br><span class="line">            v = <span class="number">0</span></span><br><span class="line">            <span class="comment"># 试探是否为关键边，若是，则进入下一轮循环</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">                <span class="keyword">if</span> j == i: <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> ufr.unionNodes(edges[j][<span class="number">0</span>], edges[j][<span class="number">1</span>]):</span><br><span class="line">                    v += edges[j][<span class="number">2</span>]</span><br><span class="line">            <span class="keyword">if</span> ufr.setNum != <span class="number">1</span> <span class="keyword">or</span> (ufr.setNum == <span class="number">1</span> <span class="keyword">and</span> v &gt; value):</span><br><span class="line">                ans[<span class="number">0</span>].append(edges[i][<span class="number">3</span>])</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># 判断在选择当前边时能否形成最小生成树</span></span><br><span class="line">            ufp = UnionFind(n)</span><br><span class="line">            v = edges[i][<span class="number">2</span>]</span><br><span class="line">            ufp.unionNodes(edges[i][<span class="number">0</span>], edges[i][<span class="number">1</span>])</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">                <span class="keyword">if</span> j != i <span class="keyword">and</span> ufp.unionNodes(edges[j][<span class="number">0</span>], edges[j][<span class="number">1</span>]):</span><br><span class="line">                    v += edges[j][<span class="number">2</span>]</span><br><span class="line">            <span class="keyword">if</span> v == value <span class="keyword">and</span> ufp.setNum == <span class="number">1</span>:</span><br><span class="line">                ans[<span class="number">1</span>].append(edges[i][<span class="number">3</span>])</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, n</span>):</span></span><br><span class="line">        self.parents = <span class="built_in">list</span>(<span class="built_in">range</span>(n))</span><br><span class="line">        self.setNum = n</span><br><span class="line">        self.setSize = [<span class="number">1</span>] * n</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">unionNodes</span>(<span class="params">self, x, y</span>):</span></span><br><span class="line">        px, py = self.findParent(x), self.findParent(y)</span><br><span class="line">        <span class="keyword">if</span> px == py:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> self.setSize[px] &lt; self.setSize[py]:</span><br><span class="line">            px, py = py, px</span><br><span class="line">        self.parents[py] = px</span><br><span class="line">        self.setSize[px] += self.setSize[py]</span><br><span class="line">        self.setNum -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findParent</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">while</span> x != self.parents[x]:</span><br><span class="line">            x = self.findParent(self.parents[x])</span><br><span class="line">        <span class="keyword">return</span> self.parents[x]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">4</span></span><br><span class="line">    edges = [[<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>]]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.findCriticalAndPseudoCriticalEdges(n, edges))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/21/LeetCode-1489-%E6%89%BE%E5%88%B0%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E9%87%8C%E7%9A%84%E5%85%B3%E9%94%AE%E8%BE%B9%E5%92%8C%E4%BC%AA%E5%85%B3%E9%94%AE%E8%BE%B9/" data-id="ckk6svppk0000vt13co7z3pbm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-LeetCode-628-三个数的最大乘积" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/20/LeetCode-628-%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/" class="article-date">
+  <time datetime="2021-01-20T12:00:05.000Z" itemprop="datePublished">2021-01-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/20/LeetCode-628-%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/">LeetCode-628. 三个数的最大乘积</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个整型数组，在数组中找出由三个数组成的最大乘积，并输出这个乘积。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3]</span><br><span class="line">输出: 6</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>easy level，没什么好说的，注意数组中可能存在负数就行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maximumProduct</span>(<span class="params">self, nums</span>) -&gt; int:</span></span><br><span class="line">        nums.sort()</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(nums[<span class="number">0</span>] * nums[<span class="number">1</span>] * nums[-<span class="number">1</span>], nums[-<span class="number">1</span>] * nums[-<span class="number">2</span>] * nums[-<span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    ar = [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.maximumProduct(ar))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/20/LeetCode-628-%E4%B8%89%E4%B8%AA%E6%95%B0%E7%9A%84%E6%9C%80%E5%A4%A7%E4%B9%98%E7%A7%AF/" data-id="ckk5dmkac0000pe13gqcyaspy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-1584-连接所有点的最小费用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/19/LeetCode-1584-%E8%BF%9E%E6%8E%A5%E6%89%80%E6%9C%89%E7%82%B9%E7%9A%84%E6%9C%80%E5%B0%8F%E8%B4%B9%E7%94%A8/" class="article-date">
@@ -491,115 +590,6 @@
 
 
   
-    <article id="post-LeetCode-冗余连接" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/" class="article-date">
-  <time datetime="2021-01-13T12:14:03.000Z" itemprop="datePublished">2021-01-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/">LeetCode-冗余连接</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在本问题中, 树指的是一个连通且无环的无向图。</p>
-<p>输入一个图，该图由一个有着N个节点 (节点值不重复1, 2, …, N) 的树及一条附加的边构成。附加的边的两个顶点包含在1到N中间，这条附加的边不属于树中已存在的边。</p>
-<p>结果图是一个以边组成的二维数组。每一个边的元素是一对[u, v] ，满足 u &lt; v，表示连接顶点u 和v的无向图的边。</p>
-<p>返回一条可以删去的边，使得结果图是一个有着N个节点的树。如果有多个答案，则返回二维数组中最后出现的边。答案边 [u, v] 应满足相同的格式 u &lt; v。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1,2], [1,3], [2,3]]</span><br><span class="line">输出: [2,3]</span><br><span class="line">解释: 给定的无向图为:</span><br><span class="line">  1</span><br><span class="line"> &#x2F; \</span><br><span class="line">2 - 3</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1,2], [2,3], [3,4], [1,4], [1,5]]</span><br><span class="line">输出: [1,4]</span><br><span class="line">解释: 给定的无向图为:</span><br><span class="line">5 - 1 - 2</span><br><span class="line">    |   |</span><br><span class="line">    4 - 3</span><br></pre></td></tr></table></figure>
-
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>官方的解法是利用并查集。</p>
-<p>今天拿到这个题想到的是图的遍历（最小生成树）。然后复习了<code>Prim</code>算法和<code>Kruskal</code>算法，顺带还看了一下<code>Dijkstra</code>算法。没有想到更好的解决办法。毕竟<code>Kruskal</code>算法的最好实现也是借助并查集。（最近力扣跟图论杠上了）</p>
-<p>以下是代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findRedundantConnection</span>(<span class="params">self, edges: List[List[<span class="built_in">int</span>]]</span>) -&gt; List[int]:</span></span><br><span class="line">        n = <span class="built_in">len</span>(edges)</span><br><span class="line">        parents = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        ans = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">for</span> edge <span class="keyword">in</span> edges:</span><br><span class="line">            <span class="keyword">if</span> self.findRoot(edge[<span class="number">0</span>]-<span class="number">1</span>, parents) != self.findRoot(edge[<span class="number">1</span>]-<span class="number">1</span>, parents):</span><br><span class="line">                self.Union(edge[<span class="number">0</span>]-<span class="number">1</span>, edge[<span class="number">1</span>]-<span class="number">1</span>, parents)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ans = edge</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Union</span>(<span class="params">self, x, y, parents</span>):</span></span><br><span class="line">        root = self.findRoot(x, parents)</span><br><span class="line">        parents[self.findRoot(y, parents)] = root</span><br><span class="line">        <span class="keyword">while</span> parents[y] != root:</span><br><span class="line">            temp = parents[y]</span><br><span class="line">            parents[y] = root</span><br><span class="line">            y = temp</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findRoot</span>(<span class="params">self, x, parents</span>):</span></span><br><span class="line">        <span class="keyword">while</span> x != parents[x]:</span><br><span class="line">            x = parents[x]</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-
-<p>今天总算早早地完成每日一题，感冒也好得差不多了，可以接着看看编译原理。</p>
-<p>今天在改脚本的时候，突然想起现在的工作内容应该可以用编译器来实现，估计没机会来做这个了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/" data-id="ckjvebfcf0000d813g14easuh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-LeetCode-项目管理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="article-date">
-  <time datetime="2021-01-12T14:57:13.000Z" itemprop="datePublished">2021-01-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/">LeetCode-项目管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>公司共有 n 个项目和  m 个小组，每个项目要不无人接手，要不就由 m 个小组之一负责。</p>
-<p>group[i] 表示第 i 个项目所属的小组，如果这个项目目前无人接手，那么 group[i] 就等于 -1。（项目和小组都是从零开始编号的）小组可能存在没有接手任何项目的情况。</p>
-<p>请你帮忙按要求安排这些项目的进度，并返回排序后的项目列表：</p>
-<p>同一小组的项目，排序后在列表中彼此相邻。<br>项目之间存在一定的依赖关系，我们用一个列表 beforeItems 来表示，其中 beforeItems[i] 表示在进行第 i 个项目前（位于第 i 个项目左侧）应该完成的所有项目。<br>如果存在多个解决方案，只需要返回其中任意一个即可。如果没有合适的解决方案，就请返回一个 空列表 。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, m &#x3D; 2, group &#x3D; [-1,-1,1,0,0,1,0,-1], beforeItems &#x3D; [[],[6],[5],[6],[3,6],[],[],[]]</span><br><span class="line">输出：[6,3,4,1,5,2,0,7]</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 8, m &#x3D; 2, group &#x3D; [-1,-1,1,0,0,1,0,-1], beforeItems &#x3D; [[],[6],[5],[6],[3],[],[4],[]]</span><br><span class="line">输出：[]</span><br><span class="line">解释：与示例 1 大致相同，但是在排序后的列表中，4 必须放在 6 的前面。</span><br></pre></td></tr></table></figure>
-
-<p>今天这题有点难度，整了半天都没解出来。先挖个坑，日后再填。</p>
-<h3 id="1月14日更新"><a href="#1月14日更新" class="headerlink" title="1月14日更新"></a>1月14日更新</h3><p>根据官方题解的思路，写出了代码，勉强能跑出来。还有很大优化空间。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：520 ms, 在所有 Python3 提交中击败了6.51%的用户</span><br><span class="line">内存消耗：33.5 MB, 在所有 Python3 提交中击败了46.96%的用户</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sortItems</span>(<span class="params">n, m, group, beforeItems</span>):</span></span><br><span class="line">    ans = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> group[i] == -<span class="number">1</span>:</span><br><span class="line">            group[i] = m</span><br><span class="line">            m += <span class="number">1</span></span><br><span class="line">    <span class="comment"># 初始组的化入度表和邻接表</span></span><br><span class="line">    groupIndegree = [<span class="number">0</span>] * m</span><br><span class="line">    groupAdj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m)]</span><br><span class="line">    <span class="comment"># item拓扑排序</span></span><br><span class="line">    <span class="comment"># 初始化项目的入度表和邻接表</span></span><br><span class="line">    inDegree = [<span class="number">0</span>] * n</span><br><span class="line">    adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="comment"># item n 的group 为 group[n]</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> beforeItems[i]:</span><br><span class="line">            <span class="comment"># 统计group的依赖关系</span></span><br><span class="line">            <span class="keyword">if</span> group[j] != group[i]:</span><br><span class="line">                groupAdj[group[j]].append(group[i])</span><br><span class="line">            <span class="comment"># 统计items的依赖关系</span></span><br><span class="line">            adj[j].append(i)</span><br><span class="line">    <span class="comment"># 统计各group的入度</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> groupAdj[i]:</span><br><span class="line">            groupIndegree[j] += <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> adj[i]:</span><br><span class="line">            inDegree[j] += <span class="number">1</span></span><br><span class="line">    group_ans = topological(groupAdj, groupIndegree, m)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">len</span>(group_ans):</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    item_ans = topological(adj, inDegree, n)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">len</span>(item_ans):</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    <span class="comment"># 根据组的拓扑排序结果输出item顺序</span></span><br><span class="line">    ans_dict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> group_ans:</span><br><span class="line">        ans_dict[i] = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> item_ans:</span><br><span class="line">        ans_dict[group[i]].append(i)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> group_ans:</span><br><span class="line">        ans.extend(ans_dict[i])</span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">topological</span>(<span class="params">adj, inDegree, n</span>):</span></span><br><span class="line">    itemQueue = queue.Queue(maxsize=n)</span><br><span class="line">    ans = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> inDegree[i]:</span><br><span class="line">            itemQueue.put(i)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> itemQueue.empty():</span><br><span class="line">        k = itemQueue.get()</span><br><span class="line">        ans.append(k)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> adj[k]:</span><br><span class="line">            inDegree[j] -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> inDegree[j]:</span><br><span class="line">                itemQueue.put(j)</span><br><span class="line">    <span class="keyword">return</span> ans <span class="keyword">if</span> <span class="built_in">len</span>(ans) == n <span class="keyword">else</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">8</span></span><br><span class="line">    m = <span class="number">2</span></span><br><span class="line">    group = [-<span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>]</span><br><span class="line">    beforeItems = [[], [<span class="number">6</span>], [<span class="number">5</span>], [<span class="number">6</span>], [<span class="number">3</span>, <span class="number">6</span>], [], [], []]</span><br><span class="line">    print(sortItems(n, m, group, beforeItems))</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" data-id="ckju4g9js00003q13fe8g6isz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -650,6 +640,14 @@
       <ul>
         
           <li>
+            <a href="/2021/01/30/LeetCode-778-%E6%B0%B4%E4%BD%8D%E4%B8%8A%E5%8D%87%E7%9A%84%E6%B3%B3%E6%B1%A0%E4%B8%AD%E6%B8%B8%E6%B3%B3/">LeetCode-778. 水位上升的泳池中游泳</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/29/LeetCode-1631-%E6%9C%80%E5%B0%8F%E4%BD%93%E5%8A%9B%E6%B6%88%E8%80%97%E8%B7%AF%E5%BE%84/">LeetCode-1631. 最小体力消耗路径</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/28/LeetCode-724-%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">LeetCode-724. 寻找数组的中心索引</a>
           </li>
         
@@ -659,14 +657,6 @@
         
           <li>
             <a href="/2021/01/26/LeetCode-1128-%E7%AD%89%E4%BB%B7%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E5%AF%B9%E7%9A%84%E6%95%B0%E9%87%8F/">LeetCode-1128. 等价多米诺骨牌对的数量</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/25/LeetCode-959-%E7%94%B1%E6%96%9C%E6%9D%A0%E5%88%92%E5%88%86%E5%8C%BA%E5%9F%9F/">LeetCode-959. 由斜杠划分区域</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/25/LeetCode-300-%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/">LeetCode-300-最长递增子序列</a>
           </li>
         
       </ul>

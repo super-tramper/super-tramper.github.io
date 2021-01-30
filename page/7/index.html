@@ -64,6 +64,92 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-sql优化-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/13/sql%E4%BC%98%E5%8C%96-1/" class="article-date">
+  <time datetime="2020-12-13T10:03:45.000Z" itemprop="datePublished">2020-12-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/13/sql%E4%BC%98%E5%8C%96-1/">sql优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265852739">https://zhuanlan.zhihu.com/p/265852739</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/13/sql%E4%BC%98%E5%8C%96-1/" data-id="ckimyurrt0000rx13f15g0tt9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/" rel="tag">sql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-括号匹配" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/13/%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D/" class="article-date">
+  <time datetime="2020-12-13T09:57:06.000Z" itemprop="datePublished">2020-12-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/13/%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D/">括号匹配</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>找出一个只包含左右括号的字符串里面复合匹配规则的最长字串</p>
+<p>不用栈的写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_length</span>(<span class="params">s</span>):</span></span><br><span class="line">    n = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(s)):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i, <span class="built_in">len</span>(s) + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> j - i &gt; n <span class="keyword">and</span> test_match(s[i:j]):</span><br><span class="line">                n = j - i</span><br><span class="line">    <span class="keyword">return</span> n</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_match</span>(<span class="params">s</span>):</span></span><br><span class="line">    k = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">        k = k + <span class="number">1</span> <span class="keyword">if</span> i == <span class="string">&#x27;(&#x27;</span> <span class="keyword">else</span> k - <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> k &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> k == <span class="number">0</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(test_length(<span class="string">&#x27;)((()())()())&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度为O(n^3)</p>
+<p>用栈的写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">s</span>):</span></span><br><span class="line">    q = LifoQueue()</span><br><span class="line">    temp = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    q.put(s[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> s[<span class="number">1</span>:]:</span><br><span class="line">        <span class="keyword">if</span> temp == <span class="string">&#x27;(&#x27;</span> <span class="keyword">and</span> i == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">            q.get()</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        q.put(i)</span><br><span class="line">        temp = i</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(s)-q.qsize()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(test(<span class="string">&#x27;(((((((((((()())()())&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度为O(n)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/13/%E6%8B%AC%E5%8F%B7%E5%8C%B9%E9%85%8D/" data-id="ckimyursd0006rx13awmian6i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-无重复的最长子串" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/13/LeetCode-%E6%97%A0%E9%87%8D%E5%A4%8D%E7%9A%84%E6%9C%80%E9%95%BF%E5%AD%90%E4%B8%B2/" class="article-date">
@@ -1376,94 +1462,6 @@
 
 
   
-    <article id="post-面试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/01/31/%E9%9D%A2%E8%AF%95/" class="article-date">
-  <time datetime="2020-01-31T09:48:31.000Z" itemprop="datePublished">2020-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/31/%E9%9D%A2%E8%AF%95/">面试</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="面试"><a href="#面试" class="headerlink" title="面试"></a>面试</h1><p>一周内收到五个面试邀请，分别是外包、绿盟和三家其他公司。</p>
-<p>仔细一想，从2019年8月开始，基本没碰过代码，Linux也没碰，工作中的两柄利器都上了锈，还没磨，就开始面试。这段时间我专注于夯实基础，以期达到一个从业者应有的知识水平，学了很多基础性东西，也不是非常全面，例如编译原理，还要找时间学习一下，还有虚拟化，也需要了解。  </p>
-<p>毫无准备地开始面试，肯定是有点虚的。我首先去了外包，两个面试官面我，其中一个的态度让我不太舒服，可能是行业内混入了太多半路出家的人（包括我），让这个行业不太好混，需要尽力分辨人才的优劣。我对此毫无意见，只是一些科班出身的人毫无缘由的仇视态度让我不爽，因为他们本来就菜，只想靠行业红利混个温饱，一出来工作发现竞争这么激烈，于是就主动站上了鄙视链，呵呵。  </p>
-<h3 id="外包岗"><a href="#外包岗" class="headerlink" title="外包岗"></a>外包岗</h3><p>外包岗位面试的内容，更倾向于对Python语言掌握程度的考察，例如，分片的魔法方法，实现迭代器的魔法方法，很基础。但是，我答得乱七八糟。回来一翻以前的笔记，我的天，太不应该了。然后赶紧复习一下，还有装饰器，这个几乎是Python面试都会问到的（可能看我太菜，他们没问这个）。语言这个工具还是要熟练掌握的。<br>外包工作的内容是针对通信协议编写测试脚本，后期还要学习ruby再进行开发。怎么说呢，我的主观目的不是求财，起码现在不是。  </p>
-<h3 id="WPF开发"><a href="#WPF开发" class="headerlink" title="WPF开发"></a>WPF开发</h3><p>第二个面试岗位是WPF开发岗，我简历上有一个这种项目。面试的时候首先是上机做几个WPF的小东西，45分钟时间，我卡在了最简单的一个上面，内容是根据鼠标的移近移出和点击改变按钮的颜色。还说什么呢？只怪自己太轻浮，把当时做的项目拿出来看一眼就能搞出来，我啥都忘了，还好没忘记怎么打开visual studio ==b<br>我以为我挂了，结果过了两天，hr小姐姐给我发消息，问我上机的时候有没有上网搜索，他们上机是可以百度的，我话冇。她叫我去跟项目负责人谈一谈，说是还有戏。好吧，WPF开发这么缺人吗，我不想长期干这个，就给推了。  </p>
-<h3 id="绿盟"><a href="#绿盟" class="headerlink" title="绿盟"></a>绿盟</h3><p>绿盟很早就收了我的简历，并且通过了初审，但是过了差不多一周才叫我去面试（腾讯也收了，并且给我打了好几个电话确认我是否可以面试，到现在也没下文）。可能大厂都是这种效率，或者二线城市的hr都是这种效率，在深圳的时候，基本是收简历当天就敲定面试时间，不用等太久。<br>绿盟的面试约在周五下午五点，我没有十分意外，某为的hr约在晚上九点面试可能并不是段子。<br>等面试的时候，我坐在那里翻绿盟的期刊，看了一篇市场人员写的文章，里面还有很多安全方面的内容，很不错，回来之后在绿盟的官网上也找到了这个期刊。<a target="_blank" rel="noopener" href="https://www.nsfocus.com.cn/html/7/20/">绿盟期刊</a><br>绿盟的面试官是一位技术经理，下午五点过两分出现，看上去一脸疲惫，首先我自我介绍一下，说了做过的项目。<br>重点来了，面试官问了很多架构方面的东西，我一下就懵了，架构这玩意也不是我搭的呀，有些没有答上来。然后问了一些Linux操作的问题，两个答得不好，其它都没问题：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.查看进程占用cpu和内存的情况；  </span><br><span class="line">我答了top，虽然没错，但不是他想要的答案，就说不知道，回来一查，还有ps命令，以前用的最多，用来查看进程的运行情况，但是一直也没注意过各项输出结果的表示内容。  </span><br><span class="line">2.查看文件夹或文件占用多少磁盘空间的命令；  </span><br><span class="line">当时想了一下没想起来，回来之后想起来是du，还能怎么说呢？用得太少，丢了这么久又没复习。  </span><br></pre></td></tr></table></figure>
-<p>回来仔细一想，面试官问的架构方面的问题，其实也不深，答不上来很不应该。<br>我简历上写了我精通haproxy、KeepAlived等应用，简直是作死，面试官就特地问了这些东西，毫无意外，全忘了。又是恶补。<br>然后面试官问了我的职业发展规划，我表达了对绿盟的敬仰，并请面试官对职业规划作了一些建议，他对我的规划作了肯定，用“这就是我能说的全部”作为结尾，我可以确定他还有个“但是”没说出来。  </p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不同的岗位、公司需要不同的技术栈、不同的软实力，不同面试官提问的侧重点也不同。从不同岗位的面试情况，可以摸清自己的不足之处。跟不同面试官交流的过程中，也对自己的思维、意识有拓展作用。去年曾经抱着这种心态去深信服面了一下，结果因为基础太差，连最后向面试官提问的机会都不要，直接跑了。现在我可以应付当时的面试题了，深信服和绿盟都是我心仪的厂，两次机会就这样错过了，惋惜。</p>
-<p>这三次面试分别考察了语言基础、编码能力、宏观的结构问题，再加上算法，应该包括了面试的主要考察范围，于是后面两家就推了。打算先加强自己，再找准目标出击。<br>结果我猫着学习的时候，Boss上有人找到我，找我要了电话，然后电话面试了一通，真是逃都逃不掉。对方是个高校的教授，听声音还挺年轻，正好他的项目方向我很感兴趣，于是聊了40分钟。<br>我说了一下我的项目，他顺带着问了超融合和虚拟化，对方水平之高，令我等膜拜不已，这是我面过知识面最广的面试官。他问的我应该答上来的都答上来了，我还向他请教了一下最近几年国家大力扶持人工智能、网络安全、区块链的用意，教授解答得中规中矩。我也不太好意思说我的偏见，显得无知，不能被市场的乱象带偏。如果他能接受我的报价，就算是敲定了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/01/31/%E9%9D%A2%E8%AF%95/" data-id="ckja57eee0009fq135dw4bh6s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E8%B0%88/" rel="tag">杂谈</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-HTTP请求模块优化" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/08/14/HTTP%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2019-08-14T15:18:08.000Z" itemprop="datePublished">2019-08-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/14/HTTP%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97%E4%BC%98%E5%8C%96/">HTTP请求模块优化</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上个C#请求模块只有简单的请求以及解析响应，在项目的不断进行及优化中，加入了HTTPS以及上传下载文件等功能，可设置请求超时时间，加入请求头Header。</p>
-<p>模块从配置文件中读取根服务器地址，拼接请求路径自动生成request对象。模块只会对返回200状态码和401状态码的响应作出反应：当收到200状态码的响应时解析响应并将响应内容返回给调用者；收到401响应时强迫客户端弹出异地登录提醒，用户关闭该弹窗时关闭主界面并弹出登录界面；收到其它响应时一律向调用者返回null。以下为优化后的模块代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*┏┓　　　┏┓</span><br><span class="line">┏┛┻━━━┛┻┓</span><br><span class="line">┃　　　　　　　┃    ***** </span><br><span class="line">┃　　　━　　　┃    ***** </span><br><span class="line">┃　┳┛　┗┳　┃    ***** </span><br><span class="line">┃　　　　　　　┃</span><br><span class="line">┃　　　┻　　　┃</span><br><span class="line">┃　　　　　　　┃</span><br><span class="line">┗━┓　　　┏━┛</span><br><span class="line">    ┃　　　┃  神兽保佑</span><br><span class="line">    ┃　　　┃  代码无BUG！</span><br><span class="line">    ┃　　　┗━━━┓</span><br><span class="line">    ┃　　　　　　　┣┓</span><br><span class="line">    ┃　　　　　　　┏┛</span><br><span class="line">    ┗┓┓┏━┳┓┏┛</span><br><span class="line">      ┃┫┫　┃┫┫</span><br><span class="line">      ┗┻┛　┗┻┛    *&#x2F;</span><br><span class="line">using System;</span><br><span class="line">using System.Collections.Generic;</span><br><span class="line">using System.Linq;</span><br><span class="line">using System.Text;</span><br><span class="line">using System.Threading.Tasks;</span><br><span class="line">using System.Configuration;</span><br><span class="line">using RestSharp;</span><br><span class="line">using log4net;</span><br><span class="line">using Newtonsoft.Json;</span><br><span class="line">using System.IO;</span><br><span class="line">using System.Windows;</span><br><span class="line">using DesktopClient.pop_upWindow;</span><br><span class="line">using System.Security.Cryptography.X509Certificates;</span><br><span class="line">using System.Net;</span><br><span class="line"></span><br><span class="line">namespace DesktopClient.tools</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 进行http请求的类</span><br><span class="line">    &#x2F;&#x2F; 初始化时可根据需要传递参数，除uri外其它参数都可选</span><br><span class="line">    &#x2F;&#x2F; 初始化针对缺省参数的默认情形：get请求(Method.GET)，不携带token(false)，无参数（object)</span><br><span class="line">    </span><br><span class="line">    class RequestAPI</span><br><span class="line">    &#123;</span><br><span class="line">        public static string token &#123; get; set; &#125;</span><br><span class="line">        public static int id &#123; get; set; &#125;</span><br><span class="line">        public static string username &#123; get; set; &#125;</span><br><span class="line">        public static string serverAddress &#x3D; ConfigurationManager.AppSettings[&quot;address&quot;];</span><br><span class="line">        </span><br><span class="line">        RestClient client &#x3D; new RestClient(serverAddress);</span><br><span class="line">        RestRequest request &#x3D; new RestRequest();</span><br><span class="line"></span><br><span class="line">        private static readonly ILog log &#x3D; LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);</span><br><span class="line">        public RestRequest RequstBody</span><br><span class="line">        &#123;</span><br><span class="line">            get &#123; return request; &#125;</span><br><span class="line">            set &#123; request &#x3D; value; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        public RequestAPI(string uri): this(uri, &quot;get&quot;, false) &#123; &#125;</span><br><span class="line"></span><br><span class="line">        public RequestAPI(string uri, string requstMethod): this(uri, requstMethod, false) &#123; &#125;</span><br><span class="line"></span><br><span class="line">        public RequestAPI(string uri, Boolean needToken): this(uri, &quot;get&quot;, needToken) &#123; &#125;</span><br><span class="line"></span><br><span class="line">        public RequestAPI(string uri, string requestMethod, Boolean needToken): this(uri, requestMethod, needToken, 5000) &#123; &#125;</span><br><span class="line"></span><br><span class="line">        public RequestAPI(string uri, string requestMethod, Boolean needToken, int timeOut)</span><br><span class="line">        &#123;</span><br><span class="line">            request.Resource &#x3D; uri;</span><br><span class="line">            if (requestMethod &#x3D;&#x3D; &quot;get&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                request.Method &#x3D; Method.GET;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (requestMethod &#x3D;&#x3D; &quot;post&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                request.Method &#x3D; Method.POST;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (requestMethod &#x3D;&#x3D; &quot;delete&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                request.Method &#x3D; Method.DELETE;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (requestMethod &#x3D;&#x3D; &quot;put&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                request.Method &#x3D; Method.PUT;</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                throw new Exception(&quot;request method not defined&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            request.AddHeader(&quot;Accept&quot;, &quot;application&#x2F;json&quot;);</span><br><span class="line">            if (needToken)</span><br><span class="line">                request.AddHeader(&quot;Authorization&quot;, token);</span><br><span class="line">            request.Timeout &#x3D; timeOut;&#x2F;&#x2F;单位是毫秒，注意</span><br><span class="line">            ServicePointManager.ServerCertificateValidationCallback &#x3D; new System.Net.Security.RemoteCertificateValidationCallback(RemoteCertificateValidationCallback);</span><br><span class="line">            X509Certificate2 certificates &#x3D; new X509Certificate2();</span><br><span class="line">            certificates.Import(&quot;ca.crt&quot;);</span><br><span class="line">            client.ClientCertificates &#x3D; new X509CertificateCollection();</span><br><span class="line">            client.ClientCertificates.Add(certificates);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static bool RemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, System.Net.Security.SslPolicyErrors errors)</span><br><span class="line">        &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void SetTimeOut(int timeOut)</span><br><span class="line">        &#123;</span><br><span class="line">            request.Timeout &#x3D; timeOut;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public RequestAPI(string uri, Boolean needToken, Dictionary&lt;string,string&gt; param) : this(uri, &quot;get&quot;, needToken)</span><br><span class="line">        &#123;</span><br><span class="line">            foreach (var item in param)</span><br><span class="line">            &#123;</span><br><span class="line">                request.AddParameter(item.Key, item.Value);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public RequestAPI(string uri, string requestMethod, Boolean needToken, object json): this(uri, requestMethod, needToken)</span><br><span class="line">        &#123;</span><br><span class="line">            request.AddJsonBody(json);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">     </span><br><span class="line">        public void UpLoadFile(string path, string sn)&#x2F;&#x2F;文件上传</span><br><span class="line">        &#123;</span><br><span class="line">            request.AddParameter(&quot;sn&quot;, sn);</span><br><span class="line">            request.AddFile(&quot;file&quot;, path, null);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void AddFile(string fileName, string filePath)</span><br><span class="line">        &#123;</span><br><span class="line">            request.AddFile(fileName, filePath);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void DownloadFile(string path)</span><br><span class="line">        &#123;</span><br><span class="line">            byte[] file &#x3D; client.DownloadData(request);</span><br><span class="line">            File.WriteAllBytes(path, file);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public string GetHtml()</span><br><span class="line">        &#123;</span><br><span class="line">            IRestResponse response &#x3D; client.Execute(request);</span><br><span class="line">            return response.Content;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public RequestResponse Response()</span><br><span class="line">        &#123;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                log.Info(&quot;请求资源： &quot; + request.Resource.ToString());</span><br><span class="line">                IRestResponse response &#x3D; client.Execute(request);</span><br><span class="line">                ResponseStatus responseStatus &#x3D; response.ResponseStatus;</span><br><span class="line">                var code &#x3D; response.StatusCode;</span><br><span class="line">                if (response.StatusCode &#x3D;&#x3D; System.Net.HttpStatusCode.OK)</span><br><span class="line">                &#123;</span><br><span class="line">                    log.Info(response.Content);</span><br><span class="line">                    RequestResponse rb &#x3D; JsonConvert.DeserializeObject&lt;RequestResponse&gt;(response.Content);</span><br><span class="line">                    </span><br><span class="line">                    return rb;</span><br><span class="line">                &#125;</span><br><span class="line">                else if (response.StatusCode &#x3D;&#x3D; System.Net.HttpStatusCode.Unauthorized)</span><br><span class="line">                &#123;</span><br><span class="line">                    log.Info(response.Content);</span><br><span class="line">                    App.Current.Dispatcher.Invoke(new Action(() &#x3D;&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                        RequestResponse rb &#x3D; JsonConvert.DeserializeObject&lt;RequestResponse&gt;(response.Content);</span><br><span class="line">                        Window mainwindow &#x3D; App.Current.MainWindow;</span><br><span class="line">                        log.Info(response);</span><br><span class="line">                        StandardMsgBox window &#x3D; new StandardMsgBox();</span><br><span class="line">                        Window loginWindow &#x3D; new LoginWindow(false);</span><br><span class="line">                        window.TitleInfo &#x3D; &quot;提示&quot;;</span><br><span class="line">                        window.Content &#x3D; rb.msg;</span><br><span class="line">                        window.tipText.FontSize &#x3D; 16;</span><br><span class="line">                        window.Owner &#x3D; mainwindow;</span><br><span class="line">                        window.WindowStartupLocation &#x3D; WindowStartupLocation.CenterOwner;</span><br><span class="line">                        window.ShowDialog();</span><br><span class="line">                        mainwindow.Close();</span><br><span class="line">                        loginWindow.Show();</span><br><span class="line">                        token &#x3D; null;</span><br><span class="line">                    &#125;));</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    log.Error(&quot;Request for resource &quot; + request.Resource.ToString() + &quot;(&quot; + request.Method + &quot;)&quot; + &quot;failed: &quot; + responseStatus.ToString() + response.Content);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception e)</span><br><span class="line">            &#123;</span><br><span class="line">                log.Error(&quot;Failed request: &quot; + e);</span><br><span class="line">            &#125;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public class RequestResponse</span><br><span class="line">    &#123;</span><br><span class="line">        public int status &#123; get; set; &#125;</span><br><span class="line">        public string msg &#123; get; set; &#125;</span><br><span class="line">        public object data &#123; get; set; &#125; &#x3D; null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/08/14/HTTP%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97%E4%BC%98%E5%8C%96/" data-id="ckja57ee50004fq13efjm2ght" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C#</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -1514,6 +1512,14 @@
       <ul>
         
           <li>
+            <a href="/2021/01/30/LeetCode-778-%E6%B0%B4%E4%BD%8D%E4%B8%8A%E5%8D%87%E7%9A%84%E6%B3%B3%E6%B1%A0%E4%B8%AD%E6%B8%B8%E6%B3%B3/">LeetCode-778. 水位上升的泳池中游泳</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/29/LeetCode-1631-%E6%9C%80%E5%B0%8F%E4%BD%93%E5%8A%9B%E6%B6%88%E8%80%97%E8%B7%AF%E5%BE%84/">LeetCode-1631. 最小体力消耗路径</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/28/LeetCode-724-%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">LeetCode-724. 寻找数组的中心索引</a>
           </li>
         
@@ -1523,14 +1529,6 @@
         
           <li>
             <a href="/2021/01/26/LeetCode-1128-%E7%AD%89%E4%BB%B7%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E5%AF%B9%E7%9A%84%E6%95%B0%E9%87%8F/">LeetCode-1128. 等价多米诺骨牌对的数量</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/25/LeetCode-959-%E7%94%B1%E6%96%9C%E6%9D%A0%E5%88%92%E5%88%86%E5%8C%BA%E5%9F%9F/">LeetCode-959. 由斜杠划分区域</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/25/LeetCode-300-%E6%9C%80%E9%95%BF%E9%80%92%E5%A2%9E%E5%AD%90%E5%BA%8F%E5%88%97/">LeetCode-300-最长递增子序列</a>
           </li>
         
       </ul>
