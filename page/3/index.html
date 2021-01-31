@@ -64,61 +64,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-LeetCode-冗余连接" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/" class="article-date">
-  <time datetime="2021-01-13T12:14:03.000Z" itemprop="datePublished">2021-01-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/">LeetCode-冗余连接</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在本问题中, 树指的是一个连通且无环的无向图。</p>
-<p>输入一个图，该图由一个有着N个节点 (节点值不重复1, 2, …, N) 的树及一条附加的边构成。附加的边的两个顶点包含在1到N中间，这条附加的边不属于树中已存在的边。</p>
-<p>结果图是一个以边组成的二维数组。每一个边的元素是一对[u, v] ，满足 u &lt; v，表示连接顶点u 和v的无向图的边。</p>
-<p>返回一条可以删去的边，使得结果图是一个有着N个节点的树。如果有多个答案，则返回二维数组中最后出现的边。答案边 [u, v] 应满足相同的格式 u &lt; v。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1,2], [1,3], [2,3]]</span><br><span class="line">输出: [2,3]</span><br><span class="line">解释: 给定的无向图为:</span><br><span class="line">  1</span><br><span class="line"> &#x2F; \</span><br><span class="line">2 - 3</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: [[1,2], [2,3], [3,4], [1,4], [1,5]]</span><br><span class="line">输出: [1,4]</span><br><span class="line">解释: 给定的无向图为:</span><br><span class="line">5 - 1 - 2</span><br><span class="line">    |   |</span><br><span class="line">    4 - 3</span><br></pre></td></tr></table></figure>
-
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>官方的解法是利用并查集。</p>
-<p>今天拿到这个题想到的是图的遍历（最小生成树）。然后复习了<code>Prim</code>算法和<code>Kruskal</code>算法，顺带还看了一下<code>Dijkstra</code>算法。没有想到更好的解决办法。毕竟<code>Kruskal</code>算法的最好实现也是借助并查集。（最近力扣跟图论杠上了）</p>
-<p>以下是代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findRedundantConnection</span>(<span class="params">self, edges: List[List[<span class="built_in">int</span>]]</span>) -&gt; List[int]:</span></span><br><span class="line">        n = <span class="built_in">len</span>(edges)</span><br><span class="line">        parents = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        ans = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">for</span> edge <span class="keyword">in</span> edges:</span><br><span class="line">            <span class="keyword">if</span> self.findRoot(edge[<span class="number">0</span>]-<span class="number">1</span>, parents) != self.findRoot(edge[<span class="number">1</span>]-<span class="number">1</span>, parents):</span><br><span class="line">                self.Union(edge[<span class="number">0</span>]-<span class="number">1</span>, edge[<span class="number">1</span>]-<span class="number">1</span>, parents)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ans = edge</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Union</span>(<span class="params">self, x, y, parents</span>):</span></span><br><span class="line">        root = self.findRoot(x, parents)</span><br><span class="line">        parents[self.findRoot(y, parents)] = root</span><br><span class="line">        <span class="keyword">while</span> parents[y] != root:</span><br><span class="line">            temp = parents[y]</span><br><span class="line">            parents[y] = root</span><br><span class="line">            y = temp</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findRoot</span>(<span class="params">self, x, parents</span>):</span></span><br><span class="line">        <span class="keyword">while</span> x != parents[x]:</span><br><span class="line">            x = parents[x]</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
-
-<p>今天总算早早地完成每日一题，感冒也好得差不多了，可以接着看看编译原理。</p>
-<p>今天在改脚本的时候，突然想起现在的工作内容应该可以用编译器来实现，估计没机会来做这个了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/" data-id="ckjvebfcf0000d813g14easuh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-LeetCode-项目管理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/12/LeetCode-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/" class="article-date">
@@ -592,6 +537,61 @@
 
 
   
+    <article id="post-LeetCode-滑动窗口最大值" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/03/LeetCode-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/" class="article-date">
+  <time datetime="2021-01-03T12:12:33.000Z" itemprop="datePublished">2021-01-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/03/LeetCode-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/">LeetCode-滑动窗口最大值</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。</p>
+<p>返回滑动窗口中的最大值。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输入：nums &#x3D; [1,3,-1,-3,5,3,6,7], k &#x3D; 3</span><br><span class="line">输出：[3,3,5,5,6,7]</span><br><span class="line">解释：</span><br><span class="line">滑动窗口的位置                最大值</span><br><span class="line">---------------               -----</span><br><span class="line">[1  3  -1] -3  5  3  6  7       3</span><br><span class="line"> 1 [3  -1  -3] 5  3  6  7       3</span><br><span class="line"> 1  3 [-1  -3  5] 3  6  7       5</span><br><span class="line"> 1  3  -1 [-3  5  3] 6  7       5</span><br><span class="line"> 1  3  -1  -3 [5  3  6] 7       6</span><br><span class="line"> 1  3  -1  -3  5 [3  6  7]      7</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums &#x3D; [1], k &#x3D; 1</span><br><span class="line">输出：[1]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums &#x3D; [1,-1], k &#x3D; 1</span><br><span class="line">输出：[1,-1]</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 4：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums &#x3D; [9,11], k &#x3D; 2</span><br><span class="line">输出：[11]</span><br></pre></td></tr></table></figure>
+
+<p>思路：从头到尾遍历数组，每次加入新元素后都要对子序列进行排序，并淘汰旧元素，可选择堆和单调队列进行子序列的排序（更新部分数据较方便）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxSlidingWindow</span>(<span class="params">nums, k</span>):</span></span><br><span class="line">    q = deque()</span><br><span class="line">    n = <span class="built_in">len</span>(nums)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        <span class="keyword">while</span> q <span class="keyword">and</span> nums[q[-<span class="number">1</span>]] &lt;= nums[i]:</span><br><span class="line">            q.pop()</span><br><span class="line">        q.append(i)</span><br><span class="line">    ret = [nums[q[<span class="number">0</span>]]]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k, n):</span><br><span class="line">        <span class="keyword">while</span> q <span class="keyword">and</span> nums[q[-<span class="number">1</span>]] &lt;= nums[i]:</span><br><span class="line">            q.pop()</span><br><span class="line">        q.append(i)</span><br><span class="line">        <span class="keyword">while</span> q[<span class="number">0</span>] &lt;= i-k:</span><br><span class="line">            q.popleft()</span><br><span class="line">        ret.append(nums[q[<span class="number">0</span>]])</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    nums = [<span class="number">1</span>, <span class="number">3</span>, -<span class="number">1</span>, -<span class="number">3</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line">    print(maxSlidingWindow(nums, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/03/LeetCode-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%80%E5%A4%A7%E5%80%BC/" data-id="ckjh3p0w600009i139bn791aa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -646,10 +646,6 @@
           </li>
         
           <li>
-            <a href="/2021/01/29/LeetCode-1631-%E6%9C%80%E5%B0%8F%E4%BD%93%E5%8A%9B%E6%B6%88%E8%80%97%E8%B7%AF%E5%BE%84/">LeetCode-1631. 最小体力消耗路径</a>
-          </li>
-        
-          <li>
             <a href="/2021/01/28/LeetCode-724-%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">LeetCode-724. 寻找数组的中心索引</a>
           </li>
         
@@ -659,6 +655,10 @@
         
           <li>
             <a href="/2021/01/26/LeetCode-1128-%E7%AD%89%E4%BB%B7%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E5%AF%B9%E7%9A%84%E6%95%B0%E9%87%8F/">LeetCode-1128. 等价多米诺骨牌对的数量</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/25/LeetCode-959-%E7%94%B1%E6%96%9C%E6%9D%A0%E5%88%92%E5%88%86%E5%8C%BA%E5%9F%9F/">LeetCode-959. 由斜杠划分区域</a>
           </li>
         
       </ul>
