@@ -64,6 +64,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-424-替换后的最长重复字符" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/" class="article-date">
+  <time datetime="2021-02-02T10:56:02.000Z" itemprop="datePublished">2021-02-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/">LeetCode-424. 替换后的最长重复字符</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给你一个仅由大写英文字母组成的字符串，你可以将任意位置上的字符替换成另外的字符，总共可最多替换 k 次。在执行上述操作后，找到包含重复字母的最长子串的长度。</p>
+<p>注意：字符串长度 和 k 不会超过 104。</p>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;ABAB&quot;, k &#x3D; 2</span><br><span class="line">输出：4</span><br><span class="line">解释：用两个&#39;A&#39;替换为两个&#39;B&#39;,反之亦然。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：s &#x3D; &quot;AABABBA&quot;, k &#x3D; 1</span><br><span class="line">输出：4</span><br><span class="line">解释：</span><br><span class="line">将中间的一个&#39;A&#39;替换为&#39;B&#39;,字符串变为 &quot;AABBBBA&quot;。</span><br><span class="line">子串 &quot;BBBB&quot; 有最长重复字母, 答案为 4。</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>这种问题一般扫描一遍可以得出结果。采用双指针法，不断向后移动右指针，记录指向的字符、更新指针范围内的最长连续字符长度，并判断当前的状态：1.若两指针之间的距离减k大于当前的最大连续字符串长度，说明两指针之间需替换的字符超过k，将左指针向右移动一位，左指针指向的字符计数减一；2.不满足1中的条件，不做任何处理，只向后移动右指针。</p>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">characterReplacement</span>(<span class="params">self, s: <span class="built_in">str</span>, k: <span class="built_in">int</span></span>) -&gt; int:</span></span><br><span class="line">        n = <span class="built_in">len</span>(s)</span><br><span class="line">        num = [<span class="number">0</span>] * <span class="number">26</span></span><br><span class="line">        begin, end, maxn = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> end &lt; n:</span><br><span class="line">            num[<span class="built_in">ord</span>(s[end]) - <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)] += <span class="number">1</span></span><br><span class="line">            maxn = <span class="built_in">max</span>(maxn, num[<span class="built_in">ord</span>(s[end]) - <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)])</span><br><span class="line">            <span class="keyword">if</span> end - begin + <span class="number">1</span> - k &gt; maxn:</span><br><span class="line">                num[<span class="built_in">ord</span>(s[begin]) - <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)] -= <span class="number">1</span></span><br><span class="line">                begin += <span class="number">1</span></span><br><span class="line">            end += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> end - begin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    s = <span class="string">&quot;AABABBA&quot;</span></span><br><span class="line">    k = <span class="number">1</span></span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.characterReplacement(s, k))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/" data-id="ckknwlehz0000f613g3c877ny" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-888-公平的糖果棒交换" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/02/01/LeetCode-888-%E5%85%AC%E5%B9%B3%E7%9A%84%E7%B3%96%E6%9E%9C%E6%A3%92%E4%BA%A4%E6%8D%A2/" class="article-date">
@@ -570,82 +620,6 @@
 
 
   
-    <article id="post-LeetCode-1319-连通网络的操作次数" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/23/LeetCode-1319-%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/" class="article-date">
-  <time datetime="2021-01-23T08:30:19.000Z" itemprop="datePublished">2021-01-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/23/LeetCode-1319-%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/">LeetCode-1319. 连通网络的操作次数</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>用以太网线缆将 n 台计算机连接成一个网络，计算机的编号从 0 到 n-1。线缆用 connections 表示，其中 connections[i] = [a, b] 连接了计算机 a 和 b。</p>
-<p>网络中的任何一台计算机都可以通过网络直接或者间接访问同一个网络中其他任意一台计算机。</p>
-<p>给你这个计算机网络的初始布线 connections，你可以拔开任意两台直连计算机之间的线缆，并用它连接一对未直连的计算机。请你计算并返回使所有计算机都连通所需的最少操作次数。如果不可能，则返回 -1 。 </p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 4, connections &#x3D; [[0,1],[0,2],[1,2]]</span><br><span class="line">输出：1</span><br><span class="line">解释：拔下计算机 1 和 2 之间的线缆，并将它插到计算机 1 和 3 上。</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 6, connections &#x3D; [[0,1],[0,2],[0,3],[1,2],[1,3]]</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：n &#x3D; 6, connections &#x3D; [[0,1],[0,2],[0,3],[1,2]]</span><br><span class="line">输出：-1</span><br><span class="line">解释：线缆数量不足。</span><br></pre></td></tr></table></figure>
-
-<h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p><strong>并查集</strong>。1.遍历连接，将相连的计算机加入集合；2.计算遍历完成后的集合个数，集合数减一即为所需的最少操纵次数。</p>
-<p>代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">makeConnected</span>(<span class="params">self, n, connections</span>) -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> n - <span class="number">1</span> &gt; <span class="built_in">len</span>(connections):</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        uf = UnionFind(n)</span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> connections:</span><br><span class="line">            uf.unionNodes(x, y)</span><br><span class="line">        <span class="keyword">return</span> uf.setNum - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnionFind</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, n</span>):</span></span><br><span class="line">        self.parents = <span class="built_in">list</span>(<span class="built_in">range</span>(n))</span><br><span class="line">        self.setNum = n</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findParent</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> x != self.parents[x]:</span><br><span class="line">            self.parents[x] = self.findParent(self.parents[x])</span><br><span class="line">        <span class="keyword">return</span> self.parents[x]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">unionNodes</span>(<span class="params">self, x, y</span>):</span></span><br><span class="line">        root1 = self.findParent(x)</span><br><span class="line">        root2 = self.findParent(y)</span><br><span class="line">        <span class="keyword">if</span> root1 == root2:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.parents[self.findParent(y)] = self.findParent(x)</span><br><span class="line">        self.setNum -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">5</span></span><br><span class="line">    connections = [[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">2</span>, <span class="number">3</span>]]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.makeConnected(n, connections))</span><br></pre></td></tr></table></figure>
-
-<p>以上代码的执行情况如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：184 ms, 在所有 Python3 提交中击败了39.14%的用户</span><br><span class="line">内存消耗：25.3 MB, 在所有 Python3 提交中击败了75.70%的用户</span><br></pre></td></tr></table></figure>
-
-<p>代码的执行效率并不理想，又在评论中看了其他相同思路的实现代码，我简化了一下代码，这下结果比较理想了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：128 ms, 在所有 Python3 提交中击败了89.91%的用户</span><br><span class="line">内存消耗：25.9 MB, 在所有 Python3 提交中击败了54.21%的用户</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">makeConnected</span>(<span class="params">self, n, connections</span>) -&gt; int:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find</span>(<span class="params">x</span>):</span></span><br><span class="line">            <span class="keyword">if</span> x != parents[x]:</span><br><span class="line">                parents[x] = find(parents[x])</span><br><span class="line">            <span class="keyword">return</span> parents[x]</span><br><span class="line">        <span class="keyword">if</span> n - <span class="number">1</span> &gt; <span class="built_in">len</span>(connections):</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        parents = <span class="built_in">list</span>(<span class="built_in">range</span>(n))</span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> connections:</span><br><span class="line">            root1 = find(x)</span><br><span class="line">            root2 = find(y)</span><br><span class="line">            parents[root2] = root1</span><br><span class="line">        setNum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> i == parents[i]:</span><br><span class="line">                setNum += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> setNum - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">4</span></span><br><span class="line">    connections = [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">2</span>],[<span class="number">1</span>,<span class="number">2</span>]]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.makeConnected(n, connections))</span><br></pre></td></tr></table></figure>
-
-<p>这个实现只维护了一个<code>parent</code>列表，莫非是要初始化一个并查集对象非常耗时？</p>
-<h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p><strong>深度优先遍历</strong>：首先建立邻接矩阵，然后执行深度优先算法，深度优先遍历次数即为连通集合数量。</p>
-<p>使用栈的深度优先遍历执行效率如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：620 ms, 在所有 Python3 提交中击败了14.07%的用户</span><br><span class="line">内存消耗：29.2 MB, 在所有 Python3 提交中击败了38.32%的用户</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">makeConnected</span>(<span class="params">self, n, connections</span>) -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(connections) &lt; n - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        visited = [<span class="number">0</span>] * n</span><br><span class="line">        lifoQueue = LifoQueue()</span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> connections:</span><br><span class="line">            adj[x].append(y)</span><br><span class="line">            adj[y].append(x)</span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> visited[i]: <span class="keyword">continue</span></span><br><span class="line">            lifoQueue.put(i)</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> lifoQueue.qsize():</span><br><span class="line">                node = lifoQueue.get()</span><br><span class="line">                visited[node] = <span class="number">1</span></span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> adj[node]:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> visited[j]:</span><br><span class="line">                        lifoQueue.put(j)</span><br><span class="line">        <span class="keyword">return</span> count - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">5</span></span><br><span class="line">    connections = [[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">2</span>, <span class="number">3</span>]]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.makeConnected(n, connections))</span><br></pre></td></tr></table></figure>
-
-<p>深度优先遍历改为递归后的效率如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：144 ms, 在所有 Python3 提交中击败了75.84%的用户</span><br><span class="line">内存消耗：45.5 MB, 在所有 Python3 提交中击败了17.45%的用户</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">makeConnected</span>(<span class="params">self, n, connections</span>) -&gt; int:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">x</span>):</span></span><br><span class="line">            <span class="keyword">if</span> visited[x]: <span class="keyword">return</span></span><br><span class="line">            visited[x] = <span class="number">1</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> adj[x]:</span><br><span class="line">                dfs(j)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(connections) &lt; n - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        adj = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        visited = [<span class="number">0</span>] * n</span><br><span class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> connections:</span><br><span class="line">            adj[x].append(y)</span><br><span class="line">            adj[y].append(x)</span><br><span class="line">        count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> visited[i]: <span class="keyword">continue</span></span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            dfs(i)</span><br><span class="line">        <span class="keyword">return</span> count - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    n = <span class="number">5</span></span><br><span class="line">    connections = [[<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">2</span>, <span class="number">3</span>]]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.makeConnected(n, connections))</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/23/LeetCode-1319-%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/" data-id="ckk9hx5q90000jc139xy4g63w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -696,6 +670,10 @@
       <ul>
         
           <li>
+            <a href="/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/">LeetCode-424. 替换后的最长重复字符</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/01/LeetCode-888-%E5%85%AC%E5%B9%B3%E7%9A%84%E7%B3%96%E6%9E%9C%E6%A3%92%E4%BA%A4%E6%8D%A2/">LeetCode-888. 公平的糖果棒交换</a>
           </li>
         
@@ -709,10 +687,6 @@
         
           <li>
             <a href="/2021/01/28/LeetCode-724-%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">LeetCode-724. 寻找数组的中心索引</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/27/LeetCode-1579-%E4%BF%9D%E8%AF%81%E5%9B%BE%E5%8F%AF%E5%AE%8C%E5%85%A8%E9%81%8D%E5%8E%86/">LeetCode-1579. 保证图可完全遍历</a>
           </li>
         
       </ul>
