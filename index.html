@@ -64,6 +64,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-480-滑动窗口中位数" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/03/LeetCode-480-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%AD%E4%BD%8D%E6%95%B0/" class="article-date">
+  <time datetime="2021-02-03T15:14:08.000Z" itemprop="datePublished">2021-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/03/LeetCode-480-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%AD%E4%BD%8D%E6%95%B0/">LeetCode-480. 滑动窗口中位数</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>中位数是有序序列最中间的那个数。如果序列的长度是偶数，则没有最中间的数；此时中位数是最中间的两个数的平均数。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[2,3,4]，中位数是 3</span><br><span class="line">[2,3]，中位数是 (2 + 3) &#x2F; 2 &#x3D; 2.5</span><br></pre></td></tr></table></figure>
+
+<p>给你一个数组 nums，有一个长度为 k 的窗口从最左端滑动到最右端。窗口中有 k 个数，每次窗口向右移动 1 位。你的任务是找出每次窗口移动后得到的新窗口中元素的中位数，并输出由它们组成的数组。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>用两个堆存储窗口中的数字，小顶堆存储较大的那一半，大顶堆存储较小的那一半。在扫描的过程中不断平衡两个堆：加入新元素并移除窗口外的元素，则大顶堆的堆顶元素或两个堆顶元素的平均值为当前数组的中位数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> heapq</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">medianSlidingWindow</span>(<span class="params">self, nums, k: <span class="built_in">int</span></span>):</span></span><br><span class="line">        <span class="comment"># 定义两个数组进行堆排序, left为大顶堆，right为小顶堆，则中位数为left的堆顶元素或left与right堆顶元素的平均值</span></span><br><span class="line">        left, right = [], []</span><br><span class="line">        <span class="comment"># 两个指针分别指向当前区域的头部和尾部</span></span><br><span class="line">        p, q = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        ans = []</span><br><span class="line">        <span class="comment"># 当尾指针指向数组末尾时结束计算</span></span><br><span class="line">        <span class="keyword">while</span> q &lt; n:</span><br><span class="line">            <span class="keyword">if</span> q - p + <span class="number">1</span> &lt;= k:</span><br><span class="line">                <span class="comment"># 依次将数组中的元素加入两个堆中</span></span><br><span class="line">                self.pushToHeaps(left, right, nums[q])</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 从堆中删除p指向的元素</span></span><br><span class="line">                <span class="keyword">if</span> nums[p] &lt;= -left[<span class="number">0</span>]:</span><br><span class="line">                    self.removeNum(left, -nums[p])</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    self.removeNum(right, nums[p])</span><br><span class="line">                <span class="comment"># 向右移动左指针</span></span><br><span class="line">                p += <span class="number">1</span></span><br><span class="line">                <span class="comment"># 调整两个堆的大小</span></span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(left) &lt; <span class="built_in">len</span>(right):</span><br><span class="line">                    heapq.heappush(left, -heapq.heappop(right))</span><br><span class="line">                <span class="comment"># 将元素加入堆中</span></span><br><span class="line">                self.pushToHeaps(left, right, nums[q])</span><br><span class="line">            <span class="keyword">if</span> q - p + <span class="number">1</span> == k:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(left) == <span class="built_in">len</span>(right):</span><br><span class="line">                    ans.append((right[<span class="number">0</span>] - left[<span class="number">0</span>]) / <span class="number">2</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ans.append(-left[<span class="number">0</span>])</span><br><span class="line">            q += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pushToHeaps</span>(<span class="params">self, left, right, num</span>):</span></span><br><span class="line">        <span class="comment"># 针对新元素入堆，自动做平衡</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(left) == <span class="built_in">len</span>(right):</span><br><span class="line">            heapq.heappush(left, -heapq.heappushpop(right, num))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            heapq.heappush(right, -heapq.heappushpop(left, -num))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeNum</span>(<span class="params">self, q, num</span>):</span></span><br><span class="line">        ind = q.index(num)</span><br><span class="line">        q[ind] = q[-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">del</span> q[-<span class="number">1</span>]</span><br><span class="line">        heapq.heapify(q)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    k = <span class="number">8</span></span><br><span class="line">    nums = [<span class="number">5</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">4</span>]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.medianSlidingWindow(nums, k))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/02/03/LeetCode-480-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%AD%E4%BD%8D%E6%95%B0/" data-id="ckkpkvyyh0000dp135xsjamqa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-424-替换后的最长重复字符" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/" class="article-date">
@@ -562,64 +608,6 @@
 
 
   
-    <article id="post-LeetCode-435-无重叠区间" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" class="article-date">
-  <time datetime="2021-01-24T14:40:56.000Z" itemprop="datePublished">2021-01-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/">LeetCode-435. 无重叠区间</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。</p>
-<p>注意:</p>
-<p>可以认为区间的终点总是大于它的起点。<br>区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。<br><strong>示例 1</strong>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [ [1,2], [2,3], [3,4], [1,3] ]</span><br><span class="line">输出: 1</span><br><span class="line">解释: 移除 [1,3] 后，剩下的区间没有重叠。</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: [ [1,2], [1,2], [1,2] ]</span><br><span class="line">输出: 2</span><br><span class="line">解释: 你需要移除两个 [1,2] 来使剩下的区间没有重叠。</span><br></pre></td></tr></table></figure>
-
-<h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><p><strong>动态规划</strong>：以<code>f[i]</code>表示当前区间为最后一个区间时，能排列的区间的最大值。将区间列表按起始位置排序，当前区间为最后一个区间时，上一个区间<code>j</code>的尾部必须小于或等于区间<code>i</code>的起始值。</p>
-<p>代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span>(<span class="params">intervals</span>) -&gt; int:</span></span><br><span class="line">    n = <span class="built_in">len</span>(intervals)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    f = [<span class="number">1</span>]</span><br><span class="line">    intervals.sort()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        f.append(<span class="built_in">max</span>([f[j] <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i) <span class="keyword">if</span> intervals[j][<span class="number">1</span>] &lt;= intervals[i][<span class="number">0</span>]], default=<span class="number">0</span>) + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> n - <span class="built_in">max</span>(f)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    intervals = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span>, <span class="number">3</span>]]</span><br><span class="line">    print(eraseOverlapIntervals(intervals))</span><br></pre></td></tr></table></figure>
-
-<p>时间复杂度为<code>O(n^2)</code>，运行时间 6188 ms</p>
-<h3 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h3><p><strong>贪心算法</strong>：将区间列表按右端点排序，选择右端点值最小的作为第一个区间（若有多个则任选一个），然后将可选区间缩小，即可选区间的左端点为已选区间的右端点，再次选择右端点最小且在可选区间内的字区间；不断重复上述步骤。由于每一次选择的区间都是满足条件的右端点最小的那个，因此每次选择后留下的可选区间的起点都最小，即可选空间最大，因此能选择最多的区间数。</p>
-<p>贪心算法的执行效率如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：68 ms, 在所有 Python3 提交中击败了99.48%的用户</span><br><span class="line">内存消耗：17.9 MB, 在所有 Python3 提交中击败了5.16%的用户</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span>(<span class="params">intervals</span>) -&gt; int:</span></span><br><span class="line">    n = <span class="built_in">len</span>(intervals)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    intervals.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>])</span><br><span class="line">    right = intervals[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">    ans = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        <span class="keyword">if</span> intervals[i][<span class="number">0</span>] &gt;= right:</span><br><span class="line">            ans += <span class="number">1</span></span><br><span class="line">            right = intervals[i][<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> n - ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    intervals = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span>, <span class="number">3</span>]]</span><br><span class="line">    print(eraseOverlapIntervals(intervals))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>执行贪心算法部分的时间复杂度为<code>O(n)</code>，但针对右端点对区间排序的时间复杂度为`O(nlogn)。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/24/LeetCode-435-%E6%97%A0%E9%87%8D%E5%8F%A0%E5%8C%BA%E9%97%B4/" data-id="ckkbamqop00009013hi3f8w61" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -670,6 +658,10 @@
       <ul>
         
           <li>
+            <a href="/2021/02/03/LeetCode-480-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%AD%E4%BD%8D%E6%95%B0/">LeetCode-480. 滑动窗口中位数</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/">LeetCode-424. 替换后的最长重复字符</a>
           </li>
         
@@ -683,10 +675,6 @@
         
           <li>
             <a href="/2021/01/30/LeetCode-778-%E6%B0%B4%E4%BD%8D%E4%B8%8A%E5%8D%87%E7%9A%84%E6%B3%B3%E6%B1%A0%E4%B8%AD%E6%B8%B8%E6%B3%B3/">LeetCode-778. 水位上升的泳池中游泳</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/28/LeetCode-724-%E5%AF%BB%E6%89%BE%E6%95%B0%E7%BB%84%E7%9A%84%E4%B8%AD%E5%BF%83%E7%B4%A2%E5%BC%95/">LeetCode-724. 寻找数组的中心索引</a>
           </li>
         
       </ul>
