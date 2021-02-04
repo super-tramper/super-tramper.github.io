@@ -64,6 +64,110 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-按要求补齐数组" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/" class="article-date">
+  <time datetime="2020-12-29T14:32:58.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/">LeetCode-按要求补齐数组</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个已排序的正整数数组 nums，和一个正整数 n 。从 [1, n] 区间内选取任意个数字补充到 nums 中，使得 [1, n] 区间内的任何数字都可以用 nums 中某几个数字的和来表示。请输出满足上述要求的最少需要补充的数字个数。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: nums &#x3D; [1,3], n &#x3D; 6</span><br><span class="line">输出: 1 </span><br><span class="line">解释:</span><br><span class="line">根据 nums 里现有的组合 [1], [3], [1,3]，可以得出 1, 3, 4。</span><br><span class="line">现在如果我们将 2 添加到 nums 中， 组合变为: [1], [2], [3], [1,3], [2,3], [1,2,3]。</span><br><span class="line">其和可以表示数字 1, 2, 3, 4, 5, 6，能够覆盖 [1, 6] 区间里所有的数。</span><br><span class="line">所以我们最少需要添加一个数字。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: nums &#x3D; [1,5,10], n &#x3D; 20</span><br><span class="line">输出: 2</span><br><span class="line">解释: 我们需要添加 [2, 4]。</span><br></pre></td></tr></table></figure>
+
+<p><strong>示例 3:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: nums &#x3D; [1,2,2], n &#x3D; 5</span><br><span class="line">输出: 0</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/patching-array/solution/an-yao-qiu-bu-qi-shu-zu-by-leetcode-solu-klp1/">思路</a></p>
+<p>代码</p>
+<p>此处要注意边界值的处理，若<code>x == n</code>，则<code>[1,n-1]</code>内的所有数字都被覆盖，不包含<code>n</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">minPatches</span>(<span class="params">nums, n</span>):</span></span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    x = <span class="number">1</span></span><br><span class="line">    patches = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> x &lt;= n:</span><br><span class="line">        <span class="keyword">if</span> index &lt; <span class="built_in">len</span>(nums) <span class="keyword">and</span> nums[index] &lt;= x:</span><br><span class="line">            x += nums[index]</span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            x *= <span class="number">2</span></span><br><span class="line">            patches += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> patches</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(minPatches([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>], <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/29/LeetCode-%E6%8C%89%E8%A6%81%E6%B1%82%E8%A1%A5%E9%BD%90%E6%95%B0%E7%BB%84/" data-id="ckja3jjqq0000jc1394dc6vtq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-LeetCode-买卖股票的最佳时机IV" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/" class="article-date">
+  <time datetime="2020-12-28T14:40:35.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/">LeetCode-买卖股票的最佳时机IV</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。</p>
+<p>注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。</p>
+<p>Buy[i, j]表示进行恰好 j 笔交易，并且当前手上持有一支股票，这种情况下的最大利润；</p>
+<p>Sell[i, j]表示恰好进行 j 笔交易，并且当前手上不持有股票，这种情况下的最大利润。</p>
+<p>状态转移方程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">buy[i][j] = <span class="built_in">max</span>(buy[i-<span class="number">1</span>][j], sell[i-<span class="number">1</span>][j]-prices[i])</span><br><span class="line">sell[i][j] = <span class="built_in">max</span>(buy[i-<span class="number">1</span>][j-<span class="number">1</span>]+prices[i], sell[i-<span class="number">1</span>][j])</span><br></pre></td></tr></table></figure>
+
+<p>边界条件：buy[0, 0]设置为-prices[0]，sell[0, 0]设置为0，第0行其它值设置为负无穷</p>
+<p>注意<code>sell</code>的状态转移方程中包含<code>j-1</code>,故<code>j=0</code>时单独考虑<code>buy</code></p>
+<p>二维数组的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">prices, k</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(prices)</span><br><span class="line">    k = <span class="built_in">min</span>(k, n // <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    buy = numpy.zeros((n, k + <span class="number">1</span>), dtype=<span class="built_in">float</span>)</span><br><span class="line">    sell = numpy.zeros((n, k + <span class="number">1</span>), dtype=<span class="built_in">float</span>)</span><br><span class="line">    buy[<span class="number">0</span>, <span class="number">0</span>] = -prices[<span class="number">0</span>]</span><br><span class="line">    sell[<span class="number">0</span>, <span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">        buy[<span class="number">0</span>][i] = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        sell[<span class="number">0</span>][i] = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">        buy[i][<span class="number">0</span>] = <span class="built_in">max</span>(buy[i-<span class="number">1</span>][<span class="number">0</span>], sell[i-<span class="number">1</span>][<span class="number">0</span>]-prices[i])</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k+<span class="number">1</span>):</span><br><span class="line">            buy[i][j] = <span class="built_in">max</span>(buy[i - <span class="number">1</span>][j], sell[i - <span class="number">1</span>][j] - prices[i])</span><br><span class="line">            sell[i][j] = <span class="built_in">max</span>(buy[i - <span class="number">1</span>][j - <span class="number">1</span>] + prices[i], sell[i - <span class="number">1</span>][j])</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(<span class="built_in">max</span>(sell[n-<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    prices = [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]</span><br><span class="line">    print(maxProfit(prices, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>当然，用一维数组同样可以实现，去掉维度<code>i</code>即可，解析见<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/mai-mai-gu-piao-de-zui-jia-shi-ji-iv-by-8xtkp/">链接</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/28/LeetCode-%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BAIV/" data-id="ckj8rnvl90000df13ere16uzm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-背包问题-问法的变化" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E9%97%AE%E6%B3%95%E7%9A%84%E5%8F%98%E5%8C%96/" class="article-date">
@@ -469,136 +573,6 @@
 
 
   
-    <article id="post-计数排序" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time datetime="2020-12-23T10:52:56.000Z" itemprop="datePublished">2020-12-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">计数排序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/counting-sort.html">https://www.runoob.com/w3cnote/counting-sort.html</a></p>
-<blockquote>
-<p>计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。作为一种线性时间复杂度的排序，计数排序要求输入的数据必须是有确定范围的整数。</p>
-</blockquote>
-<p>虽然时间复杂度只有O(n)，但对求解的问题的条件很苛刻，这也是计数排序的劣势。</p>
-<p>代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">count_sort</span>(<span class="params">l</span>):</span></span><br><span class="line">    l_min = <span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    l_max = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">    ret_list = []</span><br><span class="line">    <span class="comment"># 求出列表中的最大值及最小值</span></span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> l:</span><br><span class="line">        <span class="keyword">if</span> v &lt; l_min:</span><br><span class="line">            l_min = v</span><br><span class="line">        <span class="keyword">if</span> v &gt; l_max:</span><br><span class="line">            l_max = v</span><br><span class="line">    <span class="comment"># 初始化计数容器</span></span><br><span class="line">    count_list = [<span class="number">0</span>] * (l_max - l_min + <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 统计出现次数</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">        count_list[i - l_min] += <span class="number">1</span></span><br><span class="line">    <span class="comment"># 按顺序输出结果</span></span><br><span class="line">    <span class="keyword">for</span> index, value <span class="keyword">in</span> <span class="built_in">enumerate</span>(count_list):</span><br><span class="line">        <span class="keyword">while</span> value &gt; <span class="number">0</span>:</span><br><span class="line">            ret_list.append(index + l_min)</span><br><span class="line">            value -= <span class="number">1</span></span><br><span class="line">    print(ret_list)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    l = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>]</span><br><span class="line">    count_sort(l)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>输出结果为</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/23/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/" data-id="ckj1axgr70001rf135cl86j47" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-背包问题-完全背包" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/22/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85/" class="article-date">
-  <time datetime="2020-12-22T15:06:45.000Z" itemprop="datePublished">2020-12-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/22/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85/">背包问题-完全背包</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>问题：有 N 种物品和一个容量为 V 的背包，每种物品都有无限件可用。放入第 i 种物品 的费用是 Ci，价值是 Wi。求解:将哪些物品装入背包，可使这些物品的耗费的费用总 和不超过背包容量，且价值总和最大。</p>
-<h3 id="基本思路："><a href="#基本思路：" class="headerlink" title="基本思路："></a>基本思路：</h3><p>状态转移方程如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[i,v]&#x3D;max&#123;F[i−1,v−kCi]+kWi |0≤kCi ≤v&#125;</span><br></pre></td></tr></table></figure>
-
-<p>代码略，以下是优化思路：</p>
-<h4 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h4><p>若两件物品 i、j 满足 Ci ≤ Cj 且 Wi ≥ Wj，则将可以将物品 j 直接去掉，不用考虑。</p>
-<p>这个优化的正确性是显然的:任何情况下都可将价值小费用高的 j 换成物美价廉的 i，得到的方案至少不会更差。对于随机生成的数据，这个方法往往会大大减少物品的 件数，从而加快速度。然而这个并不能改善最坏情况的复杂度，因为有可能特别设计的 数据可以一件物品也去不掉。</p>
-<h4 id="思路二"><a href="#思路二" class="headerlink" title="思路二"></a>思路二</h4><p>首先将费用大于 V 的物品去掉，然后使用类似计数排序的做法，计算出费用相同的物品中价值最高的是哪个，可以 O(V + N ) 地完成这个优化。计数排序的思路参考下一篇文档。</p>
-<h4 id="思路三（优于前两者）"><a href="#思路三（优于前两者）" class="headerlink" title="思路三（优于前两者）"></a>思路三（优于前两者）</h4><p>把第 i 种物品拆成费用为 Ci2^k、价值为 Wi2^k 的若干件物 品，其中 k 取遍满足 Ci2^k ≤ V 的非负整数。</p>
-<p>这是二进制的思想。因为，不管最优策略选几件第 i 种物品，其件数写成二进制后， 总可以表示成若干个 2k 件物品的和。这样一来就把每种物品拆成 O(log ⌊V /Ci⌋) 件物 品，是一个很大的改进。</p>
-<h3 id="复杂度O-VN-的算法"><a href="#复杂度O-VN-的算法" class="headerlink" title="复杂度O(VN)的算法"></a>复杂度O(VN)的算法</h3><p>使用一维数组，先看伪代码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">F [0..V ] ←0</span><br><span class="line">	fori ←1toN</span><br><span class="line">		forv ←Ci toV</span><br><span class="line">			F[v] ←max(F[v],F[v−Ci]+Wi)</span><br></pre></td></tr></table></figure>
-
-<p>这个伪代码与 01 背包问题的伪代码只有 v 的循环次序不同而已。</p>
-<p>01背包问题为了保证每件物品只选一次，保证在考虑“选入第 i 件物品”这件策 略时，依据的是一个绝无已经选入第 i 件物品的子结果 F [i − 1, v − Ci]。</p>
-<p>完全背包的特点恰是每种物品可选无限件，所以在考虑“加选一件第 i 种物品”这种策略时， 却正需要一个可能已选入第 i 种物品的子结果 F [i, v − Ci ]，所以就可以并且必须采用 v 递增的顺序循环。</p>
-<p>代码实现如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ComoletePack</span>(<span class="params">items, v</span>):</span></span><br><span class="line">    F = numpy.zeros((v+<span class="number">1</span>), dtype=<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(items)+<span class="number">1</span>):</span><br><span class="line">        F[i] = F[i-<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(items[i-<span class="number">1</span>][<span class="number">0</span>], v+<span class="number">1</span>):</span><br><span class="line">            F[j] = <span class="built_in">max</span>(F[j], F[j-items[i-<span class="number">1</span>][<span class="number">0</span>]]+items[i-<span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> F[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    items = [[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">5</span>], [<span class="number">7</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line">    print(ComoletePack(items, <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-
-<p>输出结果为20，即选5件<code>items[1]</code>或者10件<code>items[4]</code></p>
-<p>将内层循环抽象后得如下代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"></span><br><span class="line">V = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Solution</span>(<span class="params">v</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">CompletePack</span>(<span class="params">F, C, W</span>):</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(C, v + <span class="number">1</span>):</span><br><span class="line">            F[j] = <span class="built_in">max</span>(F[j], F[j - C] + W)</span><br><span class="line"></span><br><span class="line">    items = [[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">5</span>], [<span class="number">7</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line">    F = numpy.zeros((v + <span class="number">1</span>), dtype=<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(items)+<span class="number">1</span>):</span><br><span class="line">        CompletePack(F, items[i-<span class="number">1</span>][<span class="number">0</span>], items[i-<span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> F[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(Solution(V))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/22/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E5%AE%8C%E5%85%A8%E8%83%8C%E5%8C%85/" data-id="ckj1axgr30000rf13e7z91ol2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" rel="tag">背包问题</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -649,6 +623,14 @@
       <ul>
         
           <li>
+            <a href="/2021/02/04/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86/">单链表处理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/04/%E6%B8%B8%E6%88%8F%E5%B8%81%E7%BB%84%E5%90%88/">游戏币组合</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/03/LeetCode-480-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E4%B8%AD%E4%BD%8D%E6%95%B0/">LeetCode-480. 滑动窗口中位数</a>
           </li>
         
@@ -658,14 +640,6 @@
         
           <li>
             <a href="/2021/02/01/LeetCode-888-%E5%85%AC%E5%B9%B3%E7%9A%84%E7%B3%96%E6%9E%9C%E6%A3%92%E4%BA%A4%E6%8D%A2/">LeetCode-888. 公平的糖果棒交换</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/31/LeetCode-839-%E7%9B%B8%E4%BC%BC%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%84/">LeetCode-839. 相似字符串组</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/30/LeetCode-778-%E6%B0%B4%E4%BD%8D%E4%B8%8A%E5%8D%87%E7%9A%84%E6%B3%B3%E6%B1%A0%E4%B8%AD%E6%B8%B8%E6%B3%B3/">LeetCode-778. 水位上升的泳池中游泳</a>
           </li>
         
       </ul>
