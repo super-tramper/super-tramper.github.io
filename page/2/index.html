@@ -64,6 +64,55 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-LeetCode-1128-等价多米诺骨牌对的数量" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/26/LeetCode-1128-%E7%AD%89%E4%BB%B7%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E5%AF%B9%E7%9A%84%E6%95%B0%E9%87%8F/" class="article-date">
+  <time datetime="2021-01-26T11:15:27.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/LeetCode-1128-%E7%AD%89%E4%BB%B7%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E5%AF%B9%E7%9A%84%E6%95%B0%E9%87%8F/">LeetCode-1128. 等价多米诺骨牌对的数量</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给你一个由一些多米诺骨牌组成的列表 dominoes。</p>
+<p>如果其中某一张多米诺骨牌可以通过旋转 0 度或 180 度得到另一张多米诺骨牌，我们就认为这两张牌是等价的。</p>
+<p>形式上，dominoes[i] = [a, b] 和 dominoes[j] = [c, d] 等价的前提是 a==c 且 b==d，或是 a==d 且 b==c。</p>
+<p>在 0 &lt;= i &lt; j &lt; dominoes.length 的前提下，找出满足 dominoes[i] 和 dominoes[j] 等价的骨牌对 (i, j) 的数量。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：dominoes &#x3D; [[1,2],[2,1],[3,4],[5,6]]</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
+
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>暴力求解：将数组元素按<code>dominoe[0]&lt;dominoe[1]</code>的顺序排列并统计出重复的元素数量，计算出每个元素的组合数（<code>n!/(m!*(n-m)!)</code>），累加即得结果。</p>
+<p>官方题解很巧妙。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numEquivDominoPairs</span>(<span class="params">self, dominoes</span>) -&gt; int:</span></span><br><span class="line">        n = <span class="built_in">len</span>(dominoes)</span><br><span class="line">        dominoes_dict = defaultdict(<span class="built_in">int</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">if</span> dominoes[i][<span class="number">0</span>] &gt; dominoes[i][<span class="number">1</span>]:</span><br><span class="line">                dominoes[i][<span class="number">0</span>], dominoes[i][<span class="number">1</span>] = dominoes[i][<span class="number">1</span>], dominoes[i][<span class="number">0</span>]</span><br><span class="line">            dominoes_dict[<span class="built_in">tuple</span>(dominoes[i])] += <span class="number">1</span></span><br><span class="line">        ans = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> dominoes_dict:</span><br><span class="line">            <span class="keyword">if</span> dominoes_dict[i] &gt; <span class="number">2</span>:</span><br><span class="line">                ans += math.factorial(dominoes_dict[i]) / (<span class="number">2</span> * math.factorial(dominoes_dict[i] - <span class="number">2</span>))</span><br><span class="line">            <span class="keyword">if</span> dominoes_dict[i] == <span class="number">2</span>:</span><br><span class="line">                ans += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">int</span>(ans)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    dominoes = [[<span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">2</span>]]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.numEquivDominoPairs(dominoes))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/01/26/LeetCode-1128-%E7%AD%89%E4%BB%B7%E5%A4%9A%E7%B1%B3%E8%AF%BA%E9%AA%A8%E7%89%8C%E5%AF%B9%E7%9A%84%E6%95%B0%E9%87%8F/" data-id="ckkdwsiwy00008h135mx6euxj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-LeetCode-959-由斜杠划分区域" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/25/LeetCode-959-%E7%94%B1%E6%96%9C%E6%9D%A0%E5%88%92%E5%88%86%E5%8C%BA%E5%9F%9F/" class="article-date">
@@ -568,58 +617,6 @@
 
 
   
-    <article id="post-LeetCode-721-账户合并" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/18/LeetCode-721-%E8%B4%A6%E6%88%B7%E5%90%88%E5%B9%B6/" class="article-date">
-  <time datetime="2021-01-18T12:31:04.000Z" itemprop="datePublished">2021-01-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/18/LeetCode-721-%E8%B4%A6%E6%88%B7%E5%90%88%E5%B9%B6/">LeetCode-721. 账户合并</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>给定一个列表 accounts，每个元素 accounts[i] 是一个字符串列表，其中第一个元素 accounts[i][0] 是 名称 (name)，其余元素是 emails 表示该账户的邮箱地址。</p>
-<p>现在，我们想合并这些账户。如果两个账户都有一些共同的邮箱地址，则两个账户必定属于同一个人。请注意，即使两个账户具有相同的名称，它们也可能属于不同的人，因为人们可能具有相同的名称。一个人最初可以拥有任意数量的账户，但其所有账户都具有相同的名称。</p>
-<p>合并账户后，按以下格式返回账户：每个账户的第一个元素是名称，其余元素是按字符 ASCII 顺序排列的邮箱地址。账户本身可以以任意顺序返回。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">accounts &#x3D; [[&quot;John&quot;, &quot;johnsmith@mail.com&quot;, &quot;john00@mail.com&quot;], [&quot;John&quot;, &quot;johnnybravo@mail.com&quot;], [&quot;John&quot;, &quot;johnsmith@mail.com&quot;, &quot;john_newyork@mail.com&quot;], [&quot;Mary&quot;, &quot;mary@mail.com&quot;]]</span><br><span class="line">输出：</span><br><span class="line">[[&quot;John&quot;, &#39;john00@mail.com&#39;, &#39;john_newyork@mail.com&#39;, &#39;johnsmith@mail.com&#39;],  [&quot;John&quot;, &quot;johnnybravo@mail.com&quot;], [&quot;Mary&quot;, &quot;mary@mail.com&quot;]]</span><br><span class="line">解释：</span><br><span class="line">第一个和第三个 John 是同一个人，因为他们有共同的邮箱地址 &quot;johnsmith@mail.com&quot;。 </span><br><span class="line">第二个 John 和 Mary 是不同的人，因为他们的邮箱地址没有被其他帐户使用。</span><br><span class="line">可以以任何顺序返回这些列表，例如答案 [[&#39;Mary&#39;，&#39;mary@mail.com&#39;]，[&#39;John&#39;，&#39;johnnybravo@mail.com&#39;]，</span><br><span class="line">[&#39;John&#39;，&#39;john00@mail.com&#39;，&#39;john_newyork@mail.com&#39;，&#39;johnsmith@mail.com&#39;]] 也是正确的。</span><br></pre></td></tr></table></figure>
-
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>还是并查集，这类问题的关键在于建集合，这个方向不错，一般都能解出来。</p>
-<p>在排查问题的时候，发现一个账户有多个邮箱，可能在之前的多个账户中出现过，按照这个思路，用无向图的遍历也可以写出来。</p>
-<p>最初建集合的时候，我在13行的关键步骤用的是<code>parents[i] = email_dict[email]</code>，经过几个用例测试后发现建集合的思路错了。改为<code>parents[self.findParent(email_dict[email], parents)] = i</code>，即将出现过的邮箱对应的<code>parent</code>指向自己，不破坏原有的指向关系。</p>
-<p>此处还可以根据用户名相同的条件来进行筛选；针对邮箱的排序，可以小顶堆进行优化。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accountsMerge</span>(<span class="params">self, accounts</span>):</span></span><br><span class="line">        ans = []</span><br><span class="line">        n = <span class="built_in">len</span>(accounts)</span><br><span class="line">        email_dict = &#123;&#125;</span><br><span class="line">        parents = <span class="built_in">list</span>(<span class="built_in">range</span>(n))</span><br><span class="line">        <span class="comment"># 若字典中不存在email，将email加入email_dict，否则将parent指向字典中email对应的值</span></span><br><span class="line">        <span class="keyword">for</span> i, account <span class="keyword">in</span> <span class="built_in">enumerate</span>(accounts):</span><br><span class="line">            <span class="keyword">for</span> email <span class="keyword">in</span> account[<span class="number">1</span>:]:</span><br><span class="line">                <span class="keyword">if</span> email <span class="keyword">not</span> <span class="keyword">in</span> email_dict:</span><br><span class="line">                    email_dict[email] = i</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    parents[self.findParent(email_dict[email], parents)] = i</span><br><span class="line">        <span class="comment"># print(parents)</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            parent = self.findParent(i, parents)</span><br><span class="line">            <span class="keyword">if</span> parent != i:</span><br><span class="line">                self.mergeAccount(parent, i, accounts)</span><br><span class="line">        <span class="comment"># print(accounts)</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            self.findParent(i, parents) == i <span class="keyword">and</span> ans.append(accounts[i])</span><br><span class="line">        <span class="keyword">for</span> i, item <span class="keyword">in</span> <span class="built_in">enumerate</span>(ans):</span><br><span class="line">            ans[i] = item[:<span class="number">1</span>] + <span class="built_in">list</span>(<span class="built_in">sorted</span>(<span class="built_in">set</span>(item[<span class="number">1</span>:])))</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findParent</span>(<span class="params">self, x, parents</span>):</span></span><br><span class="line">        <span class="keyword">while</span> x != parents[x]:</span><br><span class="line">            x = parents[x]</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">unionAccount</span>(<span class="params">self, x, y, parents</span>):</span></span><br><span class="line">        parents[self.findParent(y, parents)] = self.findParent(x, parents)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mergeAccount</span>(<span class="params">self, x, y, accounts</span>):</span></span><br><span class="line">        accounts[x] = accounts[x][:<span class="number">1</span>] + <span class="built_in">list</span>(accounts[x][<span class="number">1</span>:] + accounts[y][<span class="number">1</span>:])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    solution = Solution()</span><br><span class="line">    accounts = [[<span class="string">&quot;John&quot;</span>, <span class="string">&quot;johnsmith@mail.com&quot;</span>, <span class="string">&quot;john00@mail.com&quot;</span>], [<span class="string">&quot;John&quot;</span>, <span class="string">&quot;johnnybravo@mail.com&quot;</span>],</span><br><span class="line">                [<span class="string">&quot;John&quot;</span>, <span class="string">&quot;johnsmith@mail.com&quot;</span>, <span class="string">&quot;john_newyork@mail.com&quot;</span>], [<span class="string">&quot;Mary&quot;</span>, <span class="string">&quot;mary@mail.com&quot;</span>]]</span><br><span class="line">    <span class="comment"># accounts = [[&quot;Gabe&quot;, &quot;Gabe0@m.co&quot;, &quot;Gabe3@m.co&quot;, &quot;Gabe1@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#             [&quot;Kevin&quot;, &quot;Kevin3@m.co&quot;, &quot;Kevin5@m.co&quot;, &quot;Kevin0@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#             [&quot;Ethan&quot;, &quot;Ethan5@m.co&quot;, &quot;Ethan4@m.co&quot;, &quot;Ethan0@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#             [&quot;Hanzo&quot;, &quot;Hanzo3@m.co&quot;, &quot;Hanzo1@m.co&quot;, &quot;Hanzo0@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#             [&quot;Fern&quot;, &quot;Fern5@m.co&quot;, &quot;Fern1@m.co&quot;, &quot;Fern0@m.co&quot;]]</span></span><br><span class="line">    <span class="comment"># accounts = [[&quot;David&quot;, &quot;David0@m.co&quot;, &quot;David1@m.co&quot;], [&quot;David&quot;, &quot;David3@m.co&quot;, &quot;David4@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#             [&quot;David&quot;, &quot;David4@m.co&quot;, &quot;David5@m.co&quot;], [&quot;David&quot;, &quot;David2@m.co&quot;, &quot;David3@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#             [&quot;David&quot;, &quot;David1@m.co&quot;, &quot;David2@m.co&quot;]]</span></span><br><span class="line">    print(solution.accountsMerge(accounts))</span><br><span class="line">    <span class="comment"># sorted = [[&quot;Ethan&quot;, &quot;Ethan0@m.co&quot;, &quot;Ethan4@m.co&quot;, &quot;Ethan5@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#           [&quot;Gabe&quot;, &quot;Gabe0@m.co&quot;, &quot;Gabe1@m.co&quot;, &quot;Gabe3@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#           [&quot;Hanzo&quot;, &quot;Hanzo0@m.co&quot;, &quot;Hanzo1@m.co&quot;, &quot;Hanzo3@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#           [&quot;Kevin&quot;, &quot;Kevin0@m.co&quot;, &quot;Kevin3@m.co&quot;, &quot;Kevin5@m.co&quot;],</span></span><br><span class="line">    <span class="comment">#           [&quot;Fern&quot;, &quot;Fern0@m.co&quot;, &quot;Fern1@m.co&quot;, &quot;Fern5@m.co&quot;]]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/18/LeetCode-721-%E8%B4%A6%E6%88%B7%E5%90%88%E5%B9%B6/" data-id="ckk2kc6u50000xx132gdp0k92" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -670,6 +667,10 @@
       <ul>
         
           <li>
+            <a href="/2021/02/05/LeetCode-1208-%E5%B0%BD%E5%8F%AF%E8%83%BD%E4%BD%BF%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E7%AD%89/">LeetCode-1208. 尽可能使字符串相等</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/04/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86/">单链表处理</a>
           </li>
         
@@ -683,10 +684,6 @@
         
           <li>
             <a href="/2021/02/02/LeetCode-424-%E6%9B%BF%E6%8D%A2%E5%90%8E%E7%9A%84%E6%9C%80%E9%95%BF%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6/">LeetCode-424. 替换后的最长重复字符</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/01/LeetCode-888-%E5%85%AC%E5%B9%B3%E7%9A%84%E7%B3%96%E6%9E%9C%E6%A3%92%E4%BA%A4%E6%8D%A2/">LeetCode-888. 公平的糖果棒交换</a>
           </li>
         
       </ul>
