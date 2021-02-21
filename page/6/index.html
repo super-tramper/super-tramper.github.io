@@ -64,6 +64,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-背包问题-二维费用的背包问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-12-27T10:54:33.000Z" itemprop="datePublished">2020-12-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/">背包问题-二维费用的背包问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>对于每件物品，具有两种不同的费用，选择这件物品必须同时付出这两种费用。对于每种费用都有一个可付出的最大值（背包容量）。问怎样选择物品可以得到最大的价值。</p>
+<h3 id="物品费用的限制"><a href="#物品费用的限制" class="headerlink" title="物品费用的限制"></a>物品费用的限制</h3><p>设第 <em>i</em> 件物品所需的两种费用分别为 <em>Ci</em> 和 <em>Di</em>。两种费用可付出的最大值（也即两种背包容量）分别为 <em>V</em> 和 <em>U</em>。物品的价值为 <em>Wi</em>。</p>
+<h4 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h4><p>费用加了一维，只需状态也加一维即可。设 <em>F</em>[<em>i, v, u</em>] 表示前 <em>i</em> 件物品付出两种费用分别为 <em>v</em> 和 <em>u</em> 时可获得的最大价值。状态转移方程就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F[i, v, u] &#x3D; max&#123;F[i - 1, v, u], F[i - 1, v - Ci, u - Di] + Wi&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="物品总个数的限制"><a href="#物品总个数的限制" class="headerlink" title="物品总个数的限制"></a>物品总个数的限制</h3><p>有时，“二维费用”的条件是以这样一种隐含的方式给出的：最多只能取 <em>U</em> 件物品。这事实上相当于每件物品多了一种“件数”的费用，每个物品的件数费用均为 1，可以付出的最大件数费用为 <em>U</em>。换句话说，设 <em>F</em>[<em>v, u</em>] 表示付出费用 <em>v</em>、最多选 <em>u</em> 件时可得到的最大价值，则根据物品的类型（01、完全、多重）用不同的方法循环更新，最后在<em>f</em>[0 <em>. . . V,</em> 0 <em>. . . U</em>] 范围内寻找答案。</p>
+<p>有时，“二维费用”的条件是以这样一种隐含的方式给出的：最多只能取 <em>U</em> 件物品。这事实上相当于每件物品多了一种“件数”的费用，每个物品的件数费用均为 1，可以付出的最大件数费用为 <em>U</em>。换句话说，设 <em>F</em>[<em>v, u</em>] 表示付出费用 <em>v</em>、最多选 <em>u</em> 件时可得到的最大价值，则根据物品的类型（01、完全、多重）用不同的方法循环更新，最后在<em>f</em>[0 <em>. . . V,</em> 0 <em>. . . U</em>] 范围内寻找答案。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E4%BA%8C%E7%BB%B4%E8%B4%B9%E7%94%A8%E7%9A%84%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" data-id="ckj7cmpq00000ip13c1du92o6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" rel="tag">背包问题</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-背包问题-混合三种背包问题" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/27/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98-%E6%B7%B7%E5%90%88%E4%B8%89%E7%A7%8D%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" class="article-date">
@@ -561,46 +606,6 @@
 
 
   
-    <article id="post-numpy用法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/20/numpy%E7%94%A8%E6%B3%95/" class="article-date">
-  <time datetime="2020-12-20T03:10:59.000Z" itemprop="datePublished">2020-12-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/20/numpy%E7%94%A8%E6%B3%95/">numpy用法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近碰到一些问题，用numpy可能方便一些</p>
-<p><a target="_blank" rel="noopener" href="https://www.runoob.com/numpy/numpy-tutorial.html">https://www.runoob.com/numpy/numpy-tutorial.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2020/12/20/numpy%E7%94%A8%E6%B3%95/" data-id="ckiwk6sdb0000ef133otwbh5d" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -629,7 +634,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 15px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 12.5px;">tool</a> <a href="/tags/web/" style="font-size: 15px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 10px;">编译原理</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 15px;">网络</a> <a href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" style="font-size: 17.5px;">背包问题</a>
+      <a href="/tags/C/" style="font-size: 14px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 14px;">docker</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 12px;">tool</a> <a href="/tags/web/" style="font-size: 14px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 10px;">编译原理</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">网络</a> <a href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" style="font-size: 18px;">背包问题</a>
     </div>
   </div>
 
@@ -651,6 +656,10 @@
       <ul>
         
           <li>
+            <a href="/2021/02/21/epoll%E5%8E%9F%E7%90%86%E8%AE%B2%E8%A7%A3/">epoll原理讲解</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/07/LeetCode-665-%E9%9D%9E%E9%80%92%E5%87%8F%E6%95%B0%E5%88%97/">LeetCode-665. 非递减数列</a>
           </li>
         
@@ -664,10 +673,6 @@
         
           <li>
             <a href="/2021/02/04/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86/">单链表处理</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/04/%E6%B8%B8%E6%88%8F%E5%B8%81%E7%BB%84%E5%90%88/">游戏币组合</a>
           </li>
         
       </ul>
