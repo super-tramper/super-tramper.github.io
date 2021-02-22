@@ -64,6 +64,45 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-日志分析工具splunk" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/22/%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7splunk/" class="article-date">
+  <time datetime="2021-02-22T14:32:17.000Z" itemprop="datePublished">2021-02-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/22/%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7splunk/">日志分析工具splunk</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://www.edureka.co/blog/what-is-splunk/">https://www.edureka.co/blog/what-is-splunk/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/02/22/%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7splunk/" data-id="cklgojbve00000e133ctyb2sc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-epoll原理讲解" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/02/21/epoll%E5%8E%9F%E7%90%86%E8%AE%B2%E8%A7%A3/" class="article-date">
@@ -515,60 +554,6 @@
 
 
   
-    <article id="post-LeetCode-839-相似字符串组" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/31/LeetCode-839-%E7%9B%B8%E4%BC%BC%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%84/" class="article-date">
-  <time datetime="2021-01-31T07:08:13.000Z" itemprop="datePublished">2021-01-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/31/LeetCode-839-%E7%9B%B8%E4%BC%BC%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%84/">LeetCode-839. 相似字符串组</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>如果交换字符串 X 中的两个不同位置的字母，使得它和字符串 Y 相等，那么称 X 和 Y 两个字符串相似。如果这两个字符串本身是相等的，那它们也是相似的。</p>
-<p>例如，”tars” 和 “rats” 是相似的 (交换 0 与 2 的位置)； “rats” 和 “arts” 也是相似的，但是 “star” 不与 “tars”，”rats”，或 “arts” 相似。</p>
-<p>总之，它们通过相似性形成了两个关联组：{“tars”, “rats”, “arts”} 和 {“star”}。注意，”tars” 和 “arts” 是在同一组中，即使它们并不相似。形式上，对每个组而言，要确定一个单词在组中，只需要这个词和该组中至少一个单词相似。</p>
-<p>给你一个字符串列表 strs。列表中的每个字符串都是 strs 中其它所有字符串的一个字母异位词。请问 strs 中有多少个相似字符串组？</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：strs &#x3D; [&quot;tars&quot;,&quot;rats&quot;,&quot;arts&quot;,&quot;star&quot;]</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure>
-
-<p><strong>示例 2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：strs &#x3D; [&quot;omv&quot;,&quot;ovm&quot;]</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure>
-
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>最开始被hard这个标签唬住了，以为难点在判断相似性，仔细阅读题目后发现是常规并查集。</p>
-<p>上代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSimilarGroups</span>(<span class="params">self, strs</span>) -&gt; int:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">checkSimilar</span>(<span class="params">x, y</span>):</span></span><br><span class="line">            differ = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(x)):</span><br><span class="line">                <span class="keyword">if</span> x[i] != y[i]:</span><br><span class="line">                    differ += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> differ &gt; <span class="number">2</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">return</span> differ == <span class="number">0</span> <span class="keyword">or</span> differ == <span class="number">2</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">findParent</span>(<span class="params">x</span>):</span></span><br><span class="line">            <span class="keyword">if</span> x != parent[x]:</span><br><span class="line">                parent[x] = findParent(parent[x])</span><br><span class="line">            <span class="keyword">return</span> parent[x]</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">union</span>(<span class="params">x, y</span>):</span></span><br><span class="line">            parent[findParent(y)] = findParent(x)</span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(strs)</span><br><span class="line">        parent = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, n):</span><br><span class="line">                <span class="keyword">if</span> findParent(i) == findParent(j):</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> checkSimilar(strs[i], strs[j]):</span><br><span class="line">                    union(i, j)</span><br><span class="line">        ans = <span class="built_in">sum</span>(<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n) <span class="keyword">if</span> i == parent[i])</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    strs = [<span class="string">&quot;tars&quot;</span>, <span class="string">&quot;rats&quot;</span>, <span class="string">&quot;arts&quot;</span>, <span class="string">&quot;star&quot;</span>]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.numSimilarGroups(strs))</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行用时：296 ms, 在所有 Python3 提交中击败了73.97%的用户</span><br><span class="line">内存消耗：15.3 MB, 在所有 Python3 提交中击败了20.59%的用户</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/31/LeetCode-839-%E7%9B%B8%E4%BC%BC%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BB%84/" data-id="ckkkt313x0000l213clz62xq8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -619,6 +604,10 @@
       <ul>
         
           <li>
+            <a href="/2021/02/22/%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7splunk/">日志分析工具splunk</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/21/epoll%E5%8E%9F%E7%90%86%E8%AE%B2%E8%A7%A3/">epoll原理讲解</a>
           </li>
         
@@ -632,10 +621,6 @@
         
           <li>
             <a href="/2021/02/05/LeetCode-1208-%E5%B0%BD%E5%8F%AF%E8%83%BD%E4%BD%BF%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9B%B8%E7%AD%89/">LeetCode-1208. 尽可能使字符串相等</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/04/%E5%8D%95%E9%93%BE%E8%A1%A8%E5%A4%84%E7%90%86/">单链表处理</a>
           </li>
         
       </ul>
