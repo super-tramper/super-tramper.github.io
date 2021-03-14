@@ -5,19 +5,19 @@
   
 
   
-  <title>LeetCode-可被 5 整除的二进制前缀 | IMTE</title>
+  <title>从容器构建镜像并推送到DockerHub | IMTE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="给定由若干 0 和 1 组成的数组 A。我们定义 N_i：从 A[0] 到 A[i] 的第 i 个子数组被解释为一个二进制数（从最高有效位到最低有效位）。 返回布尔值列表 answer，只有当 N_i 可以被 5 整除时，答案 answer[i] 为 true，否则为 false。 示例 1： 1234输入：[0,1,1]输出：[true,false,false]解释：输入数字为 0, 01, 0">
+  <meta name="description" content="备忘：记录构建镜像及提送的过程，包括中途犯的错误。 构建镜像从dockerfile构建待补充 从容器构建 查看容器，后续需要用到容器id  123└─# docker container lsCONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS         PORTS                N">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode-可被 5 整除的二进制前缀">
-<meta property="og:url" content="http://example.com/2021/01/14/LeetCode-%E5%8F%AF%E8%A2%AB-5-%E6%95%B4%E9%99%A4%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%89%8D%E7%BC%80/index.html">
+<meta property="og:title" content="从容器构建镜像并推送到DockerHub">
+<meta property="og:url" content="http://example.com/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/index.html">
 <meta property="og:site_name" content="IMTE">
-<meta property="og:description" content="给定由若干 0 和 1 组成的数组 A。我们定义 N_i：从 A[0] 到 A[i] 的第 i 个子数组被解释为一个二进制数（从最高有效位到最低有效位）。 返回布尔值列表 answer，只有当 N_i 可以被 5 整除时，答案 answer[i] 为 true，否则为 false。 示例 1： 1234输入：[0,1,1]输出：[true,false,false]解释：输入数字为 0, 01, 0">
+<meta property="og:description" content="备忘：记录构建镜像及提送的过程，包括中途犯的错误。 构建镜像从dockerfile构建待补充 从容器构建 查看容器，后续需要用到容器id  123└─# docker container lsCONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS         PORTS                N">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-01-14T10:51:24.000Z">
-<meta property="article:modified_time" content="2021-01-14T11:08:42.173Z">
+<meta property="article:published_time" content="2021-03-14T09:14:39.000Z">
+<meta property="article:modified_time" content="2021-03-14T09:28:51.615Z">
 <meta property="article:author" content="IMTE">
-<meta property="article:tag" content="算法">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="IMTE" type="application/atom+xml">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-LeetCode-可被-5-整除的二进制前缀" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-从容器构建镜像并推送到DockerHub" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/01/14/LeetCode-%E5%8F%AF%E8%A2%AB-5-%E6%95%B4%E9%99%A4%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%89%8D%E7%BC%80/" class="article-date">
-  <time datetime="2021-01-14T10:51:24.000Z" itemprop="datePublished">2021-01-14</time>
+    <a href="/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/" class="article-date">
+  <time datetime="2021-03-14T09:14:39.000Z" itemprop="datePublished">2021-03-14</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      LeetCode-可被 5 整除的二进制前缀
+      从容器构建镜像并推送到DockerHub
     </h1>
   
 
@@ -89,27 +89,46 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>给定由若干 0 和 1 组成的数组 A。我们定义 N_i：从 A[0] 到 A[i] 的第 i 个子数组被解释为一个二进制数（从最高有效位到最低有效位）。</p>
-<p>返回布尔值列表 answer，只有当 N_i 可以被 5 整除时，答案 answer[i] 为 true，否则为 false。</p>
-<p><strong>示例 1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：[0,1,1]</span><br><span class="line">输出：[true,false,false]</span><br><span class="line">解释：</span><br><span class="line">输入数字为 0, 01, 011；也就是十进制中的 0, 1, 3 。只有第一个数可以被 5 整除，因此 answer[0] 为真。</span><br></pre></td></tr></table></figure>
+        <p>备忘：记录构建镜像及提送的过程，包括中途犯的错误。</p>
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><h4 id="从dockerfile构建"><a href="#从dockerfile构建" class="headerlink" title="从dockerfile构建"></a>从<code>dockerfile</code>构建</h4><p>待补充</p>
+<h4 id="从容器构建"><a href="#从容器构建" class="headerlink" title="从容器构建"></a>从容器构建</h4><ol>
+<li>查看容器，后续需要用到容器id</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─# docker container ls</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS         PORTS                NAMES</span><br><span class="line">0315f9034090   nginx     &quot;/docker-entrypoint.…&quot;   31 minutes ago   Up 9 minutes   0.0.0.0:80-&gt;80/tcp   webserver</span><br></pre></td></tr></table></figure>
 
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>Easy level。</p>
-<p>注意两处：</p>
-<ul>
-<li>只需记录每次除5之后得到的余数</li>
-<li>使用移位操作比乘方更快</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">prefixesDivBy5</span>(<span class="params">self, A</span>):</span></span><br><span class="line">        pre = <span class="number">0</span></span><br><span class="line">        ans = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> A:</span><br><span class="line">            pre = ((pre &lt;&lt; <span class="number">1</span>) + i) % <span class="number">5</span></span><br><span class="line">            ans.append(<span class="keyword">not</span> pre)</span><br><span class="line">        <span class="keyword">return</span> ans</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    A = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line">    solution = Solution()</span><br><span class="line">    print(solution.prefixesDivBy5(A))</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><code>docker commit</code>构建镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─# docker commit -a &quot;wanshousi&quot; -m &quot;webserver for static file&quot; 0315f webserver:v1</span><br><span class="line">sha256:b333606909730ba0118a4849d89b513318e659d5ff6dfc018413da74620d1877</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>登陆<code>DockerHub</code>（需提前注册账号）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─# docker login</span><br><span class="line">Login with your Docker ID to push and pull images from Docker Hub. If you don&#x27;t have a Docker ID, head over to https://hub.docker.com to create one.</span><br><span class="line">Username: xxxxxx</span><br><span class="line">Password: </span><br><span class="line">WARNING! Your password will be stored unencrypted in /root/.docker/config.json.</span><br><span class="line">Configure a credential helper to remove this warning. See</span><br><span class="line">https://docs.docker.com/engine/reference/commandline/login/#credentials-store</span><br><span class="line"></span><br><span class="line">Login Succeeded</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>尝试推送镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─# docker push wanshousi/webserver</span><br><span class="line">Using default tag: latest</span><br><span class="line">The push refers to repository [docker.io/wanshousi/webserver]</span><br><span class="line">An image does not exist locally with the tag: wanshousi/webserver</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>查看镜像id并重命名镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└─# docker images</span><br><span class="line">REPOSITORY   TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">webserver    v1        b33360690973   5 minutes ago   103MB</span><br><span class="line">nginx        latest    4f718772a0b3   2 days ago      103MB</span><br><span class="line">┌──(root💀kali)-[~]</span><br><span class="line">└─# docker tag b333 wanshousi/webserver:v1</span><br><span class="line">┌──(root💀kali)-[~]</span><br><span class="line">└─# docker images</span><br><span class="line">REPOSITORY            TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">webserver             v1        b33360690973   5 minutes ago   103MB</span><br><span class="line">wanshousi/webserver   v1        b33360690973   5 minutes ago   103MB</span><br><span class="line">nginx                 latest    4f718772a0b3   2 days ago      103MB</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>再次尝试push</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">└─# docker push wanshousi/webserver:v1</span><br><span class="line">The push refers to repository [docker.io/wanshousi/webserver]</span><br><span class="line">edfbfcaa59c2: Pushed </span><br><span class="line">68b7ca5ee324: Mounted from library/nginx </span><br><span class="line">5154c456ef9c: Mounted from library/nginx </span><br><span class="line">580b3e8577cb: Mounted from library/nginx </span><br><span class="line">b42bdeeb83fb: Mounted from library/nginx </span><br><span class="line">ff4e67d1931f: Mounted from library/nginx </span><br><span class="line">6997d19cbb50: Mounted from library/nginx </span><br><span class="line">v1: digest: sha256:ef249b10cca6913499ba9b62637a0230c1204273e7956510d68c4c04c85c56ab size: 1778</span><br></pre></td></tr></table></figure>
 
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2021/01/14/LeetCode-%E5%8F%AF%E8%A2%AB-5-%E6%95%B4%E9%99%A4%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%89%8D%E7%BC%80/" data-id="ckjwqlmzx0000bj13c0pi66ci" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/" data-id="ckm8yhhth0000ht13e8ie5m9o" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
 
     </footer>
   </div>
@@ -117,19 +136,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2021/01/15/python%E7%9A%84collections%E5%92%8Citertools/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          python的collections和itertools
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/01/13/LeetCode-%E5%86%97%E4%BD%99%E8%BF%9E%E6%8E%A5/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/03/13/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">LeetCode-冗余连接</div>
+      <div class="article-nav-title">树莓派添加无线网络</div>
     </a>
   
 </nav>

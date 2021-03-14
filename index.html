@@ -64,6 +64,76 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-从容器构建镜像并推送到DockerHub" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/" class="article-date">
+  <time datetime="2021-03-14T09:14:39.000Z" itemprop="datePublished">2021-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/">从容器构建镜像并推送到DockerHub</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>备忘：记录构建镜像及提送的过程，包括中途犯的错误。</p>
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><h4 id="从dockerfile构建"><a href="#从dockerfile构建" class="headerlink" title="从dockerfile构建"></a>从<code>dockerfile</code>构建</h4><p>待补充</p>
+<h4 id="从容器构建"><a href="#从容器构建" class="headerlink" title="从容器构建"></a>从容器构建</h4><ol>
+<li>查看容器，后续需要用到容器id</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─# docker container ls</span><br><span class="line">CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS         PORTS                NAMES</span><br><span class="line">0315f9034090   nginx     &quot;/docker-entrypoint.…&quot;   31 minutes ago   Up 9 minutes   0.0.0.0:80-&gt;80/tcp   webserver</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><code>docker commit</code>构建镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─# docker commit -a &quot;wanshousi&quot; -m &quot;webserver for static file&quot; 0315f webserver:v1</span><br><span class="line">sha256:b333606909730ba0118a4849d89b513318e659d5ff6dfc018413da74620d1877</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>登陆<code>DockerHub</code>（需提前注册账号）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─# docker login</span><br><span class="line">Login with your Docker ID to push and pull images from Docker Hub. If you don&#x27;t have a Docker ID, head over to https://hub.docker.com to create one.</span><br><span class="line">Username: xxxxxx</span><br><span class="line">Password: </span><br><span class="line">WARNING! Your password will be stored unencrypted in /root/.docker/config.json.</span><br><span class="line">Configure a credential helper to remove this warning. See</span><br><span class="line">https://docs.docker.com/engine/reference/commandline/login/#credentials-store</span><br><span class="line"></span><br><span class="line">Login Succeeded</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>尝试推送镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─# docker push wanshousi/webserver</span><br><span class="line">Using default tag: latest</span><br><span class="line">The push refers to repository [docker.io/wanshousi/webserver]</span><br><span class="line">An image does not exist locally with the tag: wanshousi/webserver</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>查看镜像id并重命名镜像</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└─# docker images</span><br><span class="line">REPOSITORY   TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">webserver    v1        b33360690973   5 minutes ago   103MB</span><br><span class="line">nginx        latest    4f718772a0b3   2 days ago      103MB</span><br><span class="line">┌──(root💀kali)-[~]</span><br><span class="line">└─# docker tag b333 wanshousi/webserver:v1</span><br><span class="line">┌──(root💀kali)-[~]</span><br><span class="line">└─# docker images</span><br><span class="line">REPOSITORY            TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">webserver             v1        b33360690973   5 minutes ago   103MB</span><br><span class="line">wanshousi/webserver   v1        b33360690973   5 minutes ago   103MB</span><br><span class="line">nginx                 latest    4f718772a0b3   2 days ago      103MB</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>再次尝试push</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">└─# docker push wanshousi/webserver:v1</span><br><span class="line">The push refers to repository [docker.io/wanshousi/webserver]</span><br><span class="line">edfbfcaa59c2: Pushed </span><br><span class="line">68b7ca5ee324: Mounted from library/nginx </span><br><span class="line">5154c456ef9c: Mounted from library/nginx </span><br><span class="line">580b3e8577cb: Mounted from library/nginx </span><br><span class="line">b42bdeeb83fb: Mounted from library/nginx </span><br><span class="line">ff4e67d1931f: Mounted from library/nginx </span><br><span class="line">6997d19cbb50: Mounted from library/nginx </span><br><span class="line">v1: digest: sha256:ef249b10cca6913499ba9b62637a0230c1204273e7956510d68c4c04c85c56ab size: 1778</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/" data-id="ckm8yhhth0000ht13e8ie5m9o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-树莓派添加无线网络" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/03/13/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/" class="article-date">
@@ -711,54 +781,6 @@
 
 
   
-    <article id="post-游戏币组合" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/04/%E6%B8%B8%E6%88%8F%E5%B8%81%E7%BB%84%E5%90%88/" class="article-date">
-  <time datetime="2021-02-04T15:06:36.000Z" itemprop="datePublished">2021-02-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/04/%E6%B8%B8%E6%88%8F%E5%B8%81%E7%BB%84%E5%90%88/">游戏币组合</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>⼩明的抽屉⾥有n个游戏币，总⾯值m，游戏币的设置有1分的，2分的，5分的，10分的，⽽在⼩明所拥有的游戏币中有些⾯值的游戏币可能没有，求⼀共有多少种可能的游戏币组合⽅式？</p>
-<p>输⼊：输⼊两个数n(游戏币的个数)，m(总⾯值)。</p>
-<p>输出：请输出可能的组合⽅式数；</p>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p><strong>典型的动态规划问题</strong>，以方程<code>F(count, value)</code>表示用<code>count</code>枚硬币凑出面值为<code>value</code>的方案个数，则状态转移方程如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F(count, value) &#x3D; F(count-1, value-1) + F(count-1, value-2) + F(count-1, value-5) + F(count-1, value-10)</span><br></pre></td></tr></table></figure>
-
-<p>边界条件为<code>F(0,0)=1</code>,其它元素都初始化为0</p>
-<p>具体代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">combinationCount</span>(<span class="params">n, m</span>):</span></span><br><span class="line">    coins = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">10</span>]</span><br><span class="line">    matrix = np.zeros((n + <span class="number">1</span>, m + <span class="number">1</span>), dtype=<span class="built_in">int</span>)</span><br><span class="line">    <span class="comment"># matrix[m][n] 表示用m枚硬币凑出面值n的组合个数</span></span><br><span class="line">    matrix[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span>  <span class="comment"># 初始条件</span></span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> coins:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(v, m + <span class="number">1</span>):</span><br><span class="line">                matrix[i][j] += matrix[i - <span class="number">1</span>][j - v]</span><br><span class="line">    print(matrix)</span><br><span class="line">    <span class="keyword">return</span> matrix[-<span class="number">1</span>][-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    print(combinationCount(<span class="number">4</span>, <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2021/02/04/%E6%B8%B8%E6%88%8F%E5%B8%81%E7%BB%84%E5%90%88/" data-id="ckkr040rt0000pj138ryt4ufz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -787,7 +809,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 14px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 14px;">docker</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/python/" style="font-size: 14px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 12px;">tool</a> <a href="/tags/web/" style="font-size: 14px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 10px;">编译原理</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 14px;">网络</a> <a href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" style="font-size: 18px;">背包问题</a>
+      <a href="/tags/C/" style="font-size: 13.33px;">C#</a> <a href="/tags/celery/" style="font-size: 10px;">celery</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/sql/" style="font-size: 10px;">sql</a> <a href="/tags/tool/" style="font-size: 11.67px;">tool</a> <a href="/tags/web/" style="font-size: 13.33px;">web</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 10px;">杂谈</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" style="font-size: 10px;">编译原理</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 13.33px;">网络</a> <a href="/tags/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" style="font-size: 18.33px;">背包问题</a>
     </div>
   </div>
 
@@ -809,6 +831,10 @@
       <ul>
         
           <li>
+            <a href="/2021/03/14/%E4%BB%8E%E5%AE%B9%E5%99%A8%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F%E5%B9%B6%E6%8E%A8%E9%80%81%E5%88%B0DockerHub/">从容器构建镜像并推送到DockerHub</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/13/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%B7%BB%E5%8A%A0%E6%97%A0%E7%BA%BF%E7%BD%91%E7%BB%9C/">树莓派添加无线网络</a>
           </li>
         
@@ -822,10 +848,6 @@
         
           <li>
             <a href="/2021/02/22/%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E5%B7%A5%E5%85%B7splunk/">日志分析工具splunk</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/21/epoll%E5%8E%9F%E7%90%86%E8%AE%B2%E8%A7%A3/">epoll原理讲解</a>
           </li>
         
       </ul>
