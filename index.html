@@ -88,7 +88,7 @@
       
         <h3 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h3><p>目前通过网线连接到树莓派，在路由器管理界面获取ip地址后通过ssh连接。</p>
 <h3 id="添加无线连接的ssid和密码"><a href="#添加无线连接的ssid和密码" class="headerlink" title="添加无线连接的ssid和密码"></a>添加无线连接的ssid和密码</h3><p>进入<code>/etc/wpa_supplicant</code>目录，使用<code>wpa_passphrase</code>命令创建一个配置文件。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wpa_passphrase &quot;ssid&quot; &quot;phrase&quot; &gt; wpa_supplicant.conf</span><br><span class="line">wpa_passphrase &quot;TP-LINK_5E78&quot; &quot;1234qwerasdfg&quot; &gt; wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wpa_passphrase &quot;ssid&quot; &quot;phrase&quot; &gt; wpa_supplicant.conf</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>其中<code>ssid</code>为网络名称，例如<code>TP-LINK_XXXX</code>，<code>phrase</code>为网络密码</p>
